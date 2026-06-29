@@ -5,7 +5,7 @@
   "instagram": "https://www.instagram.com/jung_ddanddan/",
   "kakao": "",
   "hero": {
-    "image": "",
+    "image": "images/moodby-hero.jpg",
     "words": ["따뜻하게", "유쾌하게", "차분하게", "고급스럽게", "감동적으로", "사랑스럽게"],
     "tagline": "Color your wedding mood.",
     "sub": "당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성합니다."
@@ -79,16 +79,16 @@
     ]
   },
   "mcs": [
-    { "name": "다원", "emoji": "🍊", "color": "#F08A3C", "keywords": ["따뜻함", "밝음"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "지후", "emoji": "🪽", "color": "#9FB7C9", "keywords": ["차분함", "깔끔함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "소담", "emoji": "🌳", "color": "#6FA86B", "keywords": ["산뜻함", "활기참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "세미", "emoji": "🩷", "color": "#E58BB0", "keywords": ["사랑스러움", "로맨틱"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "빛나", "emoji": "🌊", "color": "#4FA3C7", "keywords": ["좋은 딕션", "시원함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "이진", "emoji": "🕊️", "color": "#C8A98C", "keywords": ["부드러움", "따뜻함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "예지", "emoji": "🎀", "color": "#E89BB4", "keywords": ["다정함", "포근함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "예지", "emoji": "⚡️", "color": "#F2C24B", "keywords": ["에너지", "활기참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "유선", "emoji": "🍎", "color": "#D9534F", "keywords": ["맑음", "청아함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "연주", "emoji": "🔮", "color": "#9B7EDE", "keywords": ["매끄러움", "활기참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" }
+    { "name": "다원", "emoji": "🍊", "color": "#F08A3C", "keywords": ["따뜻함", "밝음"], "strength": "따뜻한 에너지와 안정적인 리딩으로 예식의 첫 공기를 부드럽게 열어갑니다.", "recommend": "밝지만 과하지 않은 진행, 두 사람의 이야기가 자연스럽게 담기는 예식을 원하는 커플", "image": "", "youtube": "", "review": "" },
+    { "name": "지후", "emoji": "🪽", "color": "#9FB7C9", "keywords": ["차분함", "깔끔함"], "strength": "군더더기 없는 톤과 또렷한 전달력으로 격식 있는 예식의 흐름을 정돈합니다.", "recommend": "호텔 예식, 하우스웨딩처럼 차분하고 품격 있는 무드를 원하는 커플", "image": "", "youtube": "", "review": "" },
+    { "name": "소담", "emoji": "🌳", "color": "#6FA86B", "keywords": ["산뜻함", "활기참"], "strength": "맑고 산뜻한 진행으로 하객의 집중을 자연스럽게 끌어올립니다.", "recommend": "밝은 분위기 속에서도 예식의 중심을 단단히 잡고 싶은 커플", "image": "", "youtube": "", "review": "" },
+    { "name": "세미", "emoji": "🩷", "color": "#E58BB0", "keywords": ["사랑스러움", "로맨틱"], "strength": "다정한 표현과 부드러운 호흡으로 로맨틱한 순간의 온도를 살립니다.", "recommend": "감성적인 축사와 따뜻한 멘트가 어울리는 예식을 원하는 커플", "image": "", "youtube": "", "review": "" },
+    { "name": "빛나", "emoji": "🌊", "color": "#4FA3C7", "keywords": ["좋은 딕션", "시원함"], "strength": "시원한 발성과 또렷한 딕션으로 넓은 홀에서도 메시지를 선명하게 전달합니다.", "recommend": "큰 규모의 예식, 명확한 안내와 안정적인 전달력이 중요한 커플", "image": "", "youtube": "", "review": "" },
+    { "name": "이진", "emoji": "🕊️", "color": "#C8A98C", "keywords": ["부드러움", "따뜻함"], "strength": "부드러운 톤으로 긴장된 순간을 편안하게 풀고 예식의 결을 섬세하게 이어갑니다.", "recommend": "가족 중심의 따뜻한 분위기와 잔잔한 감동을 원하는 커플", "image": "", "youtube": "", "review": "" },
+    { "name": "예지", "emoji": "🎀", "color": "#E89BB4", "keywords": ["다정함", "포근함"], "strength": "포근한 말투와 세심한 진행으로 신랑신부가 안심할 수 있는 흐름을 만듭니다.", "recommend": "예식 준비가 처음이라 식순과 멘트 가이드까지 꼼꼼히 받고 싶은 커플", "image": "", "youtube": "", "review": "" },
+    { "name": "예지", "emoji": "⚡️", "color": "#F2C24B", "keywords": ["에너지", "활기참"], "strength": "밝은 에너지로 2부와 이벤트까지 생동감 있게 이끌어갑니다.", "recommend": "친구 같은 유쾌함과 하객 참여가 있는 예식을 원하는 커플", "image": "", "youtube": "", "review": "" },
+    { "name": "유선", "emoji": "🍎", "color": "#D9534F", "keywords": ["맑음", "청아함"], "strength": "맑고 청아한 톤으로 선언과 안내 멘트의 품위를 높입니다.", "recommend": "깔끔한 진행과 또렷한 음색이 잘 어울리는 클래식한 예식을 원하는 커플", "image": "", "youtube": "", "review": "" },
+    { "name": "연주", "emoji": "🔮", "color": "#9B7EDE", "keywords": ["매끄러움", "활기참"], "strength": "매끄러운 전환과 현장 감각으로 예식의 리듬을 유연하게 이어갑니다.", "recommend": "식순 변수가 많거나 분위기 전환이 자연스러운 진행을 원하는 커플", "image": "", "youtube": "", "review": "" }
   ],
   "process": [
     { "title": "정보 제공 및 상담", "desc": "날짜·시간·예식장·인원, 원하는 결혼식 분위기와 사회자 성향을 알려주세요." },

@@ -1,5 +1,5 @@
 /* =============================================================
-   JUNG DDANDDAN · 옛 서비스워커 자동 자폭 미들웨어 (Cloudflare Pages Function)
+   MOOD BY · 옛 서비스워커 자동 자폭 미들웨어 (Cloudflare Pages Function)
    -------------------------------------------------------------
    Cloudflare 전환 전 옛 사이트가 기기에 심어둔 서비스워커는
    파일명이 제각각이라(예: firebase-messaging-sw.js, pwa-sw.js,
@@ -20,7 +20,7 @@ const REAL_ROOT_JS = new Set([
   "/serviceworker.js",
 ]);
 
-const KILL_SWITCH = `/* JUNG DDANDDAN service-worker kill-switch (auto) */
+const KILL_SWITCH = `/* MOOD BY service-worker kill-switch (auto) */
 self.addEventListener("install", function () { self.skipWaiting(); });
 self.addEventListener("activate", function (event) {
   event.waitUntil((async function () {
@@ -43,17 +43,17 @@ self.addEventListener("fetch", function (event) {
 const FIX_PAGE = `<!doctype html><html lang="ko"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>JUNG DDANDDAN 복구</title>
+<title>MOOD BY 복구</title>
 <style>
   body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;margin:0;padding:24px;background:#f7f3ee;color:#2e2a26;line-height:1.6}
   h1{font-size:20px;margin:0 0 4px}
   .sub{color:#8a7d6c;font-size:13px;margin-bottom:18px}
   #status{font-size:16px;font-weight:600;margin:16px 0;padding:14px;border-radius:10px;background:#fff;border:1px solid #e6ddd0}
   pre{background:#27241f;color:#e8e3da;padding:14px;border-radius:10px;font-size:12px;white-space:pre-wrap;word-break:break-all;overflow:auto}
-  a.btn{display:block;text-align:center;margin-top:18px;padding:15px;border-radius:40px;background:#a8927a;color:#fff;text-decoration:none;font-weight:600}
+  a.btn{display:block;text-align:center;margin-top:18px;padding:15px;border-radius:40px;background:#24211f;color:#fff;text-decoration:none;font-weight:600}
   .ok{color:#1e7a44}.bad{color:#c0392b}
 </style></head><body>
-<h1>JUNG DDANDDAN 화면 복구</h1>
+<h1>MOOD BY 화면 복구</h1>
 <div class="sub">기기에 남아있던 옛 버전 데이터를 제거합니다.</div>
 <div id="status">검사 중…</div>
 <pre id="log"></pre>

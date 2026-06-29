@@ -15,16 +15,16 @@ public_folder: "/images/uploads"
 media_libraries:
   cloudflare_r2:
     account_id: b8c01aa804c1c42982b17864b74e975b
-    bucket: jungddanddan-images
-    access_key_id: REPLACE_WITH_JUNGDDANDDAN_R2_ACCESS_KEY_ID
-    public_url: https://media.jungddanddan.com
+    bucket: moodby-images
+    access_key_id: REPLACE_WITH_MOODBY_R2_ACCESS_KEY_ID
+    public_url: https://media.moodby.kr
     prefix: uploads/
 
 # 편집 화면 언어/문구
 locale: "ko"
 publish_mode: simple
-site_url: https://www.jungddanddan.com
-display_url: https://www.jungddanddan.com
+site_url: https://moodby.kr
+display_url: https://moodby.kr
 
 collections:
   - name: "settings"

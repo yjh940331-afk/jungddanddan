@@ -8,14 +8,17 @@
   <meta property="og:title" content="무드바이 MOOD BY · 결혼식 사회자 에이전시" />
   <meta property="og:description" content="당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성해갑니다. mood by your story." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.jungddanddan.com/" />
+  <meta property="og:url" content="https://moodby.kr/" />
+  <meta property="og:image" content="https://moodby.kr/images/moodby-hero.jpg" />
+  <meta name="theme-color" content="#fffaf4" />
 
   <!-- 폰트 -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/style.css?v=20260629-1" />
+  <link rel="preload" as="image" href="images/moodby-hero.jpg" />
+  <link rel="stylesheet" href="css/style.css?v=20260629-5" />
 
   <!-- 옛 서비스워커/캐시 정리 (예전 버전이 기기에 붙어있는 문제 방지) -->
   <script>
@@ -66,11 +69,38 @@
     <div class="hero-bg" data-hero-bg></div>
     <div class="hero-overlay"></div>
     <div class="hero-copy">
-      <p class="hero-logo">MOOD BY <span class="hero-word" data-hero-word>따뜻하게</span></p>
+      <p class="hero-kicker">WEDDING MC AGENCY · MOOD LAB</p>
+      <h1 class="hero-logo">MOOD BY <span class="hero-word" data-hero-word>따뜻하게</span></h1>
       <p class="hero-tagline" data-hero-tagline>Color your wedding mood.</p>
       <p class="hero-sub" data-hero-sub></p>
+      <div class="hero-actions">
+        <a class="hero-cta primary" href="#mc" data-panel-link>사회자 둘러보기</a>
+        <a class="hero-cta secondary" href="#contact" data-panel-link>상담 문의</a>
+      </div>
+      <div class="hero-proof" aria-label="무드바이 서비스 요약">
+        <span>맞춤형 사회자 매칭</span>
+        <span>식순·대본 가이드</span>
+        <span>무드랩 교육 운영</span>
+      </div>
     </div>
     <div class="scroll-hint"><span></span></div>
+  </section>
+
+  <section class="home-preview" aria-label="무드바이 바로가기">
+    <div class="home-preview-inner">
+      <a class="preview-card reveal" href="#about" data-panel-link>
+        <span class="preview-label">01 ABOUT</span>
+        <strong>두 사람의 이야기로 분위기를 설계합니다</strong>
+      </a>
+      <a class="preview-card reveal" href="#mc" data-panel-link>
+        <span class="preview-label">02 MC</span>
+        <strong>원하는 무드에 맞는 사회자를 만납니다</strong>
+      </a>
+      <a class="preview-card reveal" href="#academy" data-panel-link>
+        <span class="preview-label">03 MOOD LAB</span>
+        <strong>좋은 사회자를 꾸준히 길러냅니다</strong>
+      </a>
+    </div>
   </section>
 
   <!-- ============ 소개(About) ============ -->
@@ -228,10 +258,10 @@
   </div>
 
   <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
-  <script src="js/site-config.js?v=20260629-1"></script>
+  <script src="js/site-config.js?v=20260629-5"></script>
   <script>
     (function () {
-      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260629-1"; document.body.appendChild(s); }
+      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260629-5"; document.body.appendChild(s); }
       fetch("content/settings.json", { cache: "no-store" })
         .then(function (r) { if (!r.ok) throw 0; return r.json(); })
         .then(function (j) { window.SITE_CONFIG = j; })

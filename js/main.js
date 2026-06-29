@@ -85,10 +85,18 @@
   /* ---------- 대표 소개 ---------- */
   if (C.ceo) {
     var ceo = C.ceo;
+    var cg = $(".ceo-grid");
     var ct = $("[data-ceo-title]"); if (ct) ct.textContent = ceo.title || "대표 소개";
     var cr = $("[data-ceo-role]"); if (cr) cr.textContent = ceo.role || "";
     var ci = $("[data-ceo-img]");
-    if (ci) { if (ceo.image) ci.src = ceo.image; else { var cp = ci.closest(".ceo-profile"); if (cp) cp.style.display = "none"; } }
+    if (ci) {
+      if (ceo.image) ci.src = ceo.image;
+      else {
+        var cp = ci.closest(".ceo-profile");
+        if (cp) cp.style.display = "none";
+        if (cg) cg.classList.add("no-photo");
+      }
+    }
     var cb = $("[data-ceo-body]");
     if (cb) cb.innerHTML = lines(ceo.body).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
   }
@@ -143,7 +151,10 @@
   function mcThumb(m) {
     if (m.image) return '<img src="' + esc(m.image) + '" alt="' + esc(m.name) + '" loading="lazy" />';
     if (m.youtube) return '<img src="https://img.youtube.com/vi/' + esc(ytId(m.youtube)) + '/hqdefault.jpg" alt="' + esc(m.name) + '" loading="lazy" />';
-    return '<span class="mc-initial">' + esc((m.name || "?").slice(0, 2)) + "</span>";
+    return '<span class="mc-initial">' +
+      (m.emoji ? '<em>' + esc(m.emoji) + "</em>" : "") +
+      '<strong>' + esc((m.name || "?").slice(0, 2)) + "</strong>" +
+    "</span>";
   }
 
   function renderMc(mood) {
@@ -307,7 +318,7 @@
       media = '<div class="lb-photo"><img src="' + esc(m.image) + '" alt="' + esc(m.name) + '" /></div>';
     }
     lbStage.innerHTML =
-      '<div class="mc-detail" style="--mc-c:' + esc(mcColor(m, index)) + '">' +
+      '<div class="mc-detail' + (media ? "" : " no-media") + '" style="--mc-c:' + esc(mcColor(m, index)) + '">' +
         media +
         '<div class="mc-detail-body">' +
           '<p class="mc-name">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name) +
@@ -399,6 +410,16 @@
       else window.location.hash = id;
     });
   });
+  $$("[data-panel-link]").forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      var id = link.getAttribute("href").slice(1);
+      if (panelIds.indexOf(id) === -1) return;
+      e.preventDefault();
+      activatePanel(id, true);
+      if (window.history && window.history.pushState) window.history.pushState(null, "", "#" + id);
+      else window.location.hash = id;
+    });
+  });
   $$("a[href='#hero']").forEach(function (link) {
     link.addEventListener("click", function (e) {
       e.preventDefault();
@@ -434,7 +455,7 @@
   buildMcFilters();
   renderMc("all");
   var initialPanel = window.location.hash.replace("#", "");
-  if (panelIds.indexOf(initialPanel) !== -1) activatePanel(initialPanel, false);
+  if (panelIds.indexOf(initialPanel) !== -1) activatePanel(initialPanel, true);
   else showHome(false);
   observeReveal();
 })();
