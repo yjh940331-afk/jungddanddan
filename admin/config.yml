@@ -10,12 +10,13 @@ public_folder: "/images/uploads"
 
 # 사진/영상 썸네일 저장소: Cloudflare R2 (대용량 원본 업로드용)
 # - 비밀키(Secret Access Key)는 여기 넣지 않음. 관리자에서 사진 처음 올릴 때 1회 입력 → 브라우저에 안전 저장.
-# - ⚠️ 아래 bucket / public_url 은 정단땅 전용 R2 버킷·도메인으로 새로 만들어 교체해야 합니다.
+# - account_id 는 동일 Cloudflare 계정이라 그대로 사용.
+# - ⚠️ bucket / public_url / access_key_id 는 정단땅 전용 R2 버킷·미디어도메인·전용 토큰을 새로 만들어 채워야 합니다.
 media_libraries:
   cloudflare_r2:
     account_id: b8c01aa804c1c42982b17864b74e975b
     bucket: jungddanddan-images
-    access_key_id: 5db68e1d66ee478e2da9b33d8e162f6b
+    access_key_id: REPLACE_WITH_JUNGDDANDDAN_R2_ACCESS_KEY_ID
     public_url: https://media.jungddanddan.com
     prefix: uploads/
 
