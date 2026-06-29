@@ -484,7 +484,115 @@ iframe.lb-scroll-media { aspect-ratio: 16/9; border: 0; }
   html { scroll-behavior: auto; }
 }
 
+/* ============================================================
+   무드바이 신규 컴포넌트
+   ============================================================ */
+
+/* 히어로 카피 */
+.hero-copy { position: relative; z-index: 2; color: #fff; padding: 0 24px; }
+.hero-slogan { font-family: var(--logo); font-size: clamp(30px, 6vw, 58px); font-weight: 500; letter-spacing: 1px; line-height: 1.1; }
+.hero-sub { margin-top: 18px; font-family: var(--myeongjo); font-size: clamp(13px, 2vw, 16px); line-height: 1.8; color: rgba(255,255,255,.9); }
+
+/* 공통 보조 */
+.section-lead { max-width: 640px; margin: 16px auto 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+.block-title { font-family: var(--myeongjo); font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+.block-title.center { text-align: center; }
+.check-list { list-style: none; max-width: 660px; margin: 0 auto; }
+.check-list li { position: relative; padding: 8px 0 8px 26px; color: var(--muted); font-size: 13.5px; line-height: 1.6; }
+.check-list li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 7px; height: 11px; border: solid var(--accent); border-width: 0 1.5px 1.5px 0; transform: rotate(40deg); }
+.about-fit { max-width: 660px; margin: 40px auto 0; }
+
+/* 대표 소개 */
+.ceo-grid { max-width: 900px; margin: 64px auto 0; display: grid; grid-template-columns: 1fr minmax(0, 300px); gap: 40px; align-items: center; }
+.ceo-copy .section-label { color: var(--accent); }
+.ceo-role { color: var(--accent); font-size: 13px; margin: 4px 0 18px; }
+.ceo-body p { color: var(--muted); font-size: 13.5px; line-height: 1.78; margin-bottom: 8px; }
+.ceo-profile img { width: 100%; aspect-ratio: 4/5; object-fit: cover; background: var(--bg); border-radius: 8px; }
+
+/* 비전 / 미션 / 약속 */
+.vision-wrap { max-width: var(--max); margin: 64px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.vision-col { padding: 28px 24px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.vision-h { font-family: var(--logo); font-size: 13px; letter-spacing: 2px; color: var(--accent); margin-bottom: 14px; }
+.vision-col ul { list-style: none; }
+.vision-col li { padding: 6px 0; color: var(--muted); font-size: 13.5px; line-height: 1.6; border-top: 1px solid var(--line); }
+.vision-col li:first-child { border-top: 0; }
+.vision-col p { color: var(--muted); font-size: 13.5px; line-height: 1.7; }
+
+/* MC 사회자 명단 */
+.mc { max-width: var(--max); margin: 0 auto; }
+.mc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.mc-card { cursor: pointer; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--bg); transition: transform .35s, box-shadow .35s; }
+.mc-card:hover { transform: translateY(-5px); box-shadow: 0 16px 38px rgba(80,68,55,.1); }
+.mc-photo { position: relative; aspect-ratio: 3/4; overflow: hidden; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; }
+.mc-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.mc-card:hover .mc-photo img { transform: scale(1.05); }
+.mc-initial { font-family: var(--logo); font-size: 40px; font-weight: 600; color: var(--accent); opacity: .5; }
+.mc-photo .play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.85); backdrop-filter: blur(2px);
+}
+.mc-photo .play::after { content: ""; position: absolute; top: 50%; left: 54%; transform: translate(-50%, -50%); border-style: solid; border-width: 8px 0 8px 13px; border-color: transparent transparent transparent #fff; }
+.mc-info { padding: 16px 16px 20px; text-align: center; }
+.mc-name { font-family: var(--myeongjo); font-size: 17px; font-weight: 700; }
+.mc-kws { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 10px 0; }
+.mc-kw { font-size: 11.5px; color: var(--accent); border: 1px solid rgba(168,146,122,.4); border-radius: 40px; padding: 3px 10px; }
+.mc-strength { color: var(--muted); font-size: 12.5px; line-height: 1.55; }
+
+/* MC 상세 (라이트박스) */
+.mc-detail { width: min(860px, calc(100vw - 32px)); display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px; align-items: center; }
+.lb-video iframe { width: 100%; aspect-ratio: 16/9; border: 0; background: #000; border-radius: 8px; }
+.lb-photo img { width: 100%; border-radius: 8px; }
+.mc-detail-body { color: #fff; }
+.mc-detail-body .mc-name { color: #fff; font-size: 24px; }
+.mc-detail-body .mc-kws { justify-content: flex-start; }
+.mc-detail-body .mc-kw { color: #fff; border-color: rgba(255,255,255,.5); }
+.mc-detail-body p { color: rgba(255,255,255,.8); font-size: 14px; line-height: 1.7; margin-top: 12px; }
+.mc-detail-body .mc-recommend strong, .mc-detail-body .mc-review { color: #fff; }
+.mc-detail-body .mc-review { font-family: var(--serif); font-size: 18px; }
+
+/* 가격표 */
+.pricing-block { max-width: 680px; margin: 72px auto 0; }
+.pricing-table-wrap { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--bg); }
+.pricing-table { width: 100%; border-collapse: collapse; }
+.pricing-table th, .pricing-table td { padding: 16px 18px; border-bottom: 1px solid var(--line); text-align: center; }
+.pricing-table thead th { background: rgba(168,146,122,.12); font-size: 13px; font-weight: 600; color: var(--ink); }
+.pricing-table tbody th { text-align: left; }
+.pricing-table .pt-name { display: block; font-size: 14.5px; font-weight: 600; color: var(--ink); }
+.pricing-table .pt-desc { display: block; margin-top: 3px; font-size: 12px; font-weight: 400; color: var(--muted); }
+.pricing-table tbody td { font-size: 15px; color: var(--accent); font-weight: 500; }
+.pricing-table tr:last-child th, .pricing-table tr:last-child td { border-bottom: 0; }
+
+/* 아카데미 파이프라인 */
+.academy { background: var(--bg-alt); }
+.academy-body { max-width: 640px; margin: 0 auto; text-align: center; }
+.academy-body p { color: var(--muted); font-size: 13.5px; line-height: 1.78; margin-bottom: 8px; }
+.pipeline { max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; }
+.pipe-step { padding: 11px 18px; border: 1px solid var(--accent); border-radius: 40px; color: var(--accent); background: var(--bg); font-size: 13px; }
+.pipe-arrow { color: var(--muted); font-size: 18px; }
+.academy-criteria { max-width: 660px; margin: 28px auto 0; }
+.criteria-talent { color: var(--muted); font-size: 13.5px; line-height: 1.7; text-align: center; margin-bottom: 24px; }
+.criteria-talent strong { color: var(--ink); }
+.criteria-h { font-family: var(--myeongjo); font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 10px; }
+
+/* 문의 2갈래 */
+.contact-split { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.contact-card { padding: 34px 28px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+.contact-card .block-title { margin-bottom: 8px; }
+.contact-card-desc { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 22px; }
+.contact-card .contact-links { flex-direction: column; gap: 10px; }
+.contact-links .primary-contact { border-color: var(--accent); background: var(--accent); color: #fff; box-shadow: 0 12px 30px rgba(80,68,55,.12); }
+.contact-links .primary-contact:hover { background: #8c765e; border-color: #8c765e; color: #fff; transform: translateY(-2px); }
+.contact-links .secondary-contact { background: var(--bg); }
+
 /* ============ 반응형 ============ */
+@media (max-width: 860px) {
+  .mc-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .ceo-grid { grid-template-columns: 1fr; gap: 28px; max-width: 460px; }
+  .ceo-profile { max-width: 300px; margin: 0 auto; }
+  .vision-wrap { grid-template-columns: 1fr; max-width: 460px; }
+  .mc-detail { grid-template-columns: 1fr; gap: 16px; max-height: 84vh; overflow-y: auto; }
+  .contact-split { grid-template-columns: 1fr; max-width: 420px; }
+}
 @media (max-width: 860px) {
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
   .photographer-grid, .availability-inner { grid-template-columns: 1fr; gap: 34px; }

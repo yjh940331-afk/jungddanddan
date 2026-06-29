@@ -11,7 +11,7 @@ public_folder: "/images/uploads"
 # 사진/영상 썸네일 저장소: Cloudflare R2 (대용량 원본 업로드용)
 # - 비밀키(Secret Access Key)는 여기 넣지 않음. 관리자에서 사진 처음 올릴 때 1회 입력 → 브라우저에 안전 저장.
 # - account_id 는 동일 Cloudflare 계정이라 그대로 사용.
-# - ⚠️ bucket / public_url / access_key_id 는 정단땅 전용 R2 버킷·미디어도메인·전용 토큰을 새로 만들어 채워야 합니다.
+# - ⚠️ bucket / public_url / access_key_id 는 무드바이 전용 R2 버킷·미디어도메인·전용 토큰을 새로 만들어 채워야 합니다.
 media_libraries:
   cloudflare_r2:
     account_id: b8c01aa804c1c42982b17864b74e975b
@@ -28,7 +28,7 @@ display_url: https://www.jungddanddan.com
 
 collections:
   - name: "settings"
-    label: "정단땅 관리"
+    label: "무드바이 관리"
     delete: false
     editor:
       preview: false
@@ -36,106 +36,107 @@ collections:
       - name: "site"
         label: "홈페이지 전체 편집"
         file: "content/settings.json"
-        description: "사진·문구·가격·Q&A를 관리합니다. 저장 후 우측 상단 Publish를 누르면 사이트에 반영됩니다."
+        description: "문구·사회자 명단·가격·아카데미·Q&A를 관리합니다. 저장 후 우측 상단 Publish를 누르면 사이트에 반영됩니다."
         fields:
           # ---------- 기본 정보 ----------
-          - { label: "브랜드명", name: "brand", widget: "string", hint: "사이트 곳곳에 표시되는 이름" }
+          - { label: "브랜드명(로고)", name: "brand", widget: "string", default: "MOOD BY" }
+          - { label: "푸터 회사 표기", name: "company", widget: "string", required: false }
+          - { label: "사회자 이름 앞 접두어", name: "mcPrefix", widget: "string", required: false, default: "무드바이", hint: "예: '무드바이 다원'의 '무드바이' 부분" }
           - { label: "인스타그램 주소", name: "instagram", widget: "string", required: false, hint: "예: https://www.instagram.com/jung_ddanddan/" }
           - { label: "카카오톡 채널 주소", name: "kakao", widget: "string", required: false }
 
           # ---------- 메인(첫 화면) ----------
-          - label: "메인 첫 화면"
+          - label: "메인 첫 화면(Hero)"
             name: "hero"
             widget: "object"
             fields:
               - { label: "배경 사진", name: "image", widget: "image", required: false }
+              - { label: "슬로건", name: "slogan", widget: "string", default: "mood by your story" }
+              - { label: "보조 문구", name: "sub", widget: "string", required: false }
 
-          # ---------- 소개 ----------
+          # ---------- 소개(About) ----------
           - label: "소개(About)"
             name: "about"
             widget: "object"
             fields:
               - { label: "제목", name: "title", widget: "string" }
-              - { label: "소개 글", name: "body", widget: "text", hint: "줄바꿈으로 문장을 나눠 주세요." }
+              - { label: "소개 글", name: "body", widget: "text", hint: "줄바꿈으로 문단을 나눠 주세요." }
+              - label: "이런 분께 적합"
+                name: "fit"
+                widget: "list"
+                field: { label: "항목", name: "item", widget: "string" }
 
-          # ---------- 사회자 소개 ----------
-          - label: "사회자 소개"
-            name: "photographer"
+          # ---------- 대표 소개 ----------
+          - label: "대표 소개"
+            name: "ceo"
             widget: "object"
             fields:
-              - { label: "섹션 제목", name: "title", widget: "string", default: "사회자 정다원" }
-              - { label: "사회자 이름", name: "name", widget: "string", default: "정다원" }
-              - { label: "역할/직함", name: "role", widget: "string", default: "결혼식 전문 사회자" }
-              - { label: "프로필 사진", name: "image", widget: "image", required: false, hint: "사회자님 얼굴이 나온 프로필 사진을 올려주세요." }
-              - { label: "누적 진행 수", name: "shootCount", widget: "string", default: "진행 다수" }
-              - { label: "진행 철학", name: "body", widget: "text", hint: "줄바꿈으로 문장을 나눠 주세요. 마지막 줄에 '사회자 정다원'을 적으면 서명처럼 표시됩니다." }
-              - { label: "직접 진행 안내 문구", name: "promise", widget: "string", default: "모든 예식은 사회자 정다원이 직접 진행합니다." }
+              - { label: "이름/제목", name: "title", widget: "string", default: "대표 정다원" }
+              - { label: "직함", name: "role", widget: "string", required: false }
+              - { label: "프로필 사진", name: "image", widget: "image", required: false }
+              - { label: "소개 글", name: "body", widget: "text", hint: "줄바꿈으로 문단을 나눠 주세요." }
 
-          # ---------- 신뢰 배지 ----------
-          - label: "신뢰 포인트(Why)"
-            name: "trustBadges"
-            widget: "list"
-            label_singular: "신뢰 포인트"
-            summary: "{{fields.title}}"
+          # ---------- 비전/미션/약속 ----------
+          - label: "비전 · 미션 · 약속"
+            name: "vision"
+            widget: "object"
             fields:
-              - { label: "아이콘 짧은 글자", name: "icon", widget: "string", hint: "예: MC, PEN, TIME, CARE" }
-              - { label: "제목", name: "title", widget: "string" }
-              - { label: "설명", name: "text", widget: "string" }
-
-          # ---------- 포트폴리오 ----------
-          - label: "포트폴리오 앨범"
-            name: "portfolioAlbums"
-            widget: "list"
-            label_singular: "앨범"
-            summary: "{{fields.title}} · {{fields.category}}"
-            hint: "예식 건별로 앨범을 만들고, 그 안에 사진·유튜브 영상을 여러 개 넣어주세요. 사이트에는 대표 사진만 먼저 보이고, 클릭하면 앨범 안 내용을 넘겨볼 수 있습니다."
-            fields:
-              - { label: "예식장/행사 이름(사진 위에 표시)", name: "title", widget: "string", required: false, hint: "예: 더채플앳청담. 비워두면 분류명(결혼식 등)이 표시됩니다." }
-              - { label: "대표 사진(목록에 보이는 사진)", name: "cover", widget: "image", required: false, hint: "비워두면 앨범 안 첫 번째 사진이 대표 사진으로 보입니다." }
-              - { label: "짧은 설명", name: "description", widget: "string", required: false, default: "" }
-              - label: "분류"
-                name: "category"
-                widget: "select"
-                options:
-                  - { label: "결혼식", value: "wedding" }
-                  - { label: "돌·가족행사", value: "family" }
-                  - { label: "기업·기타", value: "corporate" }
-              - label: "앨범 안 사진·영상"
-                name: "images"
+              - label: "비전(VISION)"
+                name: "vision"
                 widget: "list"
-                label_singular: "사진"
-                summary: "{{fields.caption}}"
-                fields:
-                  - { label: "사진", name: "image", widget: "image", required: false }
-                  - { label: "유튜브 영상 ID(영상일 때만)", name: "youtube", widget: "string", required: false, default: "" }
-                  - { label: "사진 설명(선택)", name: "caption", widget: "string", required: false, default: "" }
-
-          # ---------- 가격 ----------
-          - label: "사회 진행 상품(가격)"
-            name: "products"
-            widget: "list"
-            label_singular: "상품"
-            summary: "{{fields.name}} · {{fields.price}}"
-            fields:
-              - { label: "상품명(영문 표기)", name: "name", widget: "string" }
-              - { label: "버튼 표시 이름", name: "label", widget: "string", required: false, hint: "예: 베이직, 프리미엄" }
-              - { label: "설명", name: "desc", widget: "string", required: false }
-              - { label: "가격", name: "price", widget: "string" }
-              - { label: "상품 안내 한 줄", name: "intro", widget: "string", required: false }
-              - label: "상품별 상세 카테고리"
-                name: "categories"
+                field: { label: "항목", name: "item", widget: "string" }
+              - { label: "미션(MISSION)", name: "mission", widget: "text" }
+              - label: "브랜드 약속(PROMISE)"
+                name: "promises"
                 widget: "list"
-                label_singular: "카테고리"
+                field: { label: "항목", name: "item", widget: "string" }
+
+          # ---------- Mood Crew ----------
+          - label: "Mood Crew(왜 무드바이)"
+            name: "crew"
+            widget: "object"
+            fields:
+              - { label: "리드 문구", name: "lead", widget: "string", required: false }
+              - label: "일하는 방식"
+                name: "ways"
+                widget: "list"
+                label_singular: "항목"
                 summary: "{{fields.title}}"
                 fields:
-                  - { label: "카테고리 제목", name: "title", widget: "string", hint: "예: 진행 안내, 대본 구성, 참고 사항" }
-                  - label: "안내 내용"
-                    name: "items"
-                    widget: "list"
-                    field: { label: "내용", name: "item", widget: "text" }
+                  - { label: "아이콘 글자", name: "icon", widget: "string", required: false, hint: "예: 01, 02, 03" }
+                  - { label: "제목", name: "title", widget: "string" }
+                  - { label: "설명", name: "text", widget: "string" }
+              - label: "차별점"
+                name: "diffs"
+                widget: "list"
+                label_singular: "항목"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "아이콘 글자", name: "icon", widget: "string", required: false }
+                  - { label: "제목", name: "title", widget: "string" }
+                  - { label: "설명", name: "text", widget: "string" }
 
-          # ---------- 예약 절차 ----------
-          - label: "예약 절차"
+          # ---------- 사회자 명단 ----------
+          - label: "사회자 명단(MC)"
+            name: "mcs"
+            widget: "list"
+            label_singular: "사회자"
+            summary: "{{fields.name}}"
+            hint: "사진/진행 영상은 비워두면 이니셜만 표시됩니다. 무드 키워드가 명단 위 필터로 자동 생성됩니다."
+            fields:
+              - { label: "이름", name: "name", widget: "string" }
+              - label: "무드 키워드"
+                name: "keywords"
+                widget: "list"
+                field: { label: "키워드", name: "keyword", widget: "string" }
+              - { label: "프로필 사진", name: "image", widget: "image", required: false }
+              - { label: "진행 영상(유튜브 ID 또는 링크)", name: "youtube", widget: "string", required: false }
+              - { label: "강점 한 줄", name: "strength", widget: "string", required: false }
+              - { label: "추천 고객 유형", name: "recommend", widget: "string", required: false }
+              - { label: "후기 한 줄", name: "review", widget: "string", required: false }
+
+          # ---------- 진행 프로세스 ----------
+          - label: "진행 프로세스"
             name: "process"
             widget: "list"
             label_singular: "단계"
@@ -144,38 +145,59 @@ collections:
               - { label: "단계 제목", name: "title", widget: "string" }
               - { label: "설명", name: "desc", widget: "string", required: false }
 
-          # ---------- 예약 가능 일정 ----------
-          - label: "예약 가능 일정"
-            name: "availability"
+          # ---------- 비용 ----------
+          - label: "비용(가격표)"
+            name: "pricing"
             widget: "object"
             fields:
-              - { label: "제목", name: "title", widget: "string", default: "예약 가능 일정" }
-              - { label: "현재 예약 현황", name: "status", widget: "string", default: "2026년 하반기, 2027년 상반기 예약 상담 중" }
               - { label: "안내 문구", name: "note", widget: "string", required: false }
-              - label: "상세 안내"
-                name: "items"
+              - label: "등급별 가격"
+                name: "tiers"
                 widget: "list"
-                field: { label: "안내", name: "item", widget: "string" }
-
-          # ---------- 제휴 ----------
-          - label: "제휴(Partners)"
-            name: "partners"
-            widget: "object"
-            fields:
-              - { label: "제목", name: "title", widget: "string", default: "함께 만드는 웨딩" }
-              - { label: "소개 문구", name: "lead", widget: "string", required: false }
-              - { label: "버튼 문구", name: "ctaText", widget: "string", default: "제휴 문의하기" }
-              - { label: "버튼 링크", name: "ctaUrl", widget: "string", required: false }
-              - label: "제휴처/제휴 분야"
-                name: "items"
-                widget: "list"
-                label_singular: "제휴 항목"
+                label_singular: "등급"
                 summary: "{{fields.name}}"
                 fields:
-                  - { label: "로고 이미지", name: "logo", widget: "image", required: false }
-                  - { label: "로고 없을 때 표시할 글자", name: "initial", widget: "string", required: false, hint: "예: H, P, S" }
-                  - { label: "이름", name: "name", widget: "string" }
-                  - { label: "분류/설명", name: "category", widget: "string", required: false }
+                  - { label: "등급명", name: "name", widget: "string" }
+                  - { label: "설명", name: "desc", widget: "string", required: false }
+                  - { label: "1부 가격", name: "part1", widget: "string" }
+                  - { label: "2부 가격", name: "part2", widget: "string" }
+
+          # ---------- 아카데미(무드랩) ----------
+          - label: "아카데미(무드랩)"
+            name: "academy"
+            widget: "object"
+            fields:
+              - { label: "제목", name: "title", widget: "string", default: "무드랩 MOOD LAB" }
+              - { label: "부제", name: "sub", widget: "string", required: false }
+              - { label: "소개 글", name: "body", widget: "text", hint: "줄바꿈으로 문단을 나눠 주세요." }
+              - label: "이런 곳입니다"
+                name: "fit"
+                widget: "list"
+                field: { label: "항목", name: "item", widget: "string" }
+              - label: "사회자 성장 단계"
+                name: "pipeline"
+                widget: "list"
+                field: { label: "단계", name: "step", widget: "string" }
+              - label: "핵심 역량"
+                name: "competencies"
+                widget: "list"
+                label_singular: "역량"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "아이콘 글자", name: "icon", widget: "string", required: false }
+                  - { label: "제목", name: "title", widget: "string" }
+                  - { label: "설명", name: "text", widget: "string" }
+              - { label: "인재상", name: "talent", widget: "text", required: false }
+              - label: "선발 기준"
+                name: "selection"
+                widget: "list"
+                field: { label: "항목", name: "item", widget: "string" }
+              - label: "문의 버튼"
+                name: "cta"
+                widget: "object"
+                fields:
+                  - { label: "버튼 문구", name: "text", widget: "string", required: false }
+                  - { label: "버튼 링크", name: "url", widget: "string", required: false }
 
           # ---------- Q&A ----------
           - label: "자주 묻는 질문(Q&A)"
@@ -187,8 +209,8 @@ collections:
               - { label: "질문", name: "q", widget: "string" }
               - { label: "답변", name: "a", widget: "text" }
 
-          # ---------- 예약 문의 안내 ----------
-          - label: "예약 문의 안내"
+          # ---------- 문의 안내 ----------
+          - label: "문의 안내"
             name: "booking"
             widget: "object"
             fields:

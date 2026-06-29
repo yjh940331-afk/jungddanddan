@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>정단땅 · 결혼식 사회자 정다원</title>
-  <meta name="description" content="결혼식 전문 사회자 정다원(정단땅) - 신랑·신부 맞춤 대본으로 따뜻하고 자연스럽게 진행하는 결혼식 사회." />
-  <meta property="og:title" content="정단땅 · 결혼식 사회자 정다원" />
-  <meta property="og:description" content="결혼식 전문 사회자 정다원 - 신랑·신부 맞춤 대본으로 따뜻하고 자연스럽게 진행하는 결혼식 사회." />
+  <title>무드바이 MOOD BY · 결혼식 사회자 에이전시</title>
+  <meta name="description" content="무드바이(MOOD BY) - 신랑신부가 꿈꾸는 결혼식의 분위기에 맞는 사회자를 매칭하는 웨딩 MC 에이전시. mood by your story." />
+  <meta property="og:title" content="무드바이 MOOD BY · 결혼식 사회자 에이전시" />
+  <meta property="og:description" content="당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성해갑니다. mood by your story." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.jungddanddan.com/" />
 
@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/style.css?v=20260626-1" />
+  <link rel="stylesheet" href="css/style.css?v=20260629-1" />
 
   <!-- 옛 서비스워커/캐시 정리 (예전 버전이 기기에 붙어있는 문제 방지) -->
   <script>
@@ -43,14 +43,14 @@
   <!-- ============ 헤더 ============ -->
   <header class="site-header" id="header">
     <div class="header-inner">
-      <a href="#hero" class="logo" data-brand>JUNG DDANDDAN</a>
+      <a href="#hero" class="logo" data-brand>MOOD BY</a>
 
       <nav class="nav" id="nav">
         <a href="#about">About</a>
-        <a href="#photographer">MC</a>
-        <a href="#why">Why</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#price">Product</a>
+        <a href="#crew">Crew</a>
+        <a href="#mc">MC</a>
+        <a href="#service">Service</a>
+        <a href="#academy">Academy</a>
         <a href="#faq">Q&amp;A</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -65,107 +65,121 @@
   <section class="hero" id="hero">
     <div class="hero-bg" data-hero-bg></div>
     <div class="hero-overlay"></div>
+    <div class="hero-copy">
+      <p class="hero-slogan" data-hero-slogan>mood by your story</p>
+      <p class="hero-sub" data-hero-sub></p>
+    </div>
     <div class="scroll-hint"><span></span></div>
   </section>
 
-  <!-- ============ 소개 ============ -->
+  <!-- ============ 소개(About) ============ -->
   <section class="about section content-panel" id="about" data-panel>
-    <div class="about-grid">
-      <div class="about-text reveal">
-        <p class="section-label">ABOUT</p>
-        <h2 class="section-title" data-about-title>당신의 가장 빛나는 순간, 정단땅</h2>
-        <div class="about-body" data-about-body></div>
+    <div class="section-head center reveal">
+      <p class="section-label">ABOUT</p>
+      <h2 class="section-title" data-about-title>mood by your story</h2>
+    </div>
+    <div class="about-body reveal" data-about-body></div>
+
+    <div class="about-fit reveal">
+      <h3 class="block-title">이런 분께 잘 맞습니다</h3>
+      <ul class="check-list" id="aboutFit"><!-- JS --></ul>
+    </div>
+
+    <!-- 대표 소개 -->
+    <div class="ceo-grid reveal">
+      <div class="ceo-copy">
+        <p class="section-label">CEO</p>
+        <h3 class="block-title" data-ceo-title>대표 정다원</h3>
+        <p class="ceo-role" data-ceo-role></p>
+        <div class="ceo-body" data-ceo-body></div>
+      </div>
+      <div class="ceo-profile">
+        <img data-ceo-img alt="무드바이 대표 정다원" />
+      </div>
+    </div>
+
+    <!-- 비전 / 미션 / 약속 -->
+    <div class="vision-wrap reveal">
+      <div class="vision-col">
+        <h4 class="vision-h">VISION</h4>
+        <ul id="visionList"><!-- JS --></ul>
+      </div>
+      <div class="vision-col">
+        <h4 class="vision-h">MISSION</h4>
+        <p data-mission></p>
+      </div>
+      <div class="vision-col">
+        <h4 class="vision-h">PROMISE</h4>
+        <ul id="promiseList"><!-- JS --></ul>
       </div>
     </div>
   </section>
 
-  <!-- ============ 사회자 소개 ============ -->
-  <section class="photographer section content-panel" id="photographer" data-panel>
-    <div class="photographer-grid">
-      <div class="photographer-copy reveal reveal-left">
-        <p class="section-label">MC</p>
-        <h2 class="section-title" data-photographer-title>사회자 정다원</h2>
-        <p class="photographer-role" data-photographer-role>결혼식 전문 사회자</p>
-        <div class="photographer-body" data-photographer-body></div>
-        <p class="photographer-promise" data-photographer-promise></p>
+  <!-- ============ Mood Crew (왜 무드바이) ============ -->
+  <section class="crew section content-panel" id="crew" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">MOOD CREW</p>
+      <h2 class="section-title">무드바이 사회자는 다릅니다</h2>
+      <p class="section-lead" data-crew-lead></p>
+    </div>
+
+    <h3 class="block-title center reveal">일하는 방식</h3>
+    <div class="trust-grid" id="crewWays"><!-- JS --></div>
+
+    <h3 class="block-title center reveal" style="margin-top:64px">무드바이의 차별점</h3>
+    <div class="trust-grid" id="crewDiffs"><!-- JS --></div>
+  </section>
+
+  <!-- ============ MC 사회자 명단 ============ -->
+  <section class="mc section content-panel" id="mc" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">MC</p>
+      <h2 class="section-title">your wedding, mood by who?</h2>
+      <p class="section-lead">어떤 무드의 사회자와 함께 완성하고 싶으신가요?</p>
+    </div>
+
+    <div class="filters reveal" id="mcFilters"><!-- JS: 무드 키워드 칩 --></div>
+    <div class="mc-grid" id="mcGrid"><!-- JS: 사회자 카드 --></div>
+  </section>
+
+  <!-- ============ Service (진행 프로세스 + 비용) ============ -->
+  <section class="service section content-panel" id="service" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">SERVICE</p>
+      <h2 class="section-title">진행 프로세스</h2>
+    </div>
+    <div class="process-list" id="processList"><!-- JS --></div>
+
+    <div class="pricing-block reveal">
+      <h3 class="block-title center">비용 안내</h3>
+      <div class="pricing-table-wrap">
+        <table class="pricing-table" id="pricingTable"><!-- JS --></table>
       </div>
-      <div class="photographer-profile reveal reveal-right">
-        <img data-photographer-img alt="결혼식 사회자 정다원" />
-      </div>
+      <p class="price-note" data-pricing-note></p>
     </div>
   </section>
 
-  <!-- ============ 신뢰 포인트 ============ -->
-  <section class="why section content-panel" id="why" data-panel>
+  <!-- ============ Academy (무드랩) ============ -->
+  <section class="academy section content-panel" id="academy" data-panel>
     <div class="section-head center reveal">
-      <p class="section-label">WHY JUNG DDANDDAN</p>
-      <h2 class="section-title">믿고 맡길 수 있도록</h2>
+      <p class="section-label">ACADEMY · 무드랩</p>
+      <h2 class="section-title" data-academy-title>무드랩 MOOD LAB</h2>
+      <p class="section-lead" data-academy-sub></p>
     </div>
-    <div class="trust-grid" id="trustGrid"><!-- JS로 자동 생성 --></div>
-  </section>
+    <div class="academy-body reveal" data-academy-body></div>
 
-  <!-- ============ 포트폴리오 ============ -->
-  <section class="portfolio section content-panel" id="portfolio" data-panel>
-    <div class="section-head center reveal">
-      <p class="section-label">PORTFOLIO</p>
-      <h2 class="section-title">함께한 순간들</h2>
+    <div class="about-fit reveal">
+      <ul class="check-list" id="academyFit"><!-- JS --></ul>
     </div>
 
-    <div class="filters reveal" id="filters">
-      <button class="filter active" data-filter="wedding">결혼식</button>
-      <button class="filter" data-filter="family">돌·가족행사</button>
-      <button class="filter" data-filter="corporate">기업·기타</button>
-    </div>
+    <h3 class="block-title center reveal" style="margin-top:56px">사회자 성장 단계</h3>
+    <div class="pipeline reveal" id="academyPipeline"><!-- JS --></div>
 
-    <div class="gallery" id="gallery"><!-- JS로 자동 생성 --></div>
-  </section>
+    <h3 class="block-title center reveal" style="margin-top:56px">전속 사회자 선발 기준</h3>
+    <div class="trust-grid" id="academyCompetencies"><!-- JS: 핵심 역량 --></div>
+    <div class="academy-criteria reveal" id="academyCriteria"><!-- JS: 인재상 + 선발기준 --></div>
 
-  <!-- ============ 후기 ============ -->
-
-  <!-- ============ 가격 ============ -->
-  <section class="price section content-panel" id="price" data-panel>
-    <div class="section-head center reveal">
-      <p class="section-label">PRICE</p>
-      <h2 class="section-title">사회 진행 상품</h2>
-    </div>
-    <div class="price-grid" id="priceGrid"><!-- JS로 상품 카테고리 자동 생성 --></div>
-    <div class="product-guide reveal" id="productGuide"><!-- JS로 선택 상품 안내 자동 생성 --></div>
-    <p class="price-note reveal">* 모든 상품의 자세한 안내와 일정은 문의를 통해 확인해 주세요.</p>
-  </section>
-
-  <!-- ============ 예약 가능 일정 ============ -->
-  <section class="availability section content-panel" id="availability" data-panel>
-    <div class="availability-inner reveal">
-      <div>
-        <p class="section-label">BOOKING STATUS</p>
-        <h2 class="section-title" data-availability-title>예약 가능 일정</h2>
-        <p class="availability-note" data-availability-note></p>
-      </div>
-      <div class="availability-panel">
-        <p data-availability-status>2026년 하반기, 2027년 상반기 예약 상담 중</p>
-        <ul id="availabilityList"><!-- JS로 자동 생성 --></ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 예약 절차 ============ -->
-  <section class="process section content-panel" id="process" data-panel>
-    <div class="section-head center reveal">
-      <p class="section-label">PROCESS</p>
-      <h2 class="section-title">예약 절차</h2>
-    </div>
-    <div class="process-list" id="processList"><!-- JS로 자동 생성 --></div>
-  </section>
-
-  <!-- ============ 제휴 ============ -->
-  <section class="partners section content-panel" id="partners" data-panel>
-    <div class="section-head center reveal">
-      <p class="section-label">PARTNERS</p>
-      <h2 class="section-title" data-partners-title>함께 만드는 웨딩</h2>
-      <p class="partners-lead" data-partners-lead></p>
-    </div>
-    <div class="partner-grid reveal" id="partnerGrid"><!-- JS로 자동 생성 --></div>
-    <div class="partner-action reveal" id="partnerAction"><!-- JS로 자동 생성 --></div>
+    <div class="partner-action reveal" id="academyCta"><!-- JS --></div>
   </section>
 
   <!-- ============ Q&A ============ -->
@@ -174,38 +188,48 @@
       <p class="section-label">Q&amp;A</p>
       <h2 class="section-title">자주 묻는 질문</h2>
     </div>
-    <div class="faq-list" id="faqList"><!-- JS로 자동 생성 --></div>
+    <div class="faq-list" id="faqList"><!-- JS --></div>
   </section>
 
   <!-- ============ 문의 ============ -->
   <section class="contact section content-panel" id="contact" data-panel>
     <div class="section-head center reveal">
       <p class="section-label">CONTACT</p>
-      <h2 class="section-title">예약 &amp; 문의</h2>
+      <h2 class="section-title">문의하기</h2>
     </div>
-    <p class="contact-lead reveal" id="bookingNote">예약 문의는 인스타그램 DM으로 안내드립니다.</p>
-    <div class="contact-links contact-action reveal" id="contactLinks"><!-- JS로 자동 생성 --></div>
+    <p class="contact-lead reveal" id="bookingNote"></p>
+    <div class="contact-split reveal">
+      <div class="contact-card">
+        <h3 class="block-title">결혼식 사회자 문의</h3>
+        <p class="contact-card-desc">예식일·예식장·원하시는 무드를 남겨주세요.</p>
+        <div class="contact-links" id="contactCustomer"><!-- JS --></div>
+      </div>
+      <div class="contact-card">
+        <h3 class="block-title">사회자 지원 · 아카데미</h3>
+        <p class="contact-card-desc">무드랩과 함께 웨딩 MC로 성장하고 싶다면.</p>
+        <div class="contact-links" id="contactApplicant"><!-- JS --></div>
+      </div>
+    </div>
   </section>
 
   <!-- ============ 푸터 ============ -->
   <footer class="site-footer">
-    <p class="footer-brand" data-brand>JUNG DDANDDAN</p>
-    <p class="footer-copy">© <span id="year"></span> JUNG DDANDDAN. All rights reserved.</p>
+    <p class="footer-brand" data-brand>MOOD BY</p>
+    <p class="footer-copy" data-footer-company>무드컴퍼니 · 무드바이 / 무드랩 / 무드온</p>
+    <p class="footer-copy">© <span id="year"></span> MOOD COMPANY. All rights reserved.</p>
   </footer>
 
-  <!-- ============ 라이트박스 ============ -->
+  <!-- ============ 라이트박스 (사회자 상세 / 영상) ============ -->
   <div class="lightbox" id="lightbox">
     <button class="lb-close" id="lbClose" aria-label="닫기">&times;</button>
-    <button class="lb-nav lb-prev" id="lbPrev" aria-label="이전">&#8249;</button>
-    <div class="lb-stage" id="lbStage"><!-- 사진/영상이 들어갑니다 --></div>
-    <button class="lb-nav lb-next" id="lbNext" aria-label="다음">&#8250;</button>
+    <div class="lb-stage" id="lbStage"><!-- 내용이 들어갑니다 --></div>
   </div>
 
   <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
-  <script src="js/site-config.js?v=20260626-1"></script>
+  <script src="js/site-config.js?v=20260629-1"></script>
   <script>
     (function () {
-      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260626-1"; document.body.appendChild(s); }
+      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260629-1"; document.body.appendChild(s); }
       fetch("content/settings.json", { cache: "no-store" })
         .then(function (r) { if (!r.ok) throw 0; return r.json(); })
         .then(function (j) { window.SITE_CONFIG = j; })

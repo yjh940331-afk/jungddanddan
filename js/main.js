@@ -1,7 +1,8 @@
 /* ============================================================
-   정단땅 (JUNG DDANDDAN) · 동작 스크립트
-   site-config.js 내용을 화면에 그려주고, 갤러리/메뉴/라이트박스를
-   제어합니다. 일반적인 경우 이 파일은 수정할 필요가 없습니다.
+   무드바이 (MOOD BY) · 동작 스크립트
+   site-config.js / settings.json 내용을 화면에 그려주고,
+   사회자 명단/메뉴/라이트박스를 제어합니다.
+   일반적인 경우 이 파일은 수정할 필요가 없습니다.
    ============================================================ */
 (function () {
   "use strict";
@@ -15,314 +16,195 @@
     });
   }
 
-  /* 여러 줄 텍스트(배열/문자열/객체배열) → 문자열 배열로 정규화 (CMS 출력 호환) */
+  /* 여러 줄 텍스트(배열/문자열/객체배열) → 문자열 배열로 정규화 */
   function lines(v) {
     if (Array.isArray(v)) return v.map(function (x) {
-      return typeof x === "string" ? x : (x && (x.line || x.item || x.feature || x.text)) || "";
+      return typeof x === "string" ? x : (x && (x.line || x.item || x.text)) || "";
     }).filter(function (s) { return s !== ""; });
     if (typeof v === "string") return v.split("\n").filter(function (s) { return s.trim() !== ""; });
     return [];
   }
-  /* 포트폴리오 항목 정규화 — 사진/영상/CMS 형식 모두 처리 */
-  function normItem(it) {
-    if (!it) return { type: "photo", src: "" };
-    if (it.youtube || it.id) return { type: "youtube", id: it.youtube || it.id, category: it.category, caption: it.caption, poster: it.poster || it.cover };
-    if (it.type === "youtube" || it.type === "video") return it;
-    var src = it.src || it.image || "";
-    return { type: "photo", src: src, category: it.category, caption: it.caption, poster: it.poster || src };
-  }
-
-  function hasMedia(item) {
-    return !!(item && ((item.type === "youtube" && item.id) || item.src));
-  }
-
-  function categoryLabel(v) {
-    return ({ wedding: "결혼식", family: "돌·가족행사", corporate: "기업·기타" })[v] || "Portfolio";
-  }
-
-  function normalizeCategory(v) {
-    return ({ brightHall: "wedding", darkHall: "wedding", outdoorWedding: "wedding", event: "family", film: "corporate" })[v] || v || "wedding";
-  }
-
   function listHtml(items) {
     return lines(items).map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("");
   }
-
-  function normalizeAlbum(album, i) {
-    var rawItems = album.images || album.items || album.photos || [];
-    if (!rawItems.length && (album.image || album.src || album.youtube || album.id)) rawItems = [album];
-    var items = rawItems.map(normItem).filter(hasMedia);
-    var first = items[0] || {};
-    var venue = album.venue || album.title || album.name || "";
-    var title = venue || album.caption || categoryLabel(album.category || first.category) || ("앨범 " + (i + 1));
-    return {
-      title: title,
-      venue: venue,
-      category: normalizeCategory(album.category || first.category),
-      description: album.description || album.desc || "",
-      cover: album.cover || album.image || thumbOf(first),
-      items: items,
-    };
+  function ytId(v) {
+    if (!v) return "";
+    var s = String(v).trim();
+    var m = s.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{6,})/);
+    return m ? m[1] : s;
   }
 
-  function buildAlbums() {
-    var rawAlbums = C.portfolioAlbums || C.albums || [];
-    if (rawAlbums.length) return rawAlbums.map(normalizeAlbum).filter(function (album) { return album.items.length; });
-
-    var groups = [];
-    var byKey = {};
-    (C.portfolio || []).forEach(function (item) {
-      var normalized = normItem(item);
-      if (!hasMedia(normalized)) return;
-      var title = item.album || item.venue || item.caption || categoryLabel(normalized.category);
-      var key = (normalized.category || "all") + "|" + title;
-      if (!byKey[key]) {
-        byKey[key] = {
-          title: title,
-          venue: item.venue || item.hall || "",
-          category: normalizeCategory(normalized.category),
-          description: "",
-          cover: thumbOf(normalized),
-          items: [],
-        };
-        groups.push(byKey[key]);
-      }
-      byKey[key].items.push(normalized);
-    });
-    return groups;
-  }
-
-  var ALBUMS = buildAlbums();
-
-  /* ---------- 기본 텍스트/이미지 채우기 ---------- */
+  /* ---------- 브랜드명 ---------- */
   $$("[data-brand]").forEach(function (el) { if (C.brand) el.textContent = C.brand; });
+  if (C.company) { var fc = $("[data-footer-company]"); if (fc) fc.textContent = C.company; }
 
+  /* ---------- 히어로 ---------- */
   if (C.hero) {
     var hb = $("[data-hero-bg]");
     if (hb && C.hero.image) hb.style.backgroundImage = "url('" + C.hero.image + "')";
+    var hs = $("[data-hero-slogan]"); if (hs && C.hero.slogan) hs.textContent = C.hero.slogan;
+    var hsub = $("[data-hero-sub]"); if (hsub) hsub.textContent = C.hero.sub || "";
   }
 
+  /* ---------- About ---------- */
   if (C.about) {
     if (C.about.title) $("[data-about-title]").textContent = C.about.title;
     var ab = $("[data-about-body]");
-    if (ab && C.about.body) ab.innerHTML = lines(C.about.body).map(function (p) { return "<p>" + p + "</p>"; }).join("");
-  }
-
-  if (C.photographer) {
-    var ph = C.photographer;
-    var phTitle = $("[data-photographer-title]");
-    var phRole = $("[data-photographer-role]");
-    var phImg = $("[data-photographer-img]");
-    var phBody = $("[data-photographer-body]");
-    var phPromise = $("[data-photographer-promise]");
-    var phCount = $("[data-photographer-count]");
-    if (phTitle) phTitle.textContent = ph.title || ("사회자 " + (ph.name || ""));
-    if (phRole) phRole.textContent = ph.role || "결혼식 전문 사회자";
-    if (phImg) phImg.src = ph.image || (C.about && C.about.image) || "";
-    if (phBody) {
-      var phLines = lines(ph.body || ph.philosophy);
-      phBody.innerHTML = phLines.map(function (p, i) {
-        var isSignature = i === phLines.length - 1 && /사회자\s*정다원/.test(String(p).trim());
-        return '<p' + (isSignature ? ' class="photographer-signature"' : "") + ">" + esc(p) + "</p>";
-      }).join("");
+    if (ab) ab.innerHTML = lines(C.about.body).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+    var fit = $("#aboutFit");
+    if (fit) {
+      fit.innerHTML = listHtml(C.about.fit);
+      if (!lines(C.about.fit).length) { var fw = fit.closest(".about-fit"); if (fw) fw.style.display = "none"; }
     }
-    if (phPromise) phPromise.textContent = ph.promise || "";
-    if (phCount) phCount.textContent = ph.shootCount || ph.count || "100건+";
   }
 
-  var yr = $("#year"); if (yr) yr.textContent = new Date().getFullYear();
-
-  /* ---------- 항목 종류 판별 ---------- */
-  function isVideo(item) { return item && (item.type === "video" || item.type === "youtube"); }
-  // 타일(썸네일)에 보여줄 이미지 경로
-  function thumbOf(item) {
-    if (!item) return "";
-    if (item.type === "youtube") return item.poster || ("https://img.youtube.com/vi/" + item.id + "/hqdefault.jpg");
-    return item.poster || item.src;
+  /* ---------- 대표 소개 ---------- */
+  if (C.ceo) {
+    var ceo = C.ceo;
+    var ct = $("[data-ceo-title]"); if (ct) ct.textContent = ceo.title || "대표 소개";
+    var cr = $("[data-ceo-role]"); if (cr) cr.textContent = ceo.role || "";
+    var ci = $("[data-ceo-img]");
+    if (ci) { if (ceo.image) ci.src = ceo.image; else { var cp = ci.closest(".ceo-profile"); if (cp) cp.style.display = "none"; } }
+    var cb = $("[data-ceo-body]");
+    if (cb) cb.innerHTML = lines(ceo.body).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
   }
 
-  /* ---------- 포트폴리오 갤러리 ---------- */
-  var gallery = $("#gallery");
-  var galleryItems = [];
-  function renderGallery(filter) {
-    if (!gallery || !ALBUMS.length) return;
-    gallery.innerHTML = "";
-    galleryItems = [];
-    ALBUMS.forEach(function (album) {
-      if (filter && filter !== "all" && album.category !== filter) return;
-      galleryItems.push({ album: album, item: album.items[0] });
-    });
-    if (!galleryItems.length) {
-      gallery.innerHTML = '<p class="gallery-empty">등록된 사진이 없습니다.</p>';
-      return;
-    }
-    galleryItems.forEach(function (entry, index) {
-      var item = entry.item;
-      var album = entry.album;
-      var coverSrc = album.cover || thumbOf(item);
-      var fig = document.createElement("div");
-      fig.className = "gallery-item reveal" + (isVideo(item) ? " is-video" : "");
-      fig.dataset.index = index;
-      fig.style.transitionDelay = ((index % 6) * 0.04) + "s";
-      var venueLabel = album.venue || categoryLabel(album.category);
-      fig.innerHTML =
-        '<p class="gallery-venue">' + esc(venueLabel) + "</p>" +
-        '<div class="gallery-photo">' +
-          '<img src="' + esc(coverSrc) + '" alt="' + esc(venueLabel) + '" loading="lazy" />' +
-          (isVideo(item) ? '<span class="play"></span>' : "") +
-        "</div>";
-      fig.addEventListener("click", function () { openGalleryItem(index); });
-      gallery.appendChild(fig);
-    });
-    observeReveal();
+  /* ---------- 비전 / 미션 / 약속 ---------- */
+  if (C.vision) {
+    var vl = $("#visionList"); if (vl) vl.innerHTML = listHtml(C.vision.vision);
+    var mm = $("[data-mission]"); if (mm) mm.textContent = lines(C.vision.mission).join(" ");
+    var pl = $("#promiseList"); if (pl) pl.innerHTML = listHtml(C.vision.promises);
   }
 
-  /* ---------- 필터 버튼 ---------- */
-  $$(".filter").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      $$(".filter").forEach(function (b) { b.classList.remove("active"); });
-      btn.classList.add("active");
-      renderGallery(btn.dataset.filter);
-    });
-  });
-
-  /* ---------- 가격 카드 ---------- */
-  var priceGrid = $("#priceGrid");
-  var productGuide = $("#productGuide");
-  if (priceGrid && C.products) {
-    function productGroups(product) {
-      var structured = product.categories || product.optionCategories || product.sections;
-      if (Array.isArray(structured) && structured.length) {
-        return structured.map(function (group) {
-          return {
-            title: group.title || group.name || "상품 안내",
-            items: lines(group.items || group.options || group.features || group.body),
-          };
-        }).filter(function (group) { return group.title || group.items.length; });
-      }
-
-      var groups = [];
-      lines(product.features).forEach(function (raw) {
-        var text = String(raw).trim();
-        var heading = text.match(/^\[(.+)\]$/);
-        if (heading) {
-          groups.push({ title: heading[1], items: [] });
-        } else if (text) {
-          if (!groups.length) groups.push({ title: "상품 안내", items: [] });
-          groups[groups.length - 1].items.push(text);
-        }
-      });
-      return groups.filter(function (group) { return group.title || group.items.length; });
-    }
-
-    // 상품 1개를 PDF 스타일 표 1장으로 (전체폭 안내 배너 + 카테고리|내용 행)
-    function productBlockHtml(product, index) {
-      var groups = productGroups(product);
-      var introRow = product.intro
-        ? '<tr><td class="product-intro" colspan="2">' + esc(product.intro) + "</td></tr>"
-        : "";
-      var rows = groups.map(function (group) {
-        return "<tr>" +
-          '<th scope="row">' + esc(group.title || "상품 안내") + "</th>" +
-          "<td>" + (group.items.length ? "<ul>" + listHtml(group.items) + "</ul>" : '<span class="product-table-empty">상담 시 안내드립니다.</span>') + "</td>" +
-        "</tr>";
-      }).join("");
-      return '<article class="product-block reveal" id="product-' + index + '">' +
-        '<div class="product-block-head">' +
-          "<h3>[" + esc(product.name || "") + "]</h3>" +
-          '<p class="pb-price">' + esc(product.price || "") + "</p>" +
-        "</div>" +
-        (groups.length || introRow ? '<div class="product-table-wrap">' +
-          '<table class="product-table">' +
-            '<colgroup><col class="pt-col-cat" /><col /></colgroup>' +
-            "<tbody>" + introRow + rows + "</tbody>" +
-          "</table>" +
-        "</div>" : '<p class="product-empty">상세 구성은 카카오톡 채널로 문의해 주세요.</p>') +
-      "</article>";
-    }
-
-    // 선택한 상품 1개만 표로 표시 (한눈에)
-    function showProduct(index) {
-      if (productGuide) {
-        var product = C.products[index] || C.products[0];
-        productGuide.innerHTML = product ? productBlockHtml(product, index) : "";
-      }
-      $$(".product-filter", priceGrid).forEach(function (b) {
-        b.classList.toggle("active", Number(b.dataset.productIndex) === index);
-      });
-      observeReveal();
-    }
-
-    // 포트폴리오 필터처럼 심플한 [베이직] [프리미엄] 선택 버튼
-    priceGrid.className = "filters product-filters reveal";
-    priceGrid.innerHTML = C.products.map(function (p, i) {
-      return '<button type="button" class="filter product-filter' + (i === 0 ? " active" : "") + '" data-product-index="' + i + '">' +
-        esc(p.label || p.name || ("상품 " + (i + 1))) +
-      "</button>";
-    }).join("");
-    $$(".product-filter", priceGrid).forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        showProduct(Number(btn.dataset.productIndex || 0));
-      });
-    });
-
-    showProduct(0);
-  }
-
-  /* ---------- 문의 링크 ---------- */
-  var cl = $("#contactLinks");
-  if (cl) {
-    var links = [];
-    if (C.instagram) links.push('<a class="primary-contact" href="' + esc(C.instagram) + '" target="_blank" rel="noopener">인스타그램 DM으로 예약 문의하기</a>');
-    if (C.kakao) links.push('<a class="primary-contact" href="' + esc(C.kakao) + '" target="_blank" rel="noopener">카카오톡으로 문의하기</a>');
-    cl.innerHTML = links.join("");
-  }
-
-  var trustGrid = $("#trustGrid");
-  if (trustGrid && C.trustBadges) {
-    trustGrid.innerHTML = C.trustBadges.map(function (b, i) {
+  /* ---------- Mood Crew ---------- */
+  function cardGrid(el, items) {
+    if (!el || !items) return;
+    el.innerHTML = items.map(function (b, i) {
       return '<article class="trust-card reveal" style="transition-delay:' + (Math.min(i, 5) * 0.06) + 's">' +
-        '<div class="trust-icon">' + esc(b.icon || String(i + 1).padStart(2, "0")) + "</div>" +
+        (b.icon ? '<div class="trust-icon">' + esc(b.icon) + "</div>" : "") +
         "<h3>" + esc(b.title || "") + "</h3>" +
         "<p>" + esc(b.text || b.desc || "") + "</p>" +
       "</article>";
     }).join("");
   }
-
-  if (C.availability) {
-    var av = C.availability;
-    var avTitle = $("[data-availability-title]");
-    var avStatus = $("[data-availability-status]");
-    var avNote = $("[data-availability-note]");
-    var avList = $("#availabilityList");
-    if (avTitle && av.title) avTitle.textContent = av.title;
-    if (avStatus && av.status) avStatus.textContent = av.status;
-    if (avNote) avNote.textContent = av.note || "";
-    if (avList) avList.innerHTML = listHtml(av.items);
+  if (C.crew) {
+    var clead = $("[data-crew-lead]"); if (clead) clead.textContent = C.crew.lead || "";
+    cardGrid($("#crewWays"), C.crew.ways);
+    cardGrid($("#crewDiffs"), C.crew.diffs);
   }
 
-  if (C.partners) {
-    var partners = C.partners;
-    var pt = $("[data-partners-title]");
-    var pl = $("[data-partners-lead]");
-    var pgd = $("#partnerGrid");
-    var pa = $("#partnerAction");
-    if (pt && partners.title) pt.textContent = partners.title;
-    if (pl) pl.textContent = partners.lead || "";
-    if (pgd && partners.items) {
-      pgd.innerHTML = partners.items.map(function (p, i) {
-        var logo = p.logo ? '<img src="' + esc(p.logo) + '" alt="' + esc(p.name || "partner") + '" />' : '<span>' + esc(p.initial || (p.name || "?").slice(0, 2)) + "</span>";
-        return '<article class="partner-card" style="transition-delay:' + (Math.min(i, 5) * 0.05) + 's">' +
-          '<div class="partner-logo">' + logo + "</div>" +
-          "<h3>" + esc(p.name || "") + "</h3>" +
-          "<p>" + esc(p.category || p.desc || "") + "</p>" +
-        "</article>";
+  /* ---------- MC 사회자 명단 ---------- */
+  var MCS = (C.mcs || []).filter(function (m) { return m && m.name; });
+  var mcGrid = $("#mcGrid");
+  var mcFilters = $("#mcFilters");
+
+  function mcKeywords(m) { return lines(m.keywords); }
+
+  function buildMcFilters() {
+    if (!mcFilters) return;
+    var set = [];
+    MCS.forEach(function (m) { mcKeywords(m).forEach(function (k) { if (set.indexOf(k) === -1) set.push(k); }); });
+    var btns = ['<button class="filter active" data-mood="all">전체</button>'];
+    set.forEach(function (k) { btns.push('<button class="filter" data-mood="' + esc(k) + '">' + esc(k) + "</button>"); });
+    mcFilters.innerHTML = btns.join("");
+    $$(".filter", mcFilters).forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        $$(".filter", mcFilters).forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        renderMc(btn.dataset.mood);
+      });
+    });
+  }
+
+  function mcThumb(m) {
+    if (m.image) return '<img src="' + esc(m.image) + '" alt="' + esc(m.name) + '" loading="lazy" />';
+    if (m.youtube) return '<img src="https://img.youtube.com/vi/' + esc(ytId(m.youtube)) + '/hqdefault.jpg" alt="' + esc(m.name) + '" loading="lazy" />';
+    return '<span class="mc-initial">' + esc((m.name || "?").slice(0, 2)) + "</span>";
+  }
+
+  function renderMc(mood) {
+    if (!mcGrid) return;
+    mcGrid.innerHTML = "";
+    var shown = MCS.filter(function (m) { return !mood || mood === "all" || mcKeywords(m).indexOf(mood) !== -1; });
+    if (!shown.length) { mcGrid.innerHTML = '<p class="gallery-empty">등록된 사회자가 없습니다.</p>'; return; }
+    shown.forEach(function (m, i) {
+      var idx = MCS.indexOf(m);
+      var card = document.createElement("article");
+      card.className = "mc-card reveal" + ((m.youtube || m.image) ? "" : " no-media");
+      card.style.transitionDelay = ((i % 6) * 0.05) + "s";
+      var kw = mcKeywords(m).slice(0, 3).map(function (k) { return '<span class="mc-kw">' + esc(k) + "</span>"; }).join("");
+      card.innerHTML =
+        '<div class="mc-photo">' + mcThumb(m) + (m.youtube ? '<span class="play"></span>' : "") + "</div>" +
+        '<div class="mc-info">' +
+          '<p class="mc-name">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name) + "</p>" +
+          '<div class="mc-kws">' + kw + "</div>" +
+          (m.strength ? '<p class="mc-strength">' + esc(m.strength) + "</p>" : "") +
+        "</div>";
+      card.addEventListener("click", function () { openMc(idx); });
+      mcGrid.appendChild(card);
+    });
+    observeReveal();
+  }
+
+  /* ---------- 가격표 ---------- */
+  if (C.pricing) {
+    var pt = $("#pricingTable");
+    if (pt && C.pricing.tiers && C.pricing.tiers.length) {
+      var head = "<thead><tr><th>등급</th><th>1부</th><th>2부</th></tr></thead>";
+      var rows = C.pricing.tiers.map(function (t) {
+        return "<tr>" +
+          '<th scope="row"><span class="pt-name">' + esc(t.name || "") + "</span>" +
+            (t.desc ? '<span class="pt-desc">' + esc(t.desc) + "</span>" : "") + "</th>" +
+          "<td>" + esc(t.part1 || "-") + "</td>" +
+          "<td>" + esc(t.part2 || "-") + "</td>" +
+        "</tr>";
+      }).join("");
+      pt.innerHTML = head + "<tbody>" + rows + "</tbody>";
+    }
+    var pn = $("[data-pricing-note]"); if (pn) pn.textContent = C.pricing.note || "";
+  }
+
+  /* ---------- Academy (무드랩) ---------- */
+  if (C.academy) {
+    var ac = C.academy;
+    var at = $("[data-academy-title]"); if (at) at.textContent = ac.title || "무드랩 MOOD LAB";
+    var asub = $("[data-academy-sub]"); if (asub) asub.textContent = ac.sub || "";
+    var abd = $("[data-academy-body]");
+    if (abd) abd.innerHTML = lines(ac.body).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+    var afit = $("#academyFit"); if (afit) afit.innerHTML = listHtml(ac.fit);
+
+    var pipe = $("#academyPipeline");
+    if (pipe) {
+      pipe.innerHTML = lines(ac.pipeline).map(function (step, i, arr) {
+        return '<span class="pipe-step">' + esc(step) + "</span>" +
+          (i < arr.length - 1 ? '<span class="pipe-arrow">&#8250;</span>' : "");
       }).join("");
     }
-    if (pa && partners.ctaText) {
-      var href = partners.ctaUrl || C.instagram || C.kakao || "#contact";
-      pa.innerHTML = '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(partners.ctaText) + "</a>";
+    cardGrid($("#academyCompetencies"), ac.competencies);
+
+    var crit = $("#academyCriteria");
+    if (crit) {
+      var html = "";
+      if (ac.talent) html += '<p class="criteria-talent"><strong>인재상</strong> ' + esc(ac.talent) + "</p>";
+      if (lines(ac.selection).length) html += '<h4 class="criteria-h">선발 기준</h4><ul class="check-list">' + listHtml(ac.selection) + "</ul>";
+      crit.innerHTML = html;
     }
+    var acta = $("#academyCta");
+    if (acta && ac.cta && ac.cta.text) {
+      var href = ac.cta.url || C.instagram || "#contact";
+      acta.innerHTML = '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(ac.cta.text) + "</a>";
+    }
+  }
+
+  /* ---------- 진행 프로세스 ---------- */
+  var processList = $("#processList");
+  if (processList && C.process) {
+    processList.innerHTML = C.process.map(function (s, i) {
+      return '<div class="process-step reveal" style="transition-delay:' + (Math.min(i, 9) * 0.05) + 's">' +
+        '<div class="num">' + (i + 1) + "</div>" +
+        '<div><div class="p-title">' + esc(s.title || "") + "</div>" +
+        '<div class="p-desc">' + esc(s.desc || "") + "</div></div></div>";
+    }).join("");
   }
 
   /* ---------- Q&A 아코디언 ---------- */
@@ -332,10 +214,10 @@
       var row = document.createElement("div");
       row.className = "faq-item reveal";
       row.style.transitionDelay = (Math.min(i, 6) * 0.05) + "s";
-      var ans = (item.a || "").replace(/\n/g, "<br />");
+      var ans = esc(item.a || "").replace(/\n/g, "<br />");
       row.innerHTML =
         '<button class="faq-q" type="button">' +
-          '<span class="faq-qmark">Q</span><span class="faq-qtext">' + item.q + "</span>" +
+          '<span class="faq-qmark">Q</span><span class="faq-qtext">' + esc(item.q) + "</span>" +
           '<span class="faq-icon"></span>' +
         "</button>" +
         '<div class="faq-a"><div class="faq-a-inner">' + ans + "</div></div>";
@@ -343,7 +225,6 @@
       var panel = row.querySelector(".faq-a");
       btn.addEventListener("click", function () {
         var open = row.classList.contains("open");
-        // 하나만 열리도록(아코디언) — 여러 개 동시에 열고 싶으면 아래 forEach 줄을 지우세요.
         $$(".faq-item.open").forEach(function (r) {
           r.classList.remove("open");
           r.querySelector(".faq-a").style.maxHeight = null;
@@ -357,113 +238,68 @@
     });
   }
 
-  /* ---------- 후기 ---------- */
-  /* ---------- 예약 절차 ---------- */
-  var processList = $("#processList");
-  if (processList && C.process) {
-    processList.innerHTML = C.process.map(function (s, i) {
-      return '<div class="process-step reveal" style="transition-delay:' + (i * 0.08) + 's">' +
-        '<div class="num">' + (i + 1) + "</div>" +
-        '<div><div class="p-title">' + (s.title || "") + "</div>" +
-        '<div class="p-desc">' + (s.desc || "") + "</div></div></div>";
+  /* ---------- 문의 링크 ---------- */
+  function contactLinksHtml(which) {
+    var links = [];
+    if (which === "applicant") {
+      if (C.academy && C.academy.cta && C.academy.cta.url) links.push(C.academy.cta.url);
+      if (C.instagram) links.push(C.instagram);
+    } else {
+      if (C.instagram) links.push(C.instagram);
+      if (C.kakao) links.push(C.kakao);
+    }
+    return links;
+  }
+  function fillContact(id, label, which) {
+    var el = $(id); if (!el) return;
+    var urls = [];
+    (contactLinksHtml(which)).forEach(function (u) { if (u && urls.indexOf(u) === -1) urls.push(u); });
+    el.innerHTML = urls.map(function (u, i) {
+      var isInsta = /instagram\.com/.test(u);
+      var txt = isInsta ? "인스타그램 DM" : (/pf\.kakao|kakao/.test(u) ? "카카오톡 문의" : "문의하기");
+      var cls = i === 0 ? "primary-contact" : "secondary-contact";
+      return '<a class="' + cls + '" href="' + esc(u) + '" target="_blank" rel="noopener">' + txt + "</a>";
     }).join("");
   }
+  fillContact("#contactCustomer", "고객", "customer");
+  fillContact("#contactApplicant", "지원", "applicant");
+  if (C.booking && C.booking.note) { var bn = $("#bookingNote"); if (bn) bn.textContent = C.booking.note; }
 
-  /* ---------- 예약 문의 안내 ---------- */
-  if (C.booking && C.booking.note) {
-    var bn = $("#bookingNote");
-    if (bn) bn.textContent = C.booking.note;
-  }
+  var yr = $("#year"); if (yr) yr.textContent = new Date().getFullYear();
 
-  /* ---------- 라이트박스 (사진 + 영상) ---------- */
+  /* ---------- 라이트박스 (사회자 상세) ---------- */
   var lb = $("#lightbox"), lbStage = $("#lbStage");
-  var activeItems = [];
-  var activeAlbumTitle = "";
-  var pos = 0;
-  function openGalleryItem(itemIndex) {
-    var entry = galleryItems[itemIndex];
-    if (!entry) return;
-    var album = entry.album;
-    activeItems = album.items.map(function (source) {
-      var item = {};
-      Object.keys(source).forEach(function (key) { item[key] = source[key]; });
-      item._albumTitle = album.title;
-      item._albumCategory = album.category;
-      return item;
-    });
-    activeAlbumTitle = album.venue || album.title;
-    pos = album.items.indexOf(entry.item);
-    if (pos < 0) pos = 0;
-    showScrollLb();
-    lb.classList.add("open", "scroll-mode");
-    document.body.style.overflow = "hidden";
-    window.requestAnimationFrame(function () {
-      var target = lbStage.querySelector('[data-scroll-index="' + pos + '"]');
-      if (target) target.scrollIntoView({ block: "start" });
-    });
-  }
-
-  function makeScrollMedia(item) {
-    var el;
-    if (item.type === "youtube") {
-      el = document.createElement("iframe");
-      el.className = "lb-scroll-media";
-      el.src = "https://www.youtube.com/embed/" + item.id + "?rel=0";
-      el.allow = "encrypted-media; fullscreen";
-      el.setAttribute("allowfullscreen", "");
-    } else if (item.type === "video") {
-      el = document.createElement("video");
-      el.className = "lb-scroll-media";
-      el.src = item.src;
-      if (item.poster) el.poster = item.poster;
-      el.controls = true;
-      el.playsInline = true;
-    } else {
-      el = document.createElement("img");
-      el.className = "lb-scroll-media";
-      el.src = item.src;
-      el.alt = item.caption || activeAlbumTitle || "portfolio";
-      el.loading = "lazy";
+  function openMc(index) {
+    var m = MCS[index];
+    if (!m || !lb) return;
+    var kw = mcKeywords(m).map(function (k) { return '<span class="mc-kw">' + esc(k) + "</span>"; }).join("");
+    var media = "";
+    if (m.youtube) {
+      media = '<div class="lb-video"><iframe src="https://www.youtube.com/embed/' + esc(ytId(m.youtube)) +
+        '?rel=0" allow="encrypted-media; fullscreen" allowfullscreen></iframe></div>';
+    } else if (m.image) {
+      media = '<div class="lb-photo"><img src="' + esc(m.image) + '" alt="' + esc(m.name) + '" /></div>';
     }
-    return el;
+    lbStage.innerHTML =
+      '<div class="mc-detail">' +
+        media +
+        '<div class="mc-detail-body">' +
+          '<p class="mc-name">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name) + "</p>" +
+          '<div class="mc-kws">' + kw + "</div>" +
+          (m.strength ? "<p>" + esc(m.strength) + "</p>" : "") +
+          (m.recommend ? '<p class="mc-recommend"><strong>추천 고객</strong> ' + esc(m.recommend) + "</p>" : "") +
+          (m.review ? '<p class="mc-review">&ldquo;' + esc(m.review) + "&rdquo;</p>" : "") +
+        "</div>" +
+      "</div>";
+    lb.classList.add("open");
+    document.body.style.overflow = "hidden";
   }
-
-  function showScrollLb() {
-    lbStage.innerHTML = "";   // 이전 내용(특히 영상) 정리 → 소리/재생 중단
-    if (!activeItems.length) return;
-    var head = document.createElement("div");
-    head.className = "lb-scroll-head";
-    head.innerHTML =
-      "<strong>" + esc(activeAlbumTitle || "Portfolio") + "</strong>" +
-      "<span>아래로 스크롤해서 보기</span>";
-    lbStage.appendChild(head);
-
-    activeItems.forEach(function (item, index) {
-      var row = document.createElement("article");
-      var category = item.category || item._albumCategory;
-      row.className = "lb-scroll-item";
-      row.dataset.scrollIndex = index;
-      row.appendChild(makeScrollMedia(item));
-      var capText = item.caption || "";
-      if (capText) {
-        var caption = document.createElement("p");
-        caption.className = "lb-scroll-caption";
-        caption.textContent = capText;
-        row.appendChild(caption);
-      }
-      lbStage.appendChild(row);
-    });
+  function closeLb() { if (!lb) return; lb.classList.remove("open"); lbStage.innerHTML = ""; document.body.style.overflow = ""; }
+  if (lb) {
+    $("#lbClose").addEventListener("click", closeLb);
+    lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && lb.classList.contains("open")) closeLb(); });
   }
-  function closeLb() { lb.classList.remove("open", "scroll-mode"); lbStage.innerHTML = ""; activeItems = []; document.body.style.overflow = ""; }
-
-  $("#lbClose").addEventListener("click", closeLb);
-  $("#lbPrev").addEventListener("click", function () {});
-  $("#lbNext").addEventListener("click", function () {});
-  lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
-  document.addEventListener("keydown", function (e) {
-    if (!lb.classList.contains("open")) return;
-    if (e.key === "Escape") closeLb();
-  });
 
   /* ---------- 헤더 스크롤 효과 + 히어로 패럴랙스 ---------- */
   var header = $("#header");
@@ -476,7 +312,6 @@
     requestAnimationFrame(function () {
       var y = window.scrollY;
       header.classList.toggle("scrolled", y > 60);
-      // y>0 일 때만 적용 → 처음 로드 시 CSS 줌인 인트로는 그대로 살림
       if (heroBg && !reduceMotion && y > 0 && y < window.innerHeight) {
         heroBg.style.transform = "scale(1.06) translateY(" + (y * 0.18) + "px)";
       }
@@ -498,10 +333,7 @@
   var panels = $$("[data-panel]");
   var panelIds = panels.map(function (panel) { return panel.id; });
   function showHome(shouldScroll) {
-    panels.forEach(function (panel) {
-      panel.classList.remove("active");
-      panel.hidden = true;
-    });
+    panels.forEach(function (panel) { panel.classList.remove("active"); panel.hidden = true; });
     document.body.classList.remove("panel-open");
     $$(".nav a").forEach(function (link) { link.classList.remove("active"); });
     if (shouldScroll) {
@@ -511,12 +343,8 @@
       }, 20);
     }
   }
-
   function activatePanel(id, shouldScroll) {
-    if (panelIds.indexOf(id) === -1) {
-      showHome(shouldScroll);
-      return;
-    }
+    if (panelIds.indexOf(id) === -1) { showHome(shouldScroll); return; }
     panels.forEach(function (panel) {
       var active = panel.id === id;
       panel.classList.toggle("active", active);
@@ -534,33 +362,24 @@
       }, 20);
     }
   }
-
   $$(".nav a[href^='#']").forEach(function (link) {
     link.addEventListener("click", function (e) {
       var id = link.getAttribute("href").slice(1);
       if (panelIds.indexOf(id) === -1) return;
       e.preventDefault();
       activatePanel(id, true);
-      if (window.history && window.history.pushState) {
-        window.history.pushState(null, "", "#" + id);
-      } else {
-        window.location.hash = id;
-      }
+      if (window.history && window.history.pushState) window.history.pushState(null, "", "#" + id);
+      else window.location.hash = id;
     });
   });
-
   $$("a[href='#hero']").forEach(function (link) {
     link.addEventListener("click", function (e) {
       e.preventDefault();
       showHome(true);
-      if (window.history && window.history.pushState) {
-        window.history.pushState(null, "", "#hero");
-      } else {
-        window.location.hash = "hero";
-      }
+      if (window.history && window.history.pushState) window.history.pushState(null, "", "#hero");
+      else window.location.hash = "hero";
     });
   });
-
   window.addEventListener("hashchange", function () {
     activatePanel(window.location.hash.replace("#", ""), true);
   });
@@ -578,12 +397,10 @@
   }
 
   /* ---------- 초기 실행 ---------- */
-  renderGallery("wedding");
+  buildMcFilters();
+  renderMc("all");
   var initialPanel = window.location.hash.replace("#", "");
-  if (panelIds.indexOf(initialPanel) !== -1) {
-    activatePanel(initialPanel, false);
-  } else {
-    showHome(false);
-  }
+  if (panelIds.indexOf(initialPanel) !== -1) activatePanel(initialPanel, false);
+  else showHome(false);
   observeReveal();
 })();
