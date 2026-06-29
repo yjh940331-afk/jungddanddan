@@ -9,7 +9,9 @@
   <meta property="og:description" content="당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성해갑니다. mood by your story." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://moodby.kr/" />
-  <meta property="og:image" content="https://moodby.kr/images/moodby-hero.jpg" />
+  <meta property="og:image" content="https://moodby.kr/images/moodby-og-luxe.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://moodby.kr/images/moodby-og-luxe.jpg" />
   <meta name="theme-color" content="#fffaf4" />
 
   <!-- 폰트 -->
@@ -17,8 +19,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
-  <link rel="preload" as="image" href="images/moodby-hero.jpg" />
-  <link rel="stylesheet" href="css/style.css?v=20260629-5" />
+  <link rel="preload" as="image" href="images/moodby-hero-luxe.jpg" />
+  <link rel="stylesheet" href="css/style.css?v=20260629-7" />
 
   <!-- 옛 서비스워커/캐시 정리 (예전 버전이 기기에 붙어있는 문제 방지) -->
   <script>
@@ -42,6 +44,7 @@
   </script>
 </head>
 <body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
   <!-- ============ 헤더 ============ -->
   <header class="site-header" id="header">
@@ -68,22 +71,55 @@
   <section class="hero" id="hero">
     <div class="hero-bg" data-hero-bg></div>
     <div class="hero-overlay"></div>
+    <div class="hero-mood-stage" id="heroMoodStage" aria-hidden="true"></div>
     <div class="hero-copy">
       <p class="hero-kicker">WEDDING MC AGENCY · MOOD LAB</p>
       <h1 class="hero-logo">MOOD BY <span class="hero-word" data-hero-word>따뜻하게</span></h1>
       <p class="hero-tagline" data-hero-tagline>Color your wedding mood.</p>
       <p class="hero-sub" data-hero-sub></p>
       <div class="hero-actions">
-        <a class="hero-cta primary" href="#mc" data-panel-link>사회자 둘러보기</a>
-        <a class="hero-cta secondary" href="#contact" data-panel-link>상담 문의</a>
+        <a class="hero-cta primary" href="#mc" data-panel-link>우리 예식 무드 찾기</a>
+        <a class="hero-cta secondary" href="#contact" data-panel-link>무드바이 상담하기</a>
       </div>
       <div class="hero-proof" aria-label="무드바이 서비스 요약">
-        <span>맞춤형 사회자 매칭</span>
-        <span>식순·대본 가이드</span>
-        <span>무드랩 교육 운영</span>
+        <span>감성 무드 매칭</span>
+        <span>식순·대본 설계</span>
+        <span>전속 사회자 교육</span>
       </div>
     </div>
     <div class="scroll-hint"><span></span></div>
+  </section>
+
+  <section class="mood-palette-section" id="moodPalette" aria-label="무드바이 팔레트">
+    <div class="mood-palette-inner">
+      <figure class="mood-palette-visual reveal">
+        <img data-palette-image src="images/moodby-palette-luxe.jpg" alt="무드바이 웨딩 무드 팔레트" loading="lazy" />
+        <div class="palette-orbit" id="paletteOrbit" aria-hidden="true"></div>
+      </figure>
+      <div class="mood-palette-copy reveal">
+        <p class="section-label" data-palette-eyebrow>MOOD PALETTE</p>
+        <h2 class="palette-title" data-palette-title>무드바이는 하나의 큰 팔레트입니다.</h2>
+        <p class="palette-text" data-palette-body></p>
+        <div class="palette-signatures" id="paletteSignatures"></div>
+        <p class="palette-note" data-palette-note></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-editorial" id="homeEditorial">
+    <div class="home-editorial-inner">
+      <div class="home-editorial-copy reveal">
+        <p class="section-label" data-home-eyebrow>MOOD BY SCENE</p>
+        <h2 class="home-title" data-home-title>예식의 온도는 첫 문장부터 달라집니다.</h2>
+        <p class="home-text" data-home-body></p>
+        <div class="home-stats" id="homeStats"></div>
+      </div>
+      <div class="home-gallery reveal" id="homeGallery"></div>
+    </div>
+  </section>
+
+  <section class="mood-marquee" aria-label="무드바이 무드 키워드">
+    <div class="mood-marquee-track" id="moodMarquee"></div>
   </section>
 
   <section class="home-preview" aria-label="무드바이 바로가기">
@@ -258,10 +294,10 @@
   </div>
 
   <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
-  <script src="js/site-config.js?v=20260629-5"></script>
+  <script src="js/site-config.js?v=20260629-6"></script>
   <script>
     (function () {
-      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260629-5"; document.body.appendChild(s); }
+      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260629-6"; document.body.appendChild(s); }
       fetch("content/settings.json", { cache: "no-store" })
         .then(function (r) { if (!r.ok) throw 0; return r.json(); })
         .then(function (j) { window.SITE_CONFIG = j; })
