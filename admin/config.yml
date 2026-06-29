@@ -16,7 +16,7 @@ media_libraries:
   cloudflare_r2:
     account_id: b8c01aa804c1c42982b17864b74e975b
     bucket: moodby-images
-    access_key_id: REPLACE_WITH_MOODBY_R2_ACCESS_KEY_ID
+    access_key_id: bfe3a29f85d3a5bb139c0518c7c8788d
     public_url: https://media.moodby.kr
     prefix: uploads/
 
@@ -41,6 +41,13 @@ collections:
           # ---------- 기본 정보 ----------
           - { label: "브랜드명(로고)", name: "brand", widget: "string", default: "MOOD BY" }
           - { label: "푸터 회사 표기", name: "company", widget: "string", required: false }
+          - label: "검색/공유 이미지(SEO · OG)"
+            name: "seo"
+            widget: "object"
+            fields:
+              - { label: "브라우저/공유 제목", name: "title", widget: "string", required: false, default: "무드바이 MOOD BY · 결혼식 사회자 에이전시" }
+              - { label: "검색/공유 설명", name: "description", widget: "text", required: false }
+              - { label: "대표 공유 이미지(OG)", name: "image", widget: "image", required: false, hint: "카카오톡·SNS 공유 시 보일 대표 이미지입니다. 권장 비율 1.91:1" }
           - { label: "사회자 이름 앞 접두어", name: "mcPrefix", widget: "string", required: false, default: "무드바이", hint: "예: '무드바이 다원'의 '무드바이' 부분" }
           - { label: "인스타그램 주소", name: "instagram", widget: "string", required: false, hint: "예: https://www.instagram.com/jung_ddanddan/" }
           - { label: "카카오톡 채널 주소", name: "kakao", widget: "string", required: false }
@@ -57,6 +64,41 @@ collections:
                 field: { label: "단어", name: "word", widget: "string" }
               - { label: "태그라인", name: "tagline", widget: "string", default: "Color your wedding mood." }
               - { label: "보조 문구", name: "sub", widget: "string", required: false }
+
+          # ---------- 홈 에디토리얼 ----------
+          - label: "홈 에디토리얼 섹션"
+            name: "home"
+            widget: "object"
+            fields:
+              - { label: "작은 영문 라벨", name: "eyebrow", widget: "string", required: false, default: "MOOD BY SCENE" }
+              - { label: "대표 문장", name: "title", widget: "string", required: false }
+              - { label: "설명", name: "body", widget: "text", required: false }
+              - label: "숫자 지표"
+                name: "stats"
+                widget: "list"
+                required: false
+                label_singular: "지표"
+                summary: "{{fields.label}}"
+                fields:
+                  - { label: "숫자", name: "number", widget: "string", required: false, hint: "예: 5000" }
+                  - { label: "단위/접미사", name: "suffix", widget: "string", required: false, hint: "예: 만+, 명+, 년+" }
+                  - { label: "라벨", name: "label", widget: "string", required: false }
+              - label: "홈 갤러리 카드"
+                name: "gallery"
+                widget: "list"
+                required: false
+                label_singular: "갤러리 카드"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "이미지", name: "image", widget: "image", required: false }
+                  - { label: "작은 라벨", name: "label", widget: "string", required: false }
+                  - { label: "제목", name: "title", widget: "string", required: false }
+                  - { label: "설명", name: "text", widget: "string", required: false }
+              - label: "흐르는 무드 단어"
+                name: "marquee"
+                widget: "list"
+                required: false
+                field: { label: "단어", name: "word", widget: "string" }
 
           # ---------- 소개(About) ----------
           - label: "소개(About)"
