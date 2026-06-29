@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>정단땅 관리자</title>
+  <style>
+    /* 모바일에서 '당겨서 새로고침'이 자꾸 뜨는 것을 막고, 스크롤은 정상 동작 */
+    html, body {
+      min-height: 100% !important;
+      height: auto !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      position: static !important;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: none;
+      overscroll-behavior-y: none;
+    }
+    /* Sveltia CMS 루트 요소 */
+    sveltia-cms, #sveltia-cms, [data-sveltia-cms] {
+      display: block;
+      height: auto !important;
+      min-height: 100vh;
+      overflow: visible !important;
+      overscroll-behavior: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sveltia CMS — Decap 호환, 여러 장 업로드 지원, GitHub 로그인 -->
+  <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
+  <script>
+    // 스크롤 잠금 해제 + 당겨서 새로고침 방지 (과도한 반복 실행은 피함)
+    const unlockScroll = () => {
+      const de = document.documentElement, b = document.body;
+      de.style.overflowY = 'auto';
+      de.style.overscrollBehavior = 'none';
+      b.style.overflowY = 'auto';
+      b.style.position = 'static';
+      b.style.height = 'auto';
+      b.style.touchAction = 'pan-y';
+      b.style.overscrollBehavior = 'none';
+    };
+
+    unlockScroll();
+    // 초기 렌더 동안에만 몇 차례 보정 (무한 옵저버 대신 가벼운 타이머)
+    let ticks = 0;
+    const iv = setInterval(() => {
+      unlockScroll();
+      if (++ticks > 20) clearInterval(iv); // 약 10초 후 정지
+    }, 500);
+  </script>
+
+  <!-- 에러 항목 찾기 도우미 -->
+  <style>
+    #findErrorBtn{
+      position:fixed; right:14px; bottom:16px; z-index:2147483647;
+      background:#c0392b; color:#fff; border:none; border-radius:40px;
+      padding:13px 18px; font-size:14px; font-weight:700; box-shadow:0 6px 18px rgba(0,0,0,.25);
+      font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
+    }
+    .__err_flash{ outline:3px solid #c0392b !important; outline-offset:2px !important;
+      border-radius:6px !important; background:rgba(192,57,43,.08) !important; }
+  </style>
+  <button id="findErrorBtn" type="button">⚠️ 에러 항목 찾기</button>
+  <script>
+    (function(){
+      var btn = document.getElementById('findErrorBtn');
+
+      // 그림자 DOM(shadow root)까지 모두 훑어서 요소 수집
+      function deepCollect(root, out){
+        var nodes = root.querySelectorAll('*');
+        for (var i=0;i<nodes.length;i++){
+          out.push(nodes[i]);
+          if (nodes[i].shadowRoot) deepCollect(nodes[i].shadowRoot, out);
+        }
+      }
+      function classStr(el){
+        if (!el.className) return '';
+        return el.className.baseVal !== undefined ? el.className.baseVal : (''+el.className);
+      }
+      function findErrors(){
+        var all = []; deepCollect(document, all);
+        return all.filter(function(el){
+          try {
+            if (el.matches('[aria-invalid="true"]')) return true;
+          } catch(e){}
+          if (/(^|[\s_-])(error|invalid)([\s_-]|$)/i.test(classStr(el))) return true;
+          try {
+            if ((el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.tagName==='SELECT') && el.matches(':invalid')) return true;
+          } catch(e){}
+          return false;
+        }).filter(function(el){
+          // 화면에 보이는 것만
+          var r = el.getBoundingClientRect();
+          return r.width > 0 && r.height > 0;
+        });
+      }
+      // 에러 근처의 라벨 텍스트 추정
+      function nearestLabel(el){
+        var node = el;
+        for (var hop=0; hop<6 && node; hop++){
+          var lbl = node.querySelector && node.querySelector('label');
+          if (lbl && lbl.textContent.trim()) return lbl.textContent.trim();
+          node = node.parentElement || (node.getRootNode && node.getRootNode().host);
+        }
+        return '';
+      }
+
+      btn.addEventListener('click', function(){
+        var errs = findErrors();
+        if (!errs.length){
+          alert('지금은 에러 항목이 감지되지 않아요.\\n\\n먼저 우측 상단 Save를 한 번 눌러 에러를 표시한 뒤,\\n이 버튼을 다시 눌러보세요.');
+          return;
+        }
+        var target = errs[0];
+        var label = nearestLabel(target);
+        target.classList.add('__err_flash');
+        try { target.scrollIntoView({behavior:'smooth', block:'center'}); } catch(e){ target.scrollIntoView(); }
+        try { if (target.focus) target.focus({preventScroll:true}); } catch(e){}
+        setTimeout(function(){ try{ target.classList.remove('__err_flash'); }catch(e){} }, 4000);
+        if (label) alert('이 항목을 확인해 주세요: \\u300c' + label + '\\u300d\\n\\n빨간 테두리로 표시된 칸으로 이동했어요.');
+      });
+    })();
+  </script>
+
+  <!-- 영어 버튼/문구를 한글로 자동 치환 (Restore/Discard 등) -->
+  <script>
+    (function(){
+      // 영어 → 한글 (정확히 일치하는 글자만 바꿈)
+      var DICT = {
+        // 저장/게시/삭제 등 주요 동작
+        "Save": "저장",
+        "Saving…": "저장 중…", "Saving...": "저장 중…",
+        "Saved": "저장됨",
+        "Publish": "게시(사이트 반영)",
+        "Publishing…": "게시 중…", "Publishing...": "게시 중…",
+        "Published": "게시됨",
+        "Publish now": "지금 게시",
+        "Publish and create new": "게시하고 새로 만들기",
+        "Publish and duplicate": "게시하고 복제",
+        "Delete": "삭제", "Delete entry": "삭제",
+        "Duplicate": "복제",
+        "Cancel": "취소", "Close": "닫기",
+        "OK": "확인", "Yes": "예", "No": "아니요",
+        "Add": "추가", "New": "새로 만들기", "Create new": "새로 만들기",
+        "Edit": "편집", "Editing": "편집 중", "Preview": "미리보기",
+        "Replace": "사진 교체", "Remove": "사진 제거",
+        "Reset": "초기화", "Back": "뒤로", "Apply": "적용", "Done": "완료",
+        // 복구(임시 저장본/드래프트)
+        "Restore": "이전 작업 복구",
+        "Discard": "복구 안 함(새로 시작)",
+        "Restore draft": "임시 저장본 복구",
+        "Discard draft": "임시 저장본 버리기",
+        "Restore Backup": "임시 저장본 복구",
+        "Restore backup": "임시 저장본 복구",
+        "Delete backup": "임시 저장본 삭제",
+        "Draft": "임시 저장본", "Drafts": "임시 저장본",
+        "Backup": "임시 저장본",
+        "Restore?": "이전 작업을 복구할까요?",
+        "An unsaved version of this entry was found.": "저장하지 않은 작업 내용이 남아 있어요.",
+        "Recovered an unsaved entry.": "저장하지 않은 작업 내용을 찾았어요.",
+        "This content has unsaved changes. Are you sure you want to leave?": "저장하지 않은 변경 사항이 있어요. 정말 나가시겠어요?",
+        // 에러/필수
+        "One field has an error. Please correct it to save the entry.": "한 항목에 오류가 있어요. 저장하려면 그 항목을 고쳐 주세요.",
+        "Error": "오류", "Required": "필수",
+        "This field is required.": "꼭 입력해야 하는 항목이에요.",
+        // 로그인/계정
+        "Sign in with GitHub": "GitHub으로 로그인",
+        "Login with GitHub": "GitHub으로 로그인",
+        "Sign In": "로그인", "Sign in": "로그인", "Login": "로그인",
+        "Sign Out": "로그아웃", "Sign out": "로그아웃", "Log out": "로그아웃",
+        // 미디어 라이브러리
+        "Media": "미디어", "Media Library": "사진 보관함",
+        "Upload": "업로드", "Upload new": "새로 업로드",
+        "Insert": "넣기", "Choose": "선택", "Choose an image": "이미지 선택",
+        "Choose selected": "선택한 사진 넣기",
+        "Browse": "찾아보기", "Search": "검색", "Search…": "검색…", "Search...": "검색…",
+        "Download": "다운로드", "Copy": "복사", "Copy URL": "주소 복사",
+        // 메뉴/상태
+        "Contents": "콘텐츠", "Settings": "설정", "Workflow": "워크플로",
+        "Loading…": "불러오는 중…", "Loading...": "불러오는 중…",
+        "No results": "결과 없음", "No results.": "결과가 없어요."
+      };
+
+      function deepCollect(root, out){
+        var nodes = root.querySelectorAll('*');
+        for (var i=0;i<nodes.length;i++){
+          out.push(nodes[i]);
+          if (nodes[i].shadowRoot) deepCollect(nodes[i].shadowRoot, out);
+        }
+      }
+      // 정확히 일치하지 않는 긴 영어 안내문은 '포함' 규칙으로 통째 치환
+      var PHRASES = [
+        [/restore\s+draft/i, "임시 저장본 복구"],
+        [/discard\s+draft/i, "임시 저장본 버리기"],
+        [/this entry has a backup/i, "이 글은 이 브라우저에 임시 저장본이 남아 있어요. 복구할까요?"],
+        [/a backup .*was found|backup .*saved|saved .*backup/i, "임시 저장본이 저장되어 있어요. 복구할까요?"],
+        [/an (earlier|unsaved) version .*was (found|saved)/i, "저장하지 않은 이전 작업 내용이 남아 있어요. 복구할까요?"],
+        [/would you like to restore/i, "이어서 작업할까요?"],
+        [/unsaved changes/i, "저장하지 않은 변경 사항이 있어요."],
+        [/are you sure you want to (delete|remove)/i, "정말 삭제할까요?"],
+        [/this action cannot be undone/i, "이 작업은 되돌릴 수 없어요."],
+        [/no (items|entries|results)/i, "내용이 없어요."]
+      ];
+
+      function looksEnglish(t){ return /[A-Za-z]/.test(t) && !/[가-힣]/.test(t); }
+
+      function relabel(){
+        var all = [];
+        try { deepCollect(document, all); } catch(e){ return; }
+        for (var i=0;i<all.length;i++){
+          var el = all[i];
+          if (!(el.children && el.children.length === 0)) continue;
+          var t = el.textContent && el.textContent.trim();
+          if (!t) continue;
+          // 1) 정확히 일치
+          if (DICT[t]){
+            if (t !== DICT[t]) el.textContent = DICT[t];
+            continue;
+          }
+          // 2) 긴 영어 안내문은 포함 규칙으로
+          if (looksEnglish(t)){
+            for (var p=0; p<PHRASES.length; p++){
+              if (PHRASES[p][0].test(t)){ el.textContent = PHRASES[p][1]; break; }
+            }
+          }
+        }
+      }
+      // CMS가 다시 그릴 때마다 덮어쓰므로 주기적으로 재적용
+      setInterval(relabel, 600);
+    })();
+  </script>
+</body>
+</html>

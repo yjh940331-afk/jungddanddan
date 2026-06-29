@@ -1,0 +1,17 @@
+/content/settings.json
+  Cache-Control: no-cache
+
+/js/*
+  Cache-Control: no-cache
+
+/css/*
+  Cache-Control: no-cache
+
+/sw.js
+  Cache-Control: no-cache
+
+/service-worker.js
+  Cache-Control: no-cache
+
+/serviceworker.js
+  Cache-Control: no-cache

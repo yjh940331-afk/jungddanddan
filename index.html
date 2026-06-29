@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>정단땅 · 결혼식 사회자 정다원</title>
+  <meta name="description" content="결혼식 전문 사회자 정다원(정단땅) - 신랑·신부 맞춤 대본으로 따뜻하고 자연스럽게 진행하는 결혼식 사회." />
+  <meta property="og:title" content="정단땅 · 결혼식 사회자 정다원" />
+  <meta property="og:description" content="결혼식 전문 사회자 정다원 - 신랑·신부 맞춤 대본으로 따뜻하고 자연스럽게 진행하는 결혼식 사회." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.jungddanddan.com/" />
+
+  <!-- 폰트 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css?v=20260626-1" />
+
+  <!-- 옛 서비스워커/캐시 정리 (예전 버전이 기기에 붙어있는 문제 방지) -->
+  <script>
+    (function () {
+      if (!("serviceWorker" in navigator)) return;
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        if (!regs.length) return;
+        regs.forEach(function (reg) { reg.unregister(); });
+        if (window.caches && caches.keys) {
+          caches.keys().then(function (keys) {
+            return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+          }).then(function () {
+            if (!sessionStorage.getItem("sw-purged")) {
+              sessionStorage.setItem("sw-purged", "1");
+              location.reload();
+            }
+          });
+        }
+      }).catch(function () {});
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- ============ 헤더 ============ -->
+  <header class="site-header" id="header">
+    <div class="header-inner">
+      <a href="#hero" class="logo" data-brand>JUNG DDANDDAN</a>
+
+      <nav class="nav" id="nav">
+        <a href="#about">About</a>
+        <a href="#photographer">MC</a>
+        <a href="#why">Why</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#price">Product</a>
+        <a href="#faq">Q&amp;A</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ 히어로 ============ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" data-hero-bg></div>
+    <div class="hero-overlay"></div>
+    <div class="scroll-hint"><span></span></div>
+  </section>
+
+  <!-- ============ 소개 ============ -->
+  <section class="about section content-panel" id="about" data-panel>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p class="section-label">ABOUT</p>
+        <h2 class="section-title" data-about-title>당신의 가장 빛나는 순간, 정단땅</h2>
+        <div class="about-body" data-about-body></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 사회자 소개 ============ -->
+  <section class="photographer section content-panel" id="photographer" data-panel>
+    <div class="photographer-grid">
+      <div class="photographer-copy reveal reveal-left">
+        <p class="section-label">MC</p>
+        <h2 class="section-title" data-photographer-title>사회자 정다원</h2>
+        <p class="photographer-role" data-photographer-role>결혼식 전문 사회자</p>
+        <div class="photographer-body" data-photographer-body></div>
+        <p class="photographer-promise" data-photographer-promise></p>
+      </div>
+      <div class="photographer-profile reveal reveal-right">
+        <img data-photographer-img alt="결혼식 사회자 정다원" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 신뢰 포인트 ============ -->
+  <section class="why section content-panel" id="why" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">WHY JUNG DDANDDAN</p>
+      <h2 class="section-title">믿고 맡길 수 있도록</h2>
+    </div>
+    <div class="trust-grid" id="trustGrid"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 포트폴리오 ============ -->
+  <section class="portfolio section content-panel" id="portfolio" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">PORTFOLIO</p>
+      <h2 class="section-title">함께한 순간들</h2>
+    </div>
+
+    <div class="filters reveal" id="filters">
+      <button class="filter active" data-filter="wedding">결혼식</button>
+      <button class="filter" data-filter="family">돌·가족행사</button>
+      <button class="filter" data-filter="corporate">기업·기타</button>
+    </div>
+
+    <div class="gallery" id="gallery"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 후기 ============ -->
+
+  <!-- ============ 가격 ============ -->
+  <section class="price section content-panel" id="price" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">PRICE</p>
+      <h2 class="section-title">사회 진행 상품</h2>
+    </div>
+    <div class="price-grid" id="priceGrid"><!-- JS로 상품 카테고리 자동 생성 --></div>
+    <div class="product-guide reveal" id="productGuide"><!-- JS로 선택 상품 안내 자동 생성 --></div>
+    <p class="price-note reveal">* 모든 상품의 자세한 안내와 일정은 문의를 통해 확인해 주세요.</p>
+  </section>
+
+  <!-- ============ 예약 가능 일정 ============ -->
+  <section class="availability section content-panel" id="availability" data-panel>
+    <div class="availability-inner reveal">
+      <div>
+        <p class="section-label">BOOKING STATUS</p>
+        <h2 class="section-title" data-availability-title>예약 가능 일정</h2>
+        <p class="availability-note" data-availability-note></p>
+      </div>
+      <div class="availability-panel">
+        <p data-availability-status>2026년 하반기, 2027년 상반기 예약 상담 중</p>
+        <ul id="availabilityList"><!-- JS로 자동 생성 --></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 예약 절차 ============ -->
+  <section class="process section content-panel" id="process" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">PROCESS</p>
+      <h2 class="section-title">예약 절차</h2>
+    </div>
+    <div class="process-list" id="processList"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 제휴 ============ -->
+  <section class="partners section content-panel" id="partners" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">PARTNERS</p>
+      <h2 class="section-title" data-partners-title>함께 만드는 웨딩</h2>
+      <p class="partners-lead" data-partners-lead></p>
+    </div>
+    <div class="partner-grid reveal" id="partnerGrid"><!-- JS로 자동 생성 --></div>
+    <div class="partner-action reveal" id="partnerAction"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ Q&A ============ -->
+  <section class="faq section content-panel" id="faq" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">Q&amp;A</p>
+      <h2 class="section-title">자주 묻는 질문</h2>
+    </div>
+    <div class="faq-list" id="faqList"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 문의 ============ -->
+  <section class="contact section content-panel" id="contact" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">CONTACT</p>
+      <h2 class="section-title">예약 &amp; 문의</h2>
+    </div>
+    <p class="contact-lead reveal" id="bookingNote">예약 문의는 인스타그램 DM으로 안내드립니다.</p>
+    <div class="contact-links contact-action reveal" id="contactLinks"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 푸터 ============ -->
+  <footer class="site-footer">
+    <p class="footer-brand" data-brand>JUNG DDANDDAN</p>
+    <p class="footer-copy">© <span id="year"></span> JUNG DDANDDAN. All rights reserved.</p>
+  </footer>
+
+  <!-- ============ 라이트박스 ============ -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lbClose" aria-label="닫기">&times;</button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="이전">&#8249;</button>
+    <div class="lb-stage" id="lbStage"><!-- 사진/영상이 들어갑니다 --></div>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="다음">&#8250;</button>
+  </div>
+
+  <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
+  <script src="js/site-config.js?v=20260626-1"></script>
+  <script>
+    (function () {
+      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260626-1"; document.body.appendChild(s); }
+      fetch("content/settings.json", { cache: "no-store" })
+        .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+        .then(function (j) { window.SITE_CONFIG = j; })
+        .catch(function () { /* settings.json 없으면 site-config.js 기본값 사용 */ })
+        .then(run);
+    })();
+  </script>
+
+</body>
+</html>
