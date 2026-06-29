@@ -11,7 +11,16 @@
   "kakao": "",
   "hero": {
     "image": "images/moodby-hero-luxe.jpg",
-    "words": ["따뜻하고 밝게", "차분하고 깔끔하게", "산뜻하고 활기차게", "사랑스럽고 로맨틱하게", "시원하고 또렷하게", "부드럽고 포근하게", "맑고 청아하게", "매끄럽고 활기차게"],
+    "words": [
+      "따뜻하고 밝게",
+      "차분하고 깔끔하게",
+      "산뜻하고 활기차게",
+      "사랑스럽고 로맨틱하게",
+      "시원하고 또렷하게",
+      "부드럽고 포근하게",
+      "맑고 청아하게",
+      "매끄럽고 활기차게"
+    ],
     "tagline": "Color your wedding mood.",
     "sub": "당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성합니다."
   },
@@ -27,16 +36,52 @@
       "note": "사회자 사진과 소개, 영상, Q&A는 관리자 페이지에서 직접 수정할 수 있습니다."
     },
     "stats": [
-      { "number": "5000", "suffix": "만+", "label": "콘텐츠 누적 조회" },
-      { "number": "100", "suffix": "명+", "label": "사회자 양성" },
-      { "number": "10", "suffix": "년+", "label": "웨딩 MC 경험" }
+      {
+        "number": "5000",
+        "suffix": "만+",
+        "label": "콘텐츠 누적 조회"
+      },
+      {
+        "number": "100",
+        "suffix": "명+",
+        "label": "사회자 양성"
+      },
+      {
+        "number": "10",
+        "suffix": "년+",
+        "label": "웨딩 MC 경험"
+      }
     ],
     "gallery": [
-      { "image": "images/moodby-detail-script.jpg", "label": "SCRIPT", "title": "이야기를 대본으로", "text": "식순과 멘트가 자연스럽게 이어지도록 두 사람만의 흐름을 정리합니다." },
-      { "image": "images/moodby-hero-luxe.jpg", "label": "CEREMONY", "title": "현장을 읽는 진행", "text": "음향·조명·플래너·하객의 분위기까지 읽으며 예식의 중심을 잡습니다." },
-      { "image": "images/moodby-lab-luxe.jpg", "label": "MOOD LAB", "title": "계속 훈련되는 사회자", "text": "무드랩을 통해 말투와 태도, 돌발상황 대응까지 꾸준히 점검합니다." }
+      {
+        "image": "images/moodby-detail-script.jpg",
+        "label": "SCRIPT",
+        "title": "이야기를 대본으로",
+        "text": "식순과 멘트가 자연스럽게 이어지도록 두 사람만의 흐름을 정리합니다."
+      },
+      {
+        "image": "images/moodby-hero-luxe.jpg",
+        "label": "CEREMONY",
+        "title": "현장을 읽는 진행",
+        "text": "음향·조명·플래너·하객의 분위기까지 읽으며 예식의 중심을 잡습니다."
+      },
+      {
+        "image": "images/moodby-lab-luxe.jpg",
+        "label": "MOOD LAB",
+        "title": "계속 훈련되는 사회자",
+        "text": "무드랩을 통해 말투와 태도, 돌발상황 대응까지 꾸준히 점검합니다."
+      }
     ],
-    "marquee": ["WARM", "BRIGHT", "CALM", "ROMANTIC", "FRESH", "CLEAR", "COZY", "ELEGANT"]
+    "marquee": [
+      "WARM",
+      "BRIGHT",
+      "CALM",
+      "ROMANTIC",
+      "FRESH",
+      "CLEAR",
+      "COZY",
+      "ELEGANT"
+    ]
   },
   "about": {
     "title": "mood by your story",
@@ -115,7 +160,7 @@
         "따뜻함",
         "밝음"
       ],
-      "image": "",
+      "image": "/images/uploads/210709 p6_b1_w_5528-.jpg",
       "youtube": "",
       "strength": "따뜻한 에너지와 안정적인 리딩으로 예식의 첫 공기를 부드럽게 열어갑니다.",
       "recommend": "밝지만 과하지 않은 진행, 두 사람의 이야기가 자연스럽게 담기는 예식을 원하는 커플",
