@@ -10,7 +10,7 @@ window.SITE_CONFIG = {
   mcPrefix: "무드바이",
   instagram: "https://www.instagram.com/jung_ddanddan/",
   kakao: "",
-  hero: { image: "", slogan: "mood by your story", sub: "당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성해갑니다." },
+  hero: { image: "", words: ["따뜻하게", "유쾌하게", "차분하게", "고급스럽게", "감동적으로", "사랑스럽게"], tagline: "Color your wedding mood.", sub: "당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성합니다." },
   about: { title: "mood by your story", body: "", fit: [] },
   ceo: { title: "대표 정다원", role: "무드컴퍼니 대표 · 웨딩 MC", image: "", body: "" },
   vision: { vision: [], mission: "", promises: [] },

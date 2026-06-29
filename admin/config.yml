@@ -51,7 +51,11 @@ collections:
             widget: "object"
             fields:
               - { label: "배경 사진", name: "image", widget: "image", required: false }
-              - { label: "슬로건", name: "slogan", widget: "string", default: "mood by your story" }
+              - label: "떠오르는 형용사(MOOD BY ___)"
+                name: "words"
+                widget: "list"
+                field: { label: "단어", name: "word", widget: "string" }
+              - { label: "태그라인", name: "tagline", widget: "string", default: "Color your wedding mood." }
               - { label: "보조 문구", name: "sub", widget: "string", required: false }
 
           # ---------- 소개(About) ----------
@@ -125,6 +129,8 @@ collections:
             hint: "사진/진행 영상은 비워두면 이니셜만 표시됩니다. 무드 키워드가 명단 위 필터로 자동 생성됩니다."
             fields:
               - { label: "이름", name: "name", widget: "string" }
+              - { label: "이모지", name: "emoji", widget: "string", required: false, hint: "예: 🍊 🪽 🌳" }
+              - { label: "고유 색상", name: "color", widget: "color", required: false, hint: "사회자 카드·키워드에 쓰이는 색 (비우면 자동 배정)" }
               - label: "무드 키워드"
                 name: "keywords"
                 widget: "list"

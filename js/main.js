@@ -34,6 +34,10 @@
     return m ? m[1] : s;
   }
 
+  /* 무드바이 팔레트(폴백) — 사회자에 색이 지정되지 않으면 순서대로 사용 */
+  var PALETTE = ["#F08A3C", "#6FA86B", "#E58BB0", "#4FA3C7", "#F2C24B", "#9B7EDE", "#D9534F", "#C8A98C", "#5BB9A6", "#E2725B"];
+  function mcColor(m, i) { return (m && m.color) || PALETTE[i % PALETTE.length]; }
+
   /* ---------- 브랜드명 ---------- */
   $$("[data-brand]").forEach(function (el) { if (C.brand) el.textContent = C.brand; });
   if (C.company) { var fc = $("[data-footer-company]"); if (fc) fc.textContent = C.company; }
@@ -42,8 +46,28 @@
   if (C.hero) {
     var hb = $("[data-hero-bg]");
     if (hb && C.hero.image) hb.style.backgroundImage = "url('" + C.hero.image + "')";
-    var hs = $("[data-hero-slogan]"); if (hs && C.hero.slogan) hs.textContent = C.hero.slogan;
+    var htag = $("[data-hero-tagline]"); if (htag && C.hero.tagline) htag.textContent = C.hero.tagline;
     var hsub = $("[data-hero-sub]"); if (hsub) hsub.textContent = C.hero.sub || "";
+
+    /* "MOOD BY ___" 형용사가 색을 바꿔가며 하나씩 떠오르는 연출 */
+    var hw = $("[data-hero-word]");
+    var words = lines(C.hero.words);
+    if (hw && words.length) {
+      var wi = 0;
+      hw.textContent = words[0];
+      hw.style.color = PALETTE[0];
+      if (words.length > 1 && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+        window.setInterval(function () {
+          hw.classList.add("swap");
+          window.setTimeout(function () {
+            wi = (wi + 1) % words.length;
+            hw.textContent = words[wi];
+            hw.style.color = PALETTE[wi % PALETTE.length];
+            hw.classList.remove("swap");
+          }, 500);
+        }, 2200);
+      }
+    }
   }
 
   /* ---------- About ---------- */
@@ -132,11 +156,13 @@
       var card = document.createElement("article");
       card.className = "mc-card reveal" + ((m.youtube || m.image) ? "" : " no-media");
       card.style.transitionDelay = ((i % 6) * 0.05) + "s";
+      card.style.setProperty("--mc-c", mcColor(m, idx));
       var kw = mcKeywords(m).slice(0, 3).map(function (k) { return '<span class="mc-kw">' + esc(k) + "</span>"; }).join("");
       card.innerHTML =
         '<div class="mc-photo">' + mcThumb(m) + (m.youtube ? '<span class="play"></span>' : "") + "</div>" +
         '<div class="mc-info">' +
-          '<p class="mc-name">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name) + "</p>" +
+          '<p class="mc-name">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name) +
+            (m.emoji ? '<span class="mc-emoji">' + esc(m.emoji) + "</span>" : "") + "</p>" +
           '<div class="mc-kws">' + kw + "</div>" +
           (m.strength ? '<p class="mc-strength">' + esc(m.strength) + "</p>" : "") +
         "</div>";
@@ -281,10 +307,11 @@
       media = '<div class="lb-photo"><img src="' + esc(m.image) + '" alt="' + esc(m.name) + '" /></div>';
     }
     lbStage.innerHTML =
-      '<div class="mc-detail">' +
+      '<div class="mc-detail" style="--mc-c:' + esc(mcColor(m, index)) + '">' +
         media +
         '<div class="mc-detail-body">' +
-          '<p class="mc-name">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name) + "</p>" +
+          '<p class="mc-name">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name) +
+            (m.emoji ? " " + esc(m.emoji) : "") + "</p>" +
           '<div class="mc-kws">' + kw + "</div>" +
           (m.strength ? "<p>" + esc(m.strength) + "</p>" : "") +
           (m.recommend ? '<p class="mc-recommend"><strong>추천 고객</strong> ' + esc(m.recommend) + "</p>" : "") +
@@ -397,6 +424,13 @@
   }
 
   /* ---------- 초기 실행 ---------- */
+  var paletteRow = $("#paletteRow");
+  if (paletteRow) {
+    if (MCS.length) paletteRow.innerHTML = MCS.map(function (m, i) {
+      return '<span class="palette-dot" title="' + esc(m.name) + '" style="background:' + esc(mcColor(m, i)) + '"></span>';
+    }).join("");
+    else paletteRow.style.display = "none";
+  }
   buildMcFilters();
   renderMc("all");
   var initialPanel = window.location.hash.replace("#", "");

@@ -6,8 +6,9 @@
   "kakao": "",
   "hero": {
     "image": "",
-    "slogan": "mood by your story",
-    "sub": "당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성해갑니다."
+    "words": ["따뜻하게", "유쾌하게", "차분하게", "고급스럽게", "감동적으로", "사랑스럽게"],
+    "tagline": "Color your wedding mood.",
+    "sub": "당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성합니다."
   },
   "about": {
     "title": "mood by your story",
@@ -78,20 +79,16 @@
     ]
   },
   "mcs": [
-    { "name": "다원", "keywords": ["따뜻함", "밝음"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "지후", "keywords": ["차분함", "깔끔함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "소담", "keywords": ["산뜻함", "활기참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "윤진", "keywords": ["편안함", "힘참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "세미", "keywords": ["사랑스러움", "로맨틱"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "빛나", "keywords": ["좋은 딕션", "시원함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "이진", "keywords": ["부드러움", "따뜻함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "예지", "keywords": ["다정함", "포근함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "예지", "keywords": ["에너지", "활기참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "유선", "keywords": ["맑음", "청아함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "연주", "keywords": ["매끄러움", "활기참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "우진", "keywords": ["위트", "활기참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "선태", "keywords": ["진중함", "깔끔함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
-    { "name": "주현", "keywords": ["부드러움", "섬세함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" }
+    { "name": "다원", "emoji": "🍊", "color": "#F08A3C", "keywords": ["따뜻함", "밝음"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
+    { "name": "지후", "emoji": "🪽", "color": "#9FB7C9", "keywords": ["차분함", "깔끔함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
+    { "name": "소담", "emoji": "🌳", "color": "#6FA86B", "keywords": ["산뜻함", "활기참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
+    { "name": "세미", "emoji": "🩷", "color": "#E58BB0", "keywords": ["사랑스러움", "로맨틱"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
+    { "name": "빛나", "emoji": "🌊", "color": "#4FA3C7", "keywords": ["좋은 딕션", "시원함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
+    { "name": "이진", "emoji": "🕊️", "color": "#C8A98C", "keywords": ["부드러움", "따뜻함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
+    { "name": "예지", "emoji": "🎀", "color": "#E89BB4", "keywords": ["다정함", "포근함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
+    { "name": "예지", "emoji": "⚡️", "color": "#F2C24B", "keywords": ["에너지", "활기참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
+    { "name": "유선", "emoji": "🍎", "color": "#D9534F", "keywords": ["맑음", "청아함"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" },
+    { "name": "연주", "emoji": "🔮", "color": "#9B7EDE", "keywords": ["매끄러움", "활기참"], "strength": "", "recommend": "", "image": "", "youtube": "", "review": "" }
   ],
   "process": [
     { "title": "정보 제공 및 상담", "desc": "날짜·시간·예식장·인원, 원하는 결혼식 분위기와 사회자 성향을 알려주세요." },
