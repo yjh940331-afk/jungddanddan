@@ -379,9 +379,9 @@ body.panel-open .site-footer { display: block; }
 .footer-copy { color: var(--muted); font-size: 12px; margin-top: 10px; }
 
 /* ============ 라이트박스 ============ */
-.lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(28,24,21,.94); display: none; align-items: center; justify-content: center; }
+.lightbox { position: fixed; inset: 0; z-index: 1000; background: rgba(28,24,21,.94); display: none; align-items: center; justify-content: center; }
 .lightbox.open { display: flex; }
-.lb-stage { max-width: 92vw; max-height: 86vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+.lb-stage { position: relative; z-index: 1; max-width: 92vw; max-height: 86vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
 .lb-media { max-width: 92vw; max-height: calc(86vh - 72px); object-fit: contain; box-shadow: 0 10px 60px rgba(0,0,0,.5); animation: lbIn .4s ease; }
 video.lb-media, iframe.lb-media { width: min(92vw, 1100px); aspect-ratio: 16/9; height: auto; background: #000; }
 .lightbox.scroll-mode { align-items: stretch; }
@@ -426,7 +426,27 @@ iframe.lb-scroll-media { aspect-ratio: 16/9; border: 0; }
   font-size: 13px;
 }
 @keyframes lbIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
-.lb-close { position: absolute; top: 24px; right: 30px; background: none; border: none; color: #fff; font-size: 40px; cursor: pointer; line-height: 1; }
+.lb-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 1002;
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(20, 16, 14, .38);
+  backdrop-filter: blur(10px);
+  font-size: 38px;
+  cursor: pointer;
+  line-height: 1;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
 .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: none; color: #fff; font-size: 60px; cursor: pointer; padding: 0 20px; opacity: .7; transition: opacity .2s; }
 .lb-nav:hover { opacity: 1; }
 .lb-prev { left: 10px; } .lb-next { right: 10px; }

@@ -607,9 +607,23 @@
     lb.classList.add("open");
     document.body.style.overflow = "hidden";
   }
-  function closeLb() { if (!lb) return; lb.classList.remove("open"); lbStage.innerHTML = ""; document.body.style.overflow = ""; }
+  function closeLb() {
+    if (!lb) return;
+    lb.classList.remove("open");
+    lb.classList.remove("scroll-mode");
+    if (lbStage) lbStage.innerHTML = "";
+    document.body.style.overflow = "";
+  }
   if (lb) {
-    $("#lbClose").addEventListener("click", closeLb);
+    var lbClose = $("#lbClose");
+    if (lbClose) {
+      lbClose.addEventListener("pointerdown", function (e) { e.stopPropagation(); });
+      lbClose.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        closeLb();
+      });
+    }
     lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && lb.classList.contains("open")) closeLb(); });
   }
