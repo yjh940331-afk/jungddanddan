@@ -85,6 +85,9 @@
       if (words.length > 1 && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
         var switchingWord = false;
         var wordFallbackTimer = null;
+        var wordHoldMs = 4600;
+        var wordLeaveMs = 760;
+        var wordSettleMs = 640;
         var swapHeroWord = function () {
           if (switchingWord) return;
           switchingWord = true;
@@ -103,7 +106,7 @@
                 hw.classList.remove("is-entering");
                 window.setTimeout(function () {
                   switchingWord = false;
-                }, 260);
+                }, wordSettleMs);
               });
             });
           };
@@ -113,12 +116,12 @@
             finishLeave();
           };
           hw.addEventListener("transitionend", onLeave);
-          wordFallbackTimer = window.setTimeout(finishLeave, 340);
+          wordFallbackTimer = window.setTimeout(finishLeave, wordLeaveMs + 120);
         };
         window.setInterval(function () {
           if (document.hidden) return;
           swapHeroWord();
-        }, 2400);
+        }, wordHoldMs);
       }
     }
     var moodStage = $("#heroMoodStage");
@@ -140,10 +143,10 @@
           node.style.setProperty("--r", ((mi % 5) - 2) + "deg");
           moodStage.appendChild(node);
           mi += 1;
-          window.setTimeout(function () { if (node.parentNode) node.parentNode.removeChild(node); }, 3600);
+          window.setTimeout(function () { if (node.parentNode) node.parentNode.removeChild(node); }, 5600);
         };
         spawnMood();
-        window.setInterval(spawnMood, 820);
+        window.setInterval(spawnMood, 1450);
       }
     }
   }
