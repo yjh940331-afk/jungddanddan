@@ -171,8 +171,8 @@
       hs.innerHTML = C.home.stats.map(function (s) {
         var n = String(s.number || "").replace(/[^\d.]/g, "");
         return '<div class="home-stat reveal">' +
-          '<strong class="count-up" data-count="' + esc(n || "0") + '">' + esc(s.number || "0") + "</strong>" +
-          '<span class="stat-suffix">' + esc(s.suffix || "") + "</span>" +
+          '<div class="stat-value"><strong class="count-up" data-count="' + esc(n || "0") + '">' + esc(s.number || "0") + "</strong>" +
+          '<span class="stat-suffix">' + esc(s.suffix || "") + "</span></div>" +
           '<p>' + esc(s.label || "") + "</p>" +
         "</div>";
       }).join("");
