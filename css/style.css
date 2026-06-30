@@ -2871,3 +2871,259 @@ body {
     font-size: 20px;
   }
 }
+
+/* ============================================================
+   MOOD BY · 우아한 스크롤 모션
+   스크롤 위치에 맞춰 섹션이 천천히 열리는 느낌을 만듭니다.
+   ============================================================ */
+html.motion-ready body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(118deg, transparent 0%, rgba(255,255,255,.2) 38%, rgba(255,248,242,.42) 50%, transparent 66%),
+    linear-gradient(180deg, rgba(255,248,242,.2), transparent 42%, rgba(255,248,242,.18));
+  opacity: .38;
+  mix-blend-mode: soft-light;
+}
+
+html.motion-ready .site-header,
+html.motion-ready .scroll-progress {
+  z-index: 300;
+}
+
+html.motion-ready .reveal {
+  filter: blur(3px);
+  transform: translateY(28px);
+}
+html.motion-ready .reveal.in {
+  filter: blur(0);
+  transform: none;
+}
+
+.scroll-scene {
+  position: relative;
+  isolation: isolate;
+}
+.mood-palette-section::after,
+.home-editorial::after,
+.home-preview::after,
+.content-panel::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 34px;
+  z-index: -1;
+  width: min(820px, 78%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(78,61,52,.16), transparent);
+  opacity: calc(.16 + var(--scene-focus, 0) * .5);
+  transform: translateX(-50%) scaleX(calc(.65 + var(--scene-focus, 0) * .35));
+  transform-origin: center;
+  transition: opacity .4s ease, transform .4s ease;
+}
+
+html.motion-ready .hero-copy {
+  transition: transform .8s cubic-bezier(.18,.76,.22,1), opacity .8s ease;
+}
+html.motion-ready .hero.scene-active .hero-copy {
+  transform: translate3d(0, var(--scene-shift-reverse, 0), 0);
+}
+html.motion-ready .hero-bg {
+  transition: filter .7s ease, opacity .7s ease;
+}
+html.motion-ready .hero.scene-active .hero-bg {
+  filter: saturate(1.03) contrast(1.02) brightness(var(--scene-brightness, 1));
+}
+
+.section-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: "";
+  width: 0;
+  height: 1px;
+  background: rgba(78,61,52,.28);
+  transform-origin: left center;
+  transition: width .9s cubic-bezier(.18,.76,.22,1), opacity .6s ease;
+  opacity: 0;
+}
+.scene-active .section-label::after,
+.reveal.in .section-label::after {
+  width: 42px;
+  opacity: 1;
+}
+
+html.motion-ready .mood-palette-visual,
+html.motion-ready .mood-palette-copy,
+html.motion-ready .home-editorial-copy,
+html.motion-ready .home-gallery,
+html.motion-ready .editorial-card,
+html.motion-ready .preview-card,
+html.motion-ready .home-stat,
+html.motion-ready .trust-card,
+html.motion-ready .process-step,
+html.motion-ready .mc-card,
+html.motion-ready .contact-card {
+  transition:
+    opacity .9s cubic-bezier(.18,.76,.22,1),
+    transform .9s cubic-bezier(.18,.76,.22,1),
+    filter .9s cubic-bezier(.18,.76,.22,1),
+    clip-path .9s cubic-bezier(.18,.76,.22,1),
+    box-shadow .35s ease,
+    border-color .35s ease;
+  will-change: transform, opacity;
+}
+
+html.motion-ready .mood-palette-visual {
+  transform: translate3d(0, var(--scene-shift-soft, 0), 0);
+  clip-path: inset(var(--scene-clip, 0) 0 0 0 round 8px);
+}
+html.motion-ready .mood-palette-copy {
+  transform: translate3d(0, var(--scene-shift-reverse, 0), 0);
+}
+html.motion-ready .mood-palette-section.scene-active .mood-palette-visual,
+html.motion-ready .mood-palette-section.scene-active .mood-palette-copy {
+  opacity: 1;
+  filter: saturate(1.02);
+}
+
+html.motion-ready .palette-signature,
+html.motion-ready .home-stat,
+html.motion-ready .preview-card,
+html.motion-ready .trust-card,
+html.motion-ready .process-step,
+html.motion-ready .mc-card {
+  opacity: .72;
+  transform: translate3d(0, 16px, 0);
+}
+html.motion-ready .scene-active .palette-signature,
+html.motion-ready .scene-active .home-stat,
+html.motion-ready .scene-active .preview-card,
+html.motion-ready .scene-active .trust-card,
+html.motion-ready .scene-active .process-step,
+html.motion-ready .scene-active .mc-card,
+html.motion-ready .palette-signature.in,
+html.motion-ready .home-stat.in,
+html.motion-ready .preview-card.in,
+html.motion-ready .trust-card.in,
+html.motion-ready .process-step.in,
+html.motion-ready .mc-card.in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+html.motion-ready .palette-signature,
+html.motion-ready .home-stat,
+html.motion-ready .preview-card,
+html.motion-ready .trust-card,
+html.motion-ready .process-step,
+html.motion-ready .mc-card {
+  transition-delay: calc(var(--motion-i, 0) * 42ms);
+}
+
+html.motion-ready .home-editorial-copy {
+  transform: translate3d(0, var(--scene-shift-soft, 0), 0);
+}
+html.motion-ready .home-gallery {
+  transform: translate3d(0, var(--scene-shift-reverse, 0), 0);
+}
+html.motion-ready .editorial-card {
+  opacity: .8;
+  clip-path: inset(var(--scene-clip, 0) 0 0 0 round 8px);
+}
+html.motion-ready .home-editorial.scene-active .editorial-card {
+  opacity: 1;
+}
+html.motion-ready .editorial-card img,
+html.motion-ready .mood-palette-visual img {
+  transform: scale(var(--scene-scale, 1.015));
+}
+html.motion-ready .editorial-card:hover img,
+html.motion-ready .mood-palette-visual:hover img {
+  transform: scale(1.045);
+}
+
+html.motion-ready .mood-marquee-track {
+  animation-duration: 34s;
+}
+html.motion-ready .mood-marquee.scene-active .mood-marquee-track {
+  animation-duration: 24s;
+}
+
+html.motion-ready .content-panel.scene-active .section-head {
+  transform: translate3d(0, var(--scene-shift-soft, 0), 0);
+  transition: transform .8s cubic-bezier(.18,.76,.22,1);
+}
+
+.site-header.scrolled {
+  transform: translateY(0);
+}
+body.scrolling-down .site-header.scrolled {
+  transform: translateY(-8px);
+}
+body.scrolling-up .site-header.scrolled {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.motion-ready body::before {
+    display: none;
+  }
+  .scroll-scene,
+  .scroll-scene *,
+  .section-label::after {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html.motion-ready .palette-signature,
+  html.motion-ready .home-stat,
+  html.motion-ready .preview-card,
+  html.motion-ready .trust-card,
+  html.motion-ready .process-step,
+  html.motion-ready .mc-card {
+    transition-delay: calc(var(--motion-i, 0) * 24ms);
+  }
+  .scene-active .section-label::after,
+  .reveal.in .section-label::after {
+    width: 28px;
+  }
+}
+
+/* 히어로 단어 교체: 긴 문장끼리 겹쳐 보이지 않도록 퇴장/입장 상태를 분리 */
+.hero-word {
+  display: block;
+  min-height: 1.35em;
+  overflow: hidden;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  filter: blur(0);
+  transition:
+    opacity .34s cubic-bezier(.18,.76,.22,1),
+    transform .34s cubic-bezier(.18,.76,.22,1),
+    filter .34s cubic-bezier(.18,.76,.22,1);
+  will-change: opacity, transform, filter;
+}
+.hero-word.is-leaving {
+  opacity: 0;
+  transform: translate3d(0, -10px, 0);
+  filter: blur(5px);
+}
+.hero-word.is-entering {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  filter: blur(5px);
+  transition: none;
+}
+.hero-word.swap {
+  opacity: 0;
+}

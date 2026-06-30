@@ -79,17 +79,30 @@
     if (hw && words.length) {
       var wi = 0;
       hw.textContent = words[0];
-      hw.style.color = PALETTE[0];
       if (words.length > 1 && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
-        window.setInterval(function () {
-          hw.classList.add("swap");
+        var wordTimer = null;
+        var switchingWord = false;
+        var swapHeroWord = function () {
+          if (switchingWord) return;
+          switchingWord = true;
+          hw.classList.add("is-leaving");
           window.setTimeout(function () {
             wi = (wi + 1) % words.length;
             hw.textContent = words[wi];
-            hw.style.color = PALETTE[wi % PALETTE.length];
-            hw.classList.remove("swap");
-          }, 500);
-        }, 2200);
+            hw.classList.remove("is-leaving");
+            hw.classList.add("is-entering");
+            window.requestAnimationFrame(function () {
+              window.requestAnimationFrame(function () {
+                hw.classList.remove("is-entering");
+                switchingWord = false;
+              });
+            });
+          }, 360);
+        };
+        window.setInterval(function () {
+          if (wordTimer) window.clearTimeout(wordTimer);
+          wordTimer = window.setTimeout(swapHeroWord, 0);
+        }, 2400);
       }
     }
     var moodStage = $("#heroMoodStage");
@@ -445,7 +458,33 @@
   var heroBg = $("[data-hero-bg]");
   var progress = $("#scrollProgress");
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var scrollScenes = [];
+  var lastScrollY = window.scrollY || 0;
   var ticking = false;
+  function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+  function updateScrollScenes(y) {
+    if (!scrollScenes.length || reduceMotion) return;
+    var vh = window.innerHeight || document.documentElement.clientHeight || 1;
+    var max = Math.max(1, document.documentElement.scrollHeight - vh);
+    document.documentElement.style.setProperty("--page-progress", clamp(y / max, 0, 1).toFixed(4));
+    document.body.classList.toggle("scrolling-down", y > lastScrollY + 2);
+    document.body.classList.toggle("scrolling-up", y < lastScrollY - 2);
+    lastScrollY = y;
+    scrollScenes.forEach(function (scene) {
+      var r = scene.getBoundingClientRect();
+      var p = clamp((vh - r.top) / (vh + Math.max(1, r.height)), 0, 1);
+      var focus = clamp(1 - Math.abs(p - 0.5) * 2.15, 0, 1);
+      scene.style.setProperty("--scene-progress", p.toFixed(4));
+      scene.style.setProperty("--scene-focus", focus.toFixed(4));
+      scene.style.setProperty("--scene-shift", ((0.5 - p) * 42).toFixed(2) + "px");
+      scene.style.setProperty("--scene-shift-soft", ((0.5 - p) * 22).toFixed(2) + "px");
+      scene.style.setProperty("--scene-shift-reverse", ((p - 0.5) * 22).toFixed(2) + "px");
+      scene.style.setProperty("--scene-brightness", (0.94 + focus * 0.08).toFixed(3));
+      scene.style.setProperty("--scene-scale", (1.015 + focus * 0.025).toFixed(4));
+      scene.style.setProperty("--scene-clip", ((1 - focus) * 9).toFixed(2) + "%");
+      scene.classList.toggle("scene-active", focus > 0.16);
+    });
+  }
   function onScroll() {
     if (ticking) return;
     ticking = true;
@@ -459,6 +498,7 @@
       if (heroBg && !reduceMotion && y > 0 && y < window.innerHeight) {
         heroBg.style.transform = "scale(1.06) translateY(" + (y * 0.18) + "px)";
       }
+      updateScrollScenes(y);
       ticking = false;
     });
   }
@@ -610,6 +650,7 @@
   function initDynamicMotion() {
     observeCounters();
     enhanceTilt();
+    initScrollScenes();
     var hero = $("#hero");
     if (hero && !reduceMotion) {
       hero.addEventListener("pointermove", function (e) {
@@ -618,6 +659,22 @@
         hero.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100).toFixed(1) + "%");
       });
     }
+  }
+
+  function initScrollScenes() {
+    if (reduceMotion) return;
+    scrollScenes = $$(".hero, .mood-palette-section, .home-editorial, .mood-marquee, .home-preview, .content-panel");
+    if (!scrollScenes.length) return;
+    document.documentElement.classList.add("motion-ready");
+    scrollScenes.forEach(function (scene, i) {
+      scene.classList.add("scroll-scene");
+      scene.style.setProperty("--scene-i", i);
+    });
+    $$(".palette-signature, .home-stat, .editorial-card, .preview-card, .trust-card, .process-step, .mc-card, .contact-card").forEach(function (el, i) {
+      el.style.setProperty("--motion-i", Math.min(i % 12, 11));
+    });
+    updateScrollScenes(window.scrollY || 0);
+    window.addEventListener("resize", function () { updateScrollScenes(window.scrollY || 0); }, { passive: true });
   }
 
   /* ---------- 초기 실행 ---------- */
