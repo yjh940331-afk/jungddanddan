@@ -582,6 +582,41 @@ iframe.lb-scroll-media { aspect-ratio: 16/9; border: 0; }
 .mc-detail-body .mc-name { color: #fff; font-size: 24px; border-bottom: 3px solid var(--mc-c); display: inline-block; padding-bottom: 6px; }
 .mc-detail-body .mc-kws { justify-content: flex-start; }
 .mc-detail-body .mc-kw { color: var(--mc-c); border-color: color-mix(in srgb, var(--mc-c) 60%, transparent); background: color-mix(in srgb, var(--mc-c) 16%, transparent); }
+.mc-detail-body .mc-intro {
+  max-width: 54ch;
+  color: rgba(255,255,255,.84);
+  font-size: 14.5px;
+  line-height: 1.78;
+}
+.mc-profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.mc-profile-links a {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  color: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.08);
+  font-size: 12px;
+  font-weight: 700;
+  transition: transform .24s ease, border-color .24s ease, background .24s ease;
+}
+.mc-profile-links a:first-child {
+  border-color: color-mix(in srgb, var(--mc-c) 58%, rgba(255,255,255,.18) 42%);
+  background: color-mix(in srgb, var(--mc-c) 18%, rgba(255,255,255,.08) 82%);
+}
+.mc-profile-links a:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--mc-c) 70%, rgba(255,255,255,.28) 30%);
+  background: rgba(255,255,255,.13);
+}
 .mc-detail-body p { color: rgba(255,255,255,.8); font-size: 14px; line-height: 1.7; margin-top: 12px; }
 .mc-detail-body .mc-recommend strong, .mc-detail-body .mc-review { color: #fff; }
 .mc-detail-body .mc-review { font-family: var(--serif); font-size: 18px; }

@@ -166,6 +166,9 @@
       ],
       "image": "/images/uploads/210709 p6_b1_w_5528-.jpg",
       "youtube": "",
+      "youtubeChannel": "https://youtube.com/@jung_ddanddan",
+      "instagram": "https://www.instagram.com/jung_ddanddan/",
+      "intro": "유튜브와 인스타그램을 통해 실제 예식 현장과 웨딩 MC 콘텐츠를 꾸준히 공유합니다. 영상으로 목소리의 톤, 진행 속도, 현장 리딩감을 먼저 확인할 수 있어 상담 전 원하는 무드를 잡기 좋습니다.",
       "portfolio": [
         {
           "type": "instagram",
@@ -174,6 +177,35 @@
           "text": "실제 진행 영상과 현장 분위기는 인스타그램 릴스에서 계속 업데이트됩니다.",
           "image": "/images/uploads/210709 p6_b1_w_5528-.jpg",
           "url": "https://www.instagram.com/jung_ddanddan/"
+        },
+        {
+          "type": "youtube",
+          "title": "다원 유튜브 채널",
+          "meta": "YouTube Channel",
+          "text": "웨딩 MC 콘텐츠와 실제 현장 분위기를 영상으로 확인할 수 있는 채널입니다.",
+          "image": "/images/uploads/210709 p6_b1_w_5528-.jpg",
+          "url": "https://youtube.com/@jung_ddanddan"
+        },
+        {
+          "type": "youtube",
+          "title": "신랑입장(정다원 아나운서)",
+          "meta": "YouTube · 결혼식 여자사회자",
+          "text": "신랑 입장 순간의 톤, 속도, 현장 리딩감을 영상으로 확인할 수 있습니다.",
+          "youtube": "0_gI8dgemcE"
+        },
+        {
+          "type": "youtube",
+          "title": "개식사(정다원 아나운서)",
+          "meta": "YouTube · 결혼식 여자사회자",
+          "text": "예식의 첫 문장을 여는 발성과 진행감, 차분한 시작 무드를 확인할 수 있습니다.",
+          "youtube": "DpCAlyRX7DQ"
+        },
+        {
+          "type": "youtube",
+          "title": "결혼식에서 가장 많이 일어나는 실수",
+          "meta": "YouTube Shorts · 결혼식사회자",
+          "text": "짧은 콘텐츠로 예식 현장에서 필요한 센스와 진행 팁을 함께 보여줍니다.",
+          "youtube": "GbBA5elvjjQ"
         }
       ],
       "strength": "따뜻한 에너지와 안정적인 리딩으로 예식의 첫 공기를 부드럽게 열어갑니다.",

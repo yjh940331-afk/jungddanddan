@@ -197,6 +197,9 @@ collections:
                 field: { label: "키워드", name: "keyword", widget: "string" }
               - { label: "프로필 사진", name: "image", widget: "image", required: false }
               - { label: "진행 영상(유튜브 ID 또는 링크)", name: "youtube", widget: "string", required: false }
+              - { label: "유튜브 채널 URL", name: "youtubeChannel", widget: "string", required: false, hint: "예: https://youtube.com/@jung_ddanddan" }
+              - { label: "인스타그램/릴스 URL", name: "instagram", widget: "string", required: false, hint: "MC별 인스타가 따로 있을 때 입력합니다." }
+              - { label: "상세 소개글", name: "intro", widget: "text", required: false, hint: "MC 상세 팝업에서 키워드 아래에 표시됩니다." }
               - label: "포트폴리오"
                 name: "portfolio"
                 widget: "list"

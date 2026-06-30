@@ -33,8 +33,9 @@
   function ytId(v) {
     if (!v) return "";
     var s = String(v).trim();
-    var m = s.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{6,})/);
-    return m ? m[1] : s;
+    var m = s.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{6,})/);
+    if (m) return m[1];
+    return /^[\w-]{6,}$/.test(s) ? s : "";
   }
   function absUrl(v) {
     if (!v) return "";
@@ -283,6 +284,7 @@
   function portfolioKind(item) {
     var url = String((item && item.url) || "");
     if (item && item.youtube) return "youtube";
+    if (/youtube\.com|youtu\.be/.test(url)) return "youtube";
     if (/instagram\.com/.test(url)) return "instagram";
     if (item && item.image && !url) return "photo";
     return (item && item.type) || "link";
@@ -290,12 +292,15 @@
   function portfolioHref(item) {
     if (!item) return "";
     if (item.url) return item.url;
-    if (item.youtube) return "https://www.youtube.com/watch?v=" + ytId(item.youtube);
+    if (item.youtube) {
+      var id = ytId(item.youtube);
+      return id ? "https://www.youtube.com/watch?v=" + id : item.youtube;
+    }
     return "";
   }
   function portfolioCover(item, m) {
     if (item && item.image) return item.image;
-    if (item && item.youtube) return "https://img.youtube.com/vi/" + ytId(item.youtube) + "/hqdefault.jpg";
+    if (item && item.youtube && ytId(item.youtube)) return "https://img.youtube.com/vi/" + ytId(item.youtube) + "/hqdefault.jpg";
     return (m && m.image) || "";
   }
   function portfolioCard(item, m, i) {
@@ -322,6 +327,15 @@
     }
     return '<div class="mc-portfolio-item" style="--motion-i:' + (i % 8) + '">' + inner + "</div>";
   }
+  function mcProfileLinks(m) {
+    var links = [];
+    if (m && m.youtubeChannel) links.push({ url: m.youtubeChannel, label: "YouTube 채널 보기" });
+    if (m && m.instagram) links.push({ url: m.instagram, label: "Instagram 릴스 보기" });
+    if (!links.length) return "";
+    return '<div class="mc-profile-links">' + links.map(function (link) {
+      return '<a href="' + esc(link.url) + '" target="_blank" rel="noopener">' + esc(link.label) + "</a>";
+    }).join("") + "</div>";
+  }
 
   function buildMcFilters() {
     if (!mcFilters) return;
@@ -342,7 +356,7 @@
   function mcThumb(m) {
     var firstPortfolio = mcPortfolio(m)[0];
     if (m.image) return '<img src="' + esc(m.image) + '" alt="' + esc(m.name) + '" loading="lazy" />';
-    if (m.youtube) return '<img src="https://img.youtube.com/vi/' + esc(ytId(m.youtube)) + '/hqdefault.jpg" alt="' + esc(m.name) + '" loading="lazy" />';
+    if (m.youtube && ytId(m.youtube)) return '<img src="https://img.youtube.com/vi/' + esc(ytId(m.youtube)) + '/hqdefault.jpg" alt="' + esc(m.name) + '" loading="lazy" />';
     if (firstPortfolio && portfolioCover(firstPortfolio, m)) return '<img src="' + esc(portfolioCover(firstPortfolio, m)) + '" alt="' + esc(m.name) + '" loading="lazy" />';
     return '<span class="mc-initial">' +
       (m.emoji ? '<em>' + esc(m.emoji) + "</em>" : "") +
@@ -576,14 +590,17 @@
     var kw = mcKeywords(m).map(function (k) { return '<span class="mc-kw">' + esc(k) + "</span>"; }).join("");
     var portfolio = mcPortfolio(m);
     var featured = portfolio[0];
+    var primaryVideoId = ytId(m.youtube);
+    var featuredVideoId = featured && featured.youtube ? ytId(featured.youtube) : "";
+    var introHtml = lines(m.intro).map(function (p) { return '<p class="mc-intro">' + esc(p) + "</p>"; }).join("");
     var media = "";
-    if (m.youtube) {
-      media = '<div class="lb-video"><iframe src="https://www.youtube.com/embed/' + esc(ytId(m.youtube)) +
+    if (primaryVideoId) {
+      media = '<div class="lb-video"><iframe src="https://www.youtube.com/embed/' + esc(primaryVideoId) +
         '?rel=0" allow="encrypted-media; fullscreen" allowfullscreen></iframe></div>';
     } else if (m.image) {
       media = '<div class="lb-photo"><img src="' + esc(m.image) + '" alt="' + esc(m.name) + '" /></div>';
-    } else if (featured && featured.youtube) {
-      media = '<div class="lb-video"><iframe src="https://www.youtube.com/embed/' + esc(ytId(featured.youtube)) +
+    } else if (featuredVideoId) {
+      media = '<div class="lb-video"><iframe src="https://www.youtube.com/embed/' + esc(featuredVideoId) +
         '?rel=0" allow="encrypted-media; fullscreen" allowfullscreen></iframe></div>';
     } else if (featured && portfolioCover(featured, m)) {
       media = '<div class="lb-photo"><img src="' + esc(portfolioCover(featured, m)) + '" alt="' + esc(featured.title || m.name) + '" /></div>';
@@ -601,6 +618,8 @@
           '<p class="mc-name">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name) +
             (m.emoji ? " " + esc(m.emoji) : "") + "</p>" +
           '<div class="mc-kws">' + kw + "</div>" +
+          introHtml +
+          mcProfileLinks(m) +
           (m.strength ? "<p>" + esc(m.strength) + "</p>" : "") +
           (m.recommend ? '<p class="mc-recommend"><strong>추천 고객</strong> ' + esc(m.recommend) + "</p>" : "") +
           (m.review ? '<p class="mc-review">&ldquo;' + esc(m.review) + "&rdquo;</p>" : "") +
