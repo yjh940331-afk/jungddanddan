@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+KR:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="preload" as="image" href="images/moodby-hero-luxe.jpg" />
-  <link rel="stylesheet" href="css/style.css?v=20260630-2" />
+  <link rel="stylesheet" href="css/style.css?v=20260630-3" />
 
   <!-- 옛 서비스워커/캐시 정리 (예전 버전이 기기에 붙어있는 문제 방지) -->
   <script>
@@ -294,10 +294,10 @@
   </div>
 
   <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
-  <script src="js/site-config.js?v=20260629-6"></script>
+  <script src="js/site-config.js?v=20260630-3"></script>
   <script>
     (function () {
-      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260629-6"; document.body.appendChild(s); }
+      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260630-3"; document.body.appendChild(s); }
       fetch("content/settings.json", { cache: "no-store" })
         .then(function (r) { if (!r.ok) throw 0; return r.json(); })
         .then(function (j) { window.SITE_CONFIG = j; })

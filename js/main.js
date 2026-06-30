@@ -80,13 +80,17 @@
       var wi = 0;
       hw.textContent = words[0];
       if (words.length > 1 && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
-        var wordTimer = null;
         var switchingWord = false;
+        var wordFallbackTimer = null;
         var swapHeroWord = function () {
           if (switchingWord) return;
           switchingWord = true;
           hw.classList.add("is-leaving");
-          window.setTimeout(function () {
+
+          var finishLeave = function () {
+            hw.removeEventListener("transitionend", onLeave);
+            if (wordFallbackTimer) window.clearTimeout(wordFallbackTimer);
+            wordFallbackTimer = null;
             wi = (wi + 1) % words.length;
             hw.textContent = words[wi];
             hw.classList.remove("is-leaving");
@@ -94,23 +98,33 @@
             window.requestAnimationFrame(function () {
               window.requestAnimationFrame(function () {
                 hw.classList.remove("is-entering");
-                switchingWord = false;
+                window.setTimeout(function () {
+                  switchingWord = false;
+                }, 260);
               });
             });
-          }, 360);
+          };
+
+          var onLeave = function (e) {
+            if (e.target !== hw || e.propertyName !== "opacity") return;
+            finishLeave();
+          };
+          hw.addEventListener("transitionend", onLeave);
+          wordFallbackTimer = window.setTimeout(finishLeave, 340);
         };
         window.setInterval(function () {
-          if (wordTimer) window.clearTimeout(wordTimer);
-          wordTimer = window.setTimeout(swapHeroWord, 0);
+          if (document.hidden) return;
+          swapHeroWord();
         }, 2400);
       }
     }
     var moodStage = $("#heroMoodStage");
     if (moodStage && words.length) {
+      var stageHidden = window.getComputedStyle && window.getComputedStyle(moodStage).display === "none";
       var noMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (noMotion) {
+      if (!stageHidden && noMotion) {
         moodStage.innerHTML = '<span class="floating-mood static" style="--c:' + esc(PALETTE[0]) + '">' + esc(words[0]) + "</span>";
-      } else {
+      } else if (!stageHidden) {
         var mi = 0;
         var spawnMood = function () {
           var word = words[mi % words.length];
