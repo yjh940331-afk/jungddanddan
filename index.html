@@ -22,7 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
 
   <link rel="preload" as="image" href="images/moodby-hero-luxe.jpg" />
-  <link rel="stylesheet" href="css/style.css?v=20260630-10" />
+  <link rel="stylesheet" href="css/style.css?v=20260630-15" />
 
   <!-- 옛 서비스워커/캐시 정리 (예전 버전이 기기에 붙어있는 문제 방지) -->
   <script>
@@ -216,16 +216,22 @@
   <section class="service section content-panel" id="service" data-panel>
     <div class="section-head center reveal">
       <p class="section-label">SERVICE</p>
-      <h2 class="section-title">진행 프로세스</h2>
+      <h2 class="section-title">서비스 안내</h2>
     </div>
-    <div class="process-list" id="processList"><!-- JS --></div>
 
-    <div class="pricing-block reveal">
-      <h3 class="block-title center">비용 안내</h3>
-      <div class="pricing-table-wrap">
-        <table class="pricing-table" id="pricingTable"><!-- JS --></table>
+    <div class="service-layout">
+      <div class="service-flow">
+        <h3 class="block-title reveal">진행 흐름</h3>
+        <div class="process-list" id="processList"><!-- JS --></div>
       </div>
-      <p class="price-note" data-pricing-note></p>
+
+      <div class="pricing-block reveal">
+        <h3 class="block-title">비용 안내</h3>
+        <div class="pricing-table-wrap">
+          <table class="pricing-table" id="pricingTable"><!-- JS --></table>
+        </div>
+        <p class="price-note" data-pricing-note></p>
+      </div>
     </div>
   </section>
 

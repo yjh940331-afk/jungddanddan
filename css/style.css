@@ -3160,3 +3160,177 @@ body.scrolling-up .site-header.scrolled {
 .hero-word.swap {
   opacity: 0;
 }
+
+/* 서비스 섹션: 가격표가 바로 보이도록 프로세스를 압축 */
+.service .section-head {
+  margin-bottom: 34px;
+}
+.service-layout {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.14fr) minmax(340px, .86fr);
+  gap: 28px;
+  align-items: start;
+}
+.service-flow,
+.service .pricing-block {
+  min-width: 0;
+}
+.service-flow .block-title,
+.service .pricing-block .block-title {
+  margin-bottom: 16px;
+  text-align: left;
+}
+.service .process-list {
+  max-width: none;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.service .process-step {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 13px 14px;
+  border-radius: 8px;
+  text-align: left;
+}
+.service .process-step > div {
+  min-width: 0;
+}
+.service .process-step:hover {
+  transform: translateY(-2px);
+}
+.service .process-step .num {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  border: 0;
+  color: #fff;
+  background: var(--ink) !important;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+}
+.service .process-step .p-title {
+  margin-bottom: 3px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.service .process-step .p-desc {
+  display: -webkit-box;
+  overflow: hidden;
+  color: rgba(78, 61, 52, .62);
+  font-size: 12.5px;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.service .pricing-block {
+  max-width: none;
+  margin: 0;
+  position: sticky;
+  top: 116px;
+}
+.service .pricing-table th,
+.service .pricing-table td {
+  padding: 14px 16px;
+}
+.service .price-note {
+  margin-top: 14px;
+  color: rgba(78, 61, 52, .62);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .service-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .service .pricing-block {
+    order: -1;
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .service .section-head {
+    margin-bottom: 26px;
+  }
+  .service .process-list {
+    width: min(340px, calc(100vw - 36px));
+    max-width: min(340px, calc(100vw - 36px));
+    grid-template-columns: 1fr;
+  }
+  .service .process-step {
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 11px;
+    padding: 12px 13px;
+    overflow: hidden;
+  }
+  .service .pricing-table thead {
+    display: none;
+  }
+  .service .pricing-table,
+  .service .pricing-table tbody,
+  .service .pricing-table tr,
+  .service .pricing-table th,
+  .service .pricing-table td {
+    display: block;
+    width: 100%;
+  }
+  .service .pricing-table tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    padding: 16px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .service .pricing-table tbody tr:last-child {
+    border-bottom: 0;
+  }
+  .service .pricing-table th,
+  .service .pricing-table td {
+    padding: 0;
+    border-bottom: 0;
+    text-align: left;
+  }
+  .service .pricing-table tbody th {
+    grid-column: 1 / -1;
+  }
+  .service .pricing-table tbody td::before {
+    display: block;
+    margin-bottom: 4px;
+    color: rgba(78, 61, 52, .52);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .service .pricing-table tbody td:nth-child(2)::before {
+    content: "1부";
+  }
+  .service .pricing-table tbody td:nth-child(3)::before {
+    content: "2부";
+  }
+  .service .price-note,
+  .service .process-step .p-desc {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+  .service .price-note {
+    width: min(340px, calc(100vw - 36px));
+  }
+  .service .process-step .p-desc {
+    display: block;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    -webkit-line-clamp: initial;
+  }
+}
