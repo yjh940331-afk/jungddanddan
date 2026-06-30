@@ -465,16 +465,30 @@
   if (C.pricing) {
     var pt = $("#pricingTable");
     if (pt && C.pricing.tiers && C.pricing.tiers.length) {
-      var head = "<thead><tr><th>등급</th><th>1부</th><th>2부</th></tr></thead>";
-      var rows = C.pricing.tiers.map(function (t) {
-        return "<tr>" +
-          '<th scope="row"><span class="pt-name">' + esc(t.name || "") + "</span>" +
-            (t.desc ? '<span class="pt-desc">' + esc(t.desc) + "</span>" : "") + "</th>" +
-          "<td>" + esc(t.part1 || "-") + "</td>" +
-          "<td>" + esc(t.part2 || "-") + "</td>" +
-        "</tr>";
+      var guide = '<div class="pricing-guide">' +
+        '<span><strong>1부</strong> 본식 진행</span>' +
+        '<span><strong>2부</strong> 연회·이벤트 진행</span>' +
+      "</div>";
+      var rows = C.pricing.tiers.map(function (t, i) {
+        return '<article class="pricing-card">' +
+          '<div class="pricing-card-head">' +
+            '<span class="pricing-tier-label">등급 ' + String(i + 1).padStart(2, "0") + "</span>" +
+            "<h4>" + esc(t.name || "") + "</h4>" +
+            (t.desc ? "<p>" + esc(t.desc) + "</p>" : "") +
+          "</div>" +
+          '<div class="pricing-price-list">' +
+            '<div class="pricing-price-row">' +
+              '<span><em>1부</em><small>본식 진행</small></span>' +
+              "<strong>" + esc(t.part1 || "-") + "</strong>" +
+            "</div>" +
+            '<div class="pricing-price-row">' +
+              '<span><em>2부</em><small>연회·이벤트</small></span>' +
+              "<strong>" + esc(t.part2 || "-") + "</strong>" +
+            "</div>" +
+          "</div>" +
+        "</article>";
       }).join("");
-      pt.innerHTML = head + "<tbody>" + rows + "</tbody>";
+      pt.innerHTML = guide + '<div class="pricing-card-grid">' + rows + "</div>";
     }
     var pn = $("[data-pricing-note]"); if (pn) pn.textContent = C.pricing.note || "";
   }
