@@ -22,7 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
 
   <link rel="preload" as="image" href="images/moodby-hero-luxe.jpg" />
-  <link rel="stylesheet" href="css/style.css?v=20260630-15" />
+  <link rel="stylesheet" href="css/style.css?v=20260630-17" />
 
   <!-- 옛 서비스워커/캐시 정리 (예전 버전이 기기에 붙어있는 문제 방지) -->
   <script>
@@ -57,6 +57,7 @@
         <a href="#about">About</a>
         <a href="#crew">Crew</a>
         <a href="#mc">MC</a>
+        <a href="#portfolio">Portfolio</a>
         <a href="#service">Service</a>
         <a href="#academy">Academy</a>
         <a href="#faq">Q&amp;A</a>
@@ -134,8 +135,12 @@
         <span class="preview-label">02 MC</span>
         <strong>원하는 무드에 맞는 사회자를 만납니다</strong>
       </a>
+      <a class="preview-card reveal" href="#portfolio" data-panel-link>
+        <span class="preview-label">03 PORTFOLIO</span>
+        <strong>사회자별 실제 진행 기록을 확인합니다</strong>
+      </a>
       <a class="preview-card reveal" href="#academy" data-panel-link>
-        <span class="preview-label">03 MOOD LAB</span>
+        <span class="preview-label">04 MOOD LAB</span>
         <strong>좋은 사회자를 꾸준히 길러냅니다</strong>
       </a>
     </div>
@@ -210,6 +215,16 @@
 
     <div class="filters reveal" id="mcFilters"><!-- JS: 무드 키워드 칩 --></div>
     <div class="mc-grid" id="mcGrid"><!-- JS: 사회자 카드 --></div>
+  </section>
+
+  <!-- ============ Portfolio (MC별 진행 기록) ============ -->
+  <section class="portfolio-showcase section content-panel" id="portfolio" data-panel>
+    <div class="section-head center reveal">
+      <p class="section-label">PORTFOLIO</p>
+      <h2 class="section-title" data-portfolio-title>MC별 포트폴리오</h2>
+      <p class="section-lead" data-portfolio-lead>실제 예식 진행 영상과 현장 기록을 사회자별로 모아볼 수 있습니다.</p>
+    </div>
+    <div class="portfolio-board" id="portfolioGrid"><!-- JS: MC별 포트폴리오 --></div>
   </section>
 
   <!-- ============ Service (진행 프로세스 + 비용) ============ -->
@@ -302,10 +317,10 @@
   </div>
 
   <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
-  <script src="js/site-config.js?v=20260630-10"></script>
+  <script src="js/site-config.js?v=20260630-17"></script>
   <script>
     (function () {
-      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260630-10"; document.body.appendChild(s); }
+      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260630-17"; document.body.appendChild(s); }
       fetch("content/settings.json", { cache: "no-store" })
         .then(function (r) { if (!r.ok) throw 0; return r.json(); })
         .then(function (j) { window.SITE_CONFIG = j; })

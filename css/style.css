@@ -844,7 +844,7 @@ body.panel-open .home-preview { display: none; }
   width: min(1180px, 100%);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 14px;
 }
 .preview-card {
@@ -1282,6 +1282,7 @@ body.panel-open .home-preview { display: none; }
   }
   .nav { gap: 13px; }
   .nav a { font-size: 11px; }
+  .home-preview-inner { grid-template-columns: repeat(2, 1fr); }
   .hero-logo { font-size: 54px; }
   .section-title { font-size: 38px; }
 }
@@ -3159,6 +3160,401 @@ body.scrolling-up .site-header.scrolled {
 }
 .hero-word.swap {
   opacity: 0;
+}
+
+/* 포트폴리오 섹션 */
+.portfolio-showcase.content-panel {
+  max-width: none;
+  margin: 0;
+}
+.portfolio-showcase .section-head,
+.portfolio-board {
+  width: min(1180px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+.portfolio-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 18px;
+}
+.portfolio-board.is-single {
+  grid-template-columns: minmax(280px, 560px);
+  justify-content: center;
+}
+.portfolio-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(78, 61, 52, .12);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fffdf9 0%, rgba(255, 255, 255, .82) 100%);
+  box-shadow: var(--shadow-soft);
+  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.portfolio-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--mc-c), rgba(255,255,255,0));
+}
+.portfolio-card:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--mc-c) 34%, rgba(78, 61, 52, .12) 66%);
+  box-shadow: var(--shadow);
+}
+.portfolio-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 17px 18px 12px;
+}
+.portfolio-kind,
+.portfolio-count {
+  color: rgba(78, 61, 52, .52);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+.portfolio-kind {
+  color: color-mix(in srgb, var(--mc-c) 70%, #4E3D34 30%);
+}
+.portfolio-media {
+  position: relative;
+  display: flex;
+  width: calc(100% - 36px);
+  aspect-ratio: 4 / 3;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  color: rgba(78, 61, 52, .58);
+  background: color-mix(in srgb, var(--mc-c) 12%, #fff8f2 88%);
+  cursor: pointer;
+  font: inherit;
+}
+.portfolio-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 16%;
+  transition: transform .55s ease, filter .55s ease;
+}
+.portfolio-card:hover .portfolio-media img {
+  transform: scale(1.035);
+  filter: saturate(1.04) contrast(1.02);
+}
+.portfolio-media > span {
+  font-family: var(--logo);
+  font-size: 14px;
+  letter-spacing: 1.2px;
+}
+.portfolio-play {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255,255,255,.42);
+  border-radius: 50%;
+  background: rgba(34, 27, 23, .56);
+  backdrop-filter: blur(10px);
+}
+.portfolio-play::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent #fff;
+}
+.portfolio-copy {
+  min-width: 0;
+  padding: 18px 18px 20px;
+}
+.portfolio-mc {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.portfolio-copy h3 {
+  margin-top: 7px;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.38;
+  letter-spacing: 0;
+  word-break: keep-all;
+}
+.portfolio-tone,
+.portfolio-meta {
+  margin-top: 8px;
+  color: color-mix(in srgb, var(--mc-c) 62%, #927F71 38%);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.portfolio-meta {
+  color: rgba(78, 61, 52, .48);
+  font-weight: 600;
+}
+.portfolio-copy > p:last-of-type:not(.portfolio-mc):not(.portfolio-tone):not(.portfolio-meta) {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 11px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.portfolio-profile {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  padding: 0 14px;
+  border: 1px solid rgba(78, 61, 52, .16);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(255, 248, 242, .64);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .24s ease, border-color .24s ease, color .24s ease, transform .24s ease;
+}
+.portfolio-profile:hover {
+  border-color: var(--ink);
+  color: #fff;
+  background: var(--ink);
+  transform: translateY(-1px);
+}
+.portfolio-empty {
+  grid-column: 1 / -1;
+  max-width: 620px;
+  margin: 0 auto;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* MC별 포트폴리오 */
+.mc-card.has-portfolio .mc-photo {
+  isolation: isolate;
+}
+.mc-portfolio-pill {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 2;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, .58);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(36, 28, 24, .46);
+  backdrop-filter: blur(10px);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .4px;
+}
+.mc-detail.has-portfolio {
+  width: min(1040px, calc(100vw - 32px));
+  grid-template-columns: minmax(280px, .86fr) minmax(0, 1.14fr);
+}
+.mc-detail.has-portfolio .mc-detail-body {
+  min-width: 0;
+}
+.mc-portfolio {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, .16);
+}
+.mc-portfolio-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.mc-portfolio-head span {
+  color: var(--mc-c);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.mc-portfolio-head strong {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+.mc-portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.mc-portfolio-item {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 11px;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 8px;
+  color: #fff;
+  background: rgba(255, 255, 255, .07);
+  transition: transform .28s ease, border-color .28s ease, background .28s ease;
+}
+.mc-portfolio-item:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--mc-c) 64%, rgba(255,255,255,.18) 36%);
+  background: rgba(255, 255, 255, .1);
+}
+.mc-portfolio-thumb {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .12);
+}
+.mc-portfolio-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 16%;
+}
+.mc-portfolio-thumb span {
+  color: rgba(255,255,255,.72);
+  font-size: 11px;
+  font-weight: 700;
+}
+.mc-portfolio-play {
+  position: absolute;
+  inset: auto 8px 8px auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(34, 27, 23, .62);
+  backdrop-filter: blur(8px);
+}
+.mc-portfolio-play::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 5px 0 5px 8px;
+  border-color: transparent transparent transparent #fff;
+}
+.mc-portfolio-copy {
+  min-width: 0;
+}
+.mc-portfolio-copy span,
+.mc-portfolio-copy small {
+  display: block;
+  color: rgba(255,255,255,.54);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.mc-portfolio-copy strong {
+  display: block;
+  margin-top: 4px;
+  overflow: hidden;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mc-portfolio-copy p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 5px;
+  color: rgba(255,255,255,.66);
+  font-size: 11.5px;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+@media (max-width: 760px) {
+  .portfolio-showcase.content-panel {
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  .portfolio-showcase .section-head,
+  .portfolio-board {
+    width: calc(100vw - 36px);
+    max-width: calc(100vw - 36px);
+    min-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .portfolio-showcase .section-title {
+    max-width: 330px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 30px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  .portfolio-showcase .section-lead {
+    max-width: 330px;
+    margin-left: auto;
+    margin-right: auto;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  .portfolio-board {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .portfolio-board.is-single {
+    grid-template-columns: 1fr;
+  }
+  .portfolio-card-head {
+    padding: 15px 15px 10px;
+  }
+  .portfolio-media {
+    width: calc(100% - 30px);
+    margin: 0 15px;
+  }
+  .portfolio-copy {
+    padding: 16px 15px 18px;
+  }
+  .portfolio-copy p,
+  .portfolio-copy h3 {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .portfolio-copy h3 {
+    font-size: 16px;
+  }
+  .mc-detail.has-portfolio {
+    grid-template-columns: 1fr;
+  }
+  .mc-portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+  .mc-portfolio-item {
+    grid-template-columns: 86px minmax(0, 1fr);
+  }
 }
 
 /* 서비스 섹션: 가격표가 바로 보이도록 프로세스를 압축 */

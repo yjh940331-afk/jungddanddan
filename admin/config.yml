@@ -172,6 +172,14 @@ collections:
                   - { label: "제목", name: "title", widget: "string" }
                   - { label: "설명", name: "text", widget: "string" }
 
+          # ---------- 포트폴리오 섹션 ----------
+          - label: "포트폴리오 섹션"
+            name: "portfolioSection"
+            widget: "object"
+            fields:
+              - { label: "제목", name: "title", widget: "string", required: false }
+              - { label: "설명", name: "lead", widget: "text", required: false }
+
           # ---------- 사회자 명단 ----------
           - label: "사회자 명단(MC)"
             name: "mcs"
@@ -189,6 +197,30 @@ collections:
                 field: { label: "키워드", name: "keyword", widget: "string" }
               - { label: "프로필 사진", name: "image", widget: "image", required: false }
               - { label: "진행 영상(유튜브 ID 또는 링크)", name: "youtube", widget: "string", required: false }
+              - label: "포트폴리오"
+                name: "portfolio"
+                widget: "list"
+                required: false
+                label_singular: "포트폴리오 항목"
+                summary: "{{fields.title}}"
+                hint: "인스타 릴스/유튜브/사진/외부 링크를 여러 개 등록할 수 있습니다. 인스타 영상은 URL과 썸네일 이미지를 함께 넣으면 가장 예쁘게 보입니다."
+                fields:
+                  - label: "유형"
+                    name: "type"
+                    widget: "select"
+                    required: false
+                    default: "instagram"
+                    options:
+                      - { label: "인스타그램", value: "instagram" }
+                      - { label: "유튜브", value: "youtube" }
+                      - { label: "사진", value: "photo" }
+                      - { label: "외부 링크", value: "link" }
+                  - { label: "제목", name: "title", widget: "string", required: false, hint: "예: 본식 진행 영상, 2부 이벤트 진행" }
+                  - { label: "보조 정보", name: "meta", widget: "string", required: false, hint: "예: Wedding Ceremony, Instagram Reels, 2026.06" }
+                  - { label: "설명", name: "text", widget: "string", required: false }
+                  - { label: "썸네일 이미지", name: "image", widget: "image", required: false }
+                  - { label: "유튜브 ID 또는 링크", name: "youtube", widget: "string", required: false }
+                  - { label: "인스타/외부 링크", name: "url", widget: "string", required: false }
               - { label: "강점 한 줄", name: "strength", widget: "string", required: false }
               - { label: "추천 고객 유형", name: "recommend", widget: "string", required: false }
               - { label: "후기 한 줄", name: "review", widget: "string", required: false }

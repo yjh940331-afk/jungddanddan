@@ -151,6 +151,10 @@
       }
     ]
   },
+  "portfolioSection": {
+    "title": "MC별 포트폴리오",
+    "lead": "인스타 릴스와 현장 사진, 실제 진행 영상을 사회자별로 모아볼 수 있습니다. 각 MC의 목소리와 분위기를 먼저 확인해보세요."
+  },
   "mcs": [
     {
       "name": "다원",
@@ -162,6 +166,16 @@
       ],
       "image": "/images/uploads/210709 p6_b1_w_5528-.jpg",
       "youtube": "",
+      "portfolio": [
+        {
+          "type": "instagram",
+          "title": "다원 진행 영상 모아보기",
+          "meta": "Instagram Reels",
+          "text": "실제 진행 영상과 현장 분위기는 인스타그램 릴스에서 계속 업데이트됩니다.",
+          "image": "/images/uploads/210709 p6_b1_w_5528-.jpg",
+          "url": "https://www.instagram.com/jung_ddanddan/"
+        }
+      ],
       "strength": "따뜻한 에너지와 안정적인 리딩으로 예식의 첫 공기를 부드럽게 열어갑니다.",
       "recommend": "밝지만 과하지 않은 진행, 두 사람의 이야기가 자연스럽게 담기는 예식을 원하는 커플",
       "review": ""

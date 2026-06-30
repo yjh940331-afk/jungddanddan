@@ -256,8 +256,69 @@
   var MCS = (C.mcs || []).filter(function (m) { return m && m.name; });
   var mcGrid = $("#mcGrid");
   var mcFilters = $("#mcFilters");
+  var portfolioGrid = $("#portfolioGrid");
 
   function mcKeywords(m) { return lines(m.keywords); }
+  function mcPortfolio(m) {
+    var items = [];
+    if (m && m.youtube) {
+      items.push({
+        type: "youtube",
+        title: "대표 진행 영상",
+        youtube: m.youtube,
+        text: m.strength || ""
+      });
+    }
+    if (m && Array.isArray(m.portfolio)) {
+      m.portfolio.forEach(function (item) {
+        if (!item) return;
+        if (item.title || item.image || item.youtube || item.url) items.push(item);
+      });
+    }
+    return items;
+  }
+  function portfolioKind(item) {
+    var url = String((item && item.url) || "");
+    if (item && item.youtube) return "youtube";
+    if (/instagram\.com/.test(url)) return "instagram";
+    if (item && item.image && !url) return "photo";
+    return (item && item.type) || "link";
+  }
+  function portfolioHref(item) {
+    if (!item) return "";
+    if (item.url) return item.url;
+    if (item.youtube) return "https://www.youtube.com/watch?v=" + ytId(item.youtube);
+    return "";
+  }
+  function portfolioCover(item, m) {
+    if (item && item.image) return item.image;
+    if (item && item.youtube) return "https://img.youtube.com/vi/" + ytId(item.youtube) + "/hqdefault.jpg";
+    return (m && m.image) || "";
+  }
+  function portfolioCard(item, m, i) {
+    var kind = portfolioKind(item);
+    var href = portfolioHref(item);
+    var cover = portfolioCover(item, m);
+    var label = kind === "youtube" ? "YouTube" : (kind === "instagram" ? "Instagram" : (kind === "photo" ? "Photo" : "Link"));
+    var title = item.title || (kind === "instagram" ? "인스타그램 포트폴리오" : "포트폴리오");
+    var meta = item.meta || item.venue || item.date || "";
+    var text = item.text || item.caption || "";
+    var inner =
+      '<div class="mc-portfolio-thumb">' +
+        (cover ? '<img src="' + esc(cover) + '" alt="' + esc(title) + '" loading="lazy" />' : '<span>' + esc(label) + "</span>") +
+        (kind === "youtube" || kind === "instagram" ? '<em class="mc-portfolio-play"></em>' : "") +
+      "</div>" +
+      '<div class="mc-portfolio-copy">' +
+        '<span>' + esc(label) + "</span>" +
+        "<strong>" + esc(title) + "</strong>" +
+        (meta ? "<small>" + esc(meta) + "</small>" : "") +
+        (text ? "<p>" + esc(text) + "</p>" : "") +
+      "</div>";
+    if (href) {
+      return '<a class="mc-portfolio-item" style="--motion-i:' + (i % 8) + '" href="' + esc(href) + '" target="_blank" rel="noopener">' + inner + "</a>";
+    }
+    return '<div class="mc-portfolio-item" style="--motion-i:' + (i % 8) + '">' + inner + "</div>";
+  }
 
   function buildMcFilters() {
     if (!mcFilters) return;
@@ -276,8 +337,10 @@
   }
 
   function mcThumb(m) {
+    var firstPortfolio = mcPortfolio(m)[0];
     if (m.image) return '<img src="' + esc(m.image) + '" alt="' + esc(m.name) + '" loading="lazy" />';
     if (m.youtube) return '<img src="https://img.youtube.com/vi/' + esc(ytId(m.youtube)) + '/hqdefault.jpg" alt="' + esc(m.name) + '" loading="lazy" />';
+    if (firstPortfolio && portfolioCover(firstPortfolio, m)) return '<img src="' + esc(portfolioCover(firstPortfolio, m)) + '" alt="' + esc(m.name) + '" loading="lazy" />';
     return '<span class="mc-initial">' +
       (m.emoji ? '<em>' + esc(m.emoji) + "</em>" : "") +
       '<strong>' + esc((m.name || "?").slice(0, 2)) + "</strong>" +
@@ -291,15 +354,18 @@
     if (!shown.length) { mcGrid.innerHTML = '<p class="gallery-empty">등록된 사회자가 없습니다.</p>'; return; }
     shown.forEach(function (m, i) {
       var idx = MCS.indexOf(m);
+      var portfolio = mcPortfolio(m);
       var card = document.createElement("article");
-      card.className = "mc-card reveal" + ((m.youtube || m.image) ? "" : " no-media");
+      card.className = "mc-card reveal" + ((m.youtube || m.image || portfolio.length) ? "" : " no-media") + (portfolio.length ? " has-portfolio" : "");
       card.style.transitionDelay = ((i % 6) * 0.05) + "s";
       card.style.setProperty("--mc-c", mcColor(m, idx));
       var moodKeys = mcKeywords(m);
       var kw = moodKeys.slice(0, 3).map(function (k) { return '<span class="mc-kw">' + esc(k) + "</span>"; }).join("");
       var tone = moodKeys.slice(0, 2).join(" · ");
       card.innerHTML =
-        '<div class="mc-photo">' + mcThumb(m) + (m.youtube ? '<span class="play"></span>' : "") + "</div>" +
+        '<div class="mc-photo">' + mcThumb(m) + (m.youtube ? '<span class="play"></span>' : "") +
+          (portfolio.length ? '<span class="mc-portfolio-pill">기록 ' + portfolio.length + "</span>" : "") +
+        "</div>" +
         '<div class="mc-info">' +
           (tone ? '<p class="mc-tone">' + esc(tone) + "</p>" : "") +
           '<p class="mc-name">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name) +
@@ -312,6 +378,70 @@
     });
     observeReveal();
     enhanceTilt(mcGrid);
+  }
+
+  function renderPortfolioPanel() {
+    var copy = C.portfolioSection || {};
+    var titleEl = $("[data-portfolio-title]");
+    var leadEl = $("[data-portfolio-lead]");
+    if (titleEl) titleEl.textContent = copy.title || "MC별 포트폴리오";
+    if (leadEl) leadEl.textContent = copy.lead || "실제 예식 진행 영상과 현장 기록을 사회자별로 모아볼 수 있습니다.";
+    if (!portfolioGrid) return;
+
+    var entries = [];
+    MCS.forEach(function (m, mcIndex) {
+      var items = mcPortfolio(m);
+      items.forEach(function (item, itemIndex) {
+        entries.push({ m: m, mcIndex: mcIndex, item: item, itemIndex: itemIndex, total: items.length });
+      });
+    });
+
+    if (!entries.length) {
+      portfolioGrid.className = "portfolio-board";
+      portfolioGrid.innerHTML = '<p class="portfolio-empty reveal">아직 등록된 포트폴리오가 없습니다. 관리자 페이지에서 MC별 영상과 사진을 추가할 수 있습니다.</p>';
+      return;
+    }
+
+    portfolioGrid.className = "portfolio-board" + (entries.length === 1 ? " is-single" : "");
+    portfolioGrid.innerHTML = entries.map(function (entry, i) {
+      var m = entry.m;
+      var item = entry.item || {};
+      var kind = portfolioKind(item);
+      var href = portfolioHref(item);
+      var cover = portfolioCover(item, m);
+      var label = kind === "youtube" ? "YouTube" : (kind === "instagram" ? "Instagram" : (kind === "photo" ? "Photo" : "Link"));
+      var keys = mcKeywords(m).slice(0, 2).join(" · ");
+      var title = item.title || (kind === "instagram" ? "인스타그램 진행 기록" : "진행 포트폴리오");
+      var meta = item.meta || item.venue || item.date || label;
+      var text = item.text || item.caption || m.strength || "";
+      var mediaInner =
+        (cover ? '<img src="' + esc(cover) + '" alt="' + esc(title) + '" loading="lazy" />' : '<span>' + esc(label) + "</span>") +
+        (kind === "youtube" || kind === "instagram" ? '<em class="portfolio-play"></em>' : "");
+      var media = href
+        ? '<a class="portfolio-media" href="' + esc(href) + '" target="_blank" rel="noopener">' + mediaInner + "</a>"
+        : '<button class="portfolio-media portfolio-media-button" type="button" data-mc="' + entry.mcIndex + '">' + mediaInner + "</button>";
+      return '<article class="portfolio-card reveal" style="--mc-c:' + esc(mcColor(m, entry.mcIndex)) + '; --motion-i:' + (i % 12) + '">' +
+          '<div class="portfolio-card-head">' +
+            '<span class="portfolio-kind">' + esc(label) + "</span>" +
+            '<span class="portfolio-count">' + (entry.itemIndex + 1) + " / " + entry.total + "</span>" +
+          "</div>" +
+          media +
+          '<div class="portfolio-copy">' +
+            '<p class="portfolio-mc">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name || "") + (m.emoji ? " " + esc(m.emoji) : "") + "</p>" +
+            "<h3>" + esc(title) + "</h3>" +
+            (keys ? '<p class="portfolio-tone">' + esc(keys) + "</p>" : "") +
+            (meta ? '<p class="portfolio-meta">' + esc(meta) + "</p>" : "") +
+            (text ? "<p>" + esc(text) + "</p>" : "") +
+            '<button class="portfolio-profile" type="button" data-mc="' + entry.mcIndex + '">사회자 상세 보기</button>' +
+          "</div>" +
+        "</article>";
+    }).join("");
+
+    $$(".portfolio-profile, .portfolio-media-button", portfolioGrid).forEach(function (btn) {
+      btn.addEventListener("click", function () { openMc(parseInt(btn.dataset.mc, 10)); });
+    });
+    observeReveal();
+    enhanceTilt(portfolioGrid);
   }
 
   /* ---------- 가격표 ---------- */
@@ -441,15 +571,28 @@
     var m = MCS[index];
     if (!m || !lb) return;
     var kw = mcKeywords(m).map(function (k) { return '<span class="mc-kw">' + esc(k) + "</span>"; }).join("");
+    var portfolio = mcPortfolio(m);
+    var featured = portfolio[0];
     var media = "";
     if (m.youtube) {
       media = '<div class="lb-video"><iframe src="https://www.youtube.com/embed/' + esc(ytId(m.youtube)) +
         '?rel=0" allow="encrypted-media; fullscreen" allowfullscreen></iframe></div>';
     } else if (m.image) {
       media = '<div class="lb-photo"><img src="' + esc(m.image) + '" alt="' + esc(m.name) + '" /></div>';
+    } else if (featured && featured.youtube) {
+      media = '<div class="lb-video"><iframe src="https://www.youtube.com/embed/' + esc(ytId(featured.youtube)) +
+        '?rel=0" allow="encrypted-media; fullscreen" allowfullscreen></iframe></div>';
+    } else if (featured && portfolioCover(featured, m)) {
+      media = '<div class="lb-photo"><img src="' + esc(portfolioCover(featured, m)) + '" alt="' + esc(featured.title || m.name) + '" /></div>';
     }
+    var portfolioHtml = portfolio.length ? (
+      '<div class="mc-portfolio">' +
+        '<div class="mc-portfolio-head"><span>Portfolio</span><strong>진행 영상과 현장 기록</strong></div>' +
+        '<div class="mc-portfolio-grid">' + portfolio.map(function (item, i) { return portfolioCard(item, m, i); }).join("") + "</div>" +
+      "</div>"
+    ) : "";
     lbStage.innerHTML =
-      '<div class="mc-detail' + (media ? "" : " no-media") + '" style="--mc-c:' + esc(mcColor(m, index)) + '">' +
+      '<div class="mc-detail' + (media ? "" : " no-media") + (portfolio.length ? " has-portfolio" : "") + '" style="--mc-c:' + esc(mcColor(m, index)) + '">' +
         media +
         '<div class="mc-detail-body">' +
           '<p class="mc-name">' + esc(C.mcPrefix || "무드바이") + " " + esc(m.name) +
@@ -458,6 +601,7 @@
           (m.strength ? "<p>" + esc(m.strength) + "</p>" : "") +
           (m.recommend ? '<p class="mc-recommend"><strong>추천 고객</strong> ' + esc(m.recommend) + "</p>" : "") +
           (m.review ? '<p class="mc-review">&ldquo;' + esc(m.review) + "&rdquo;</p>" : "") +
+          portfolioHtml +
         "</div>" +
       "</div>";
     lb.classList.add("open");
@@ -643,7 +787,7 @@
 
   function enhanceTilt(root) {
     if (reduceMotion) return;
-    $$(".preview-card, .editorial-card, .trust-card, .mc-card, .contact-card", root || document).forEach(function (el) {
+    $$(".preview-card, .editorial-card, .trust-card, .mc-card, .portfolio-card, .contact-card", root || document).forEach(function (el) {
       if (el.dataset.tiltBound) return;
       el.dataset.tiltBound = "1";
       el.addEventListener("pointermove", function (e) {
@@ -687,7 +831,7 @@
       scene.classList.add("scroll-scene");
       scene.style.setProperty("--scene-i", i);
     });
-    $$(".palette-signature, .home-stat, .editorial-card, .preview-card, .trust-card, .process-step, .mc-card, .contact-card").forEach(function (el, i) {
+    $$(".palette-signature, .home-stat, .editorial-card, .preview-card, .trust-card, .process-step, .mc-card, .portfolio-card, .contact-card").forEach(function (el, i) {
       el.style.setProperty("--motion-i", Math.min(i % 12, 11));
     });
     updateScrollScenes(window.scrollY || 0);
@@ -738,6 +882,7 @@
   }
   buildMcFilters();
   renderMc("all");
+  renderPortfolioPanel();
   var initialPanel = window.location.hash.replace("#", "");
   if (panelIds.indexOf(initialPanel) !== -1) activatePanel(initialPanel, true);
   else showHome(false);
