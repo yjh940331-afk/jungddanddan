@@ -27,6 +27,9 @@
   function listHtml(items) {
     return lines(items).map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("");
   }
+  function titleHtml(v) {
+    return esc(v).replace(/(하나의 큰)\s+(팔레트입니다\.)/, "$1<br>$2");
+  }
   function ytId(v) {
     if (!v) return "";
     var s = String(v).trim();
@@ -153,7 +156,7 @@
     if (C.home.palette) {
       var palette = C.home.palette;
       var pet = $("[data-palette-eyebrow]"); if (pet && palette.eyebrow) pet.textContent = palette.eyebrow;
-      var ptt = $("[data-palette-title]"); if (ptt && palette.title) ptt.textContent = palette.title;
+      var ptt = $("[data-palette-title]"); if (ptt && palette.title) ptt.innerHTML = titleHtml(palette.title);
       var pbt = $("[data-palette-body]"); if (pbt && palette.body) pbt.textContent = palette.body;
       var pnt = $("[data-palette-note]"); if (pnt && palette.note) pnt.textContent = palette.note;
       var pim = $("[data-palette-image]");

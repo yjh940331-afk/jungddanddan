@@ -9,10 +9,10 @@
   --muted:     #927F71;   /* 보조 글자색 */
   --line:      #EBDDD0;   /* 구분선 */
   --accent:    #C58A63;   /* 포인트 색 (웜 카라멜) */
-  --logo:      "Playfair Display", "Cormorant Garamond", serif;
-  --serif:     "Cormorant Garamond", "Noto Sans KR", serif;
-  --myeongjo:  "Nanum Myeongjo", "AppleMyungjo", "Batang", serif;
-  --sans:      "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+  --logo:      "Marcellus", "Pretendard Variable", "Pretendard", serif;
+  --serif:     "Pretendard Variable", "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+  --myeongjo:  "Pretendard Variable", "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+  --sans:      "Pretendard Variable", "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
   --max:       1180px;
 }
 
@@ -23,7 +23,7 @@ body {
   color: var(--ink);
   background: var(--bg);
   overflow-x: hidden;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
 }
@@ -2545,16 +2545,17 @@ body.panel-open .mood-palette-section {
   --line: #E9DCCE;
   --accent: #9A6A55;
   --accent-deep: #4E3D34;
-  --logo: "Cormorant Garamond", "Times New Roman", serif;
-  --serif: "Noto Serif KR", "Noto Sans KR", serif;
-  --myeongjo: "Noto Serif KR", "Noto Sans KR", serif;
-  --sans: "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+  --logo: "Marcellus", "Pretendard Variable", "Pretendard", serif;
+  --serif: "Pretendard Variable", "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+  --myeongjo: "Pretendard Variable", "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+  --sans: "Pretendard Variable", "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
   --shadow: 0 18px 46px rgba(78, 61, 52, .1);
   --shadow-soft: 0 10px 28px rgba(78, 61, 52, .075);
 }
 
 body {
   font-family: var(--sans);
+  font-weight: 400;
   background: linear-gradient(180deg, #FFF8F2 0%, #FFFDF9 48%, #F8EFE7 100%);
 }
 
@@ -2562,8 +2563,8 @@ body {
   color: #2F2520;
   font-family: var(--logo);
   font-size: 25px;
-  font-weight: 600;
-  letter-spacing: 3.2px;
+  font-weight: 400;
+  letter-spacing: 3.6px;
 }
 
 .nav a,
@@ -2595,19 +2596,24 @@ body {
   color: #2B211C;
   font-family: var(--logo);
   font-size: 68px;
-  font-weight: 600;
+  font-weight: 400;
+  letter-spacing: 1.8px;
 }
 .hero-word {
   color: var(--ink) !important;
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: 50px;
   font-weight: 500;
+  letter-spacing: 0;
   text-shadow: none;
 }
 .hero-tagline {
   color: rgba(78, 61, 52, .82);
   font-family: var(--logo);
   font-size: 24px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: .2px;
 }
 .hero-sub {
   color: rgba(78, 61, 52, .78);
@@ -2646,8 +2652,8 @@ body {
 .block-title,
 .preview-card strong,
 .editorial-card-copy strong {
-  font-family: var(--serif);
-  font-weight: 500;
+  font-family: var(--sans);
+  font-weight: 600;
   letter-spacing: 0;
 }
 .section-title {
@@ -2853,6 +2859,18 @@ body {
 }
 
 @media (max-width: 760px) {
+  .mood-palette-inner,
+  .mood-palette-copy,
+  .home-editorial-copy {
+    width: min(340px, calc(100vw - 36px));
+    max-width: min(340px, calc(100vw - 36px));
+    min-width: 0;
+  }
+  .home-editorial-inner {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
   .hero-logo {
     font-size: 39px;
   }
@@ -2865,7 +2883,21 @@ body {
   }
   .palette-title,
   .home-title {
+    display: block;
     font-size: 29px;
+    line-height: 1.32;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+  }
+  .palette-text,
+  .home-text {
+    width: calc(100vw - 36px);
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-all;
   }
   .mood-marquee-track span {
     font-size: 20px;
