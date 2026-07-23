@@ -44,6 +44,7 @@ collections:
           - label: "검색/공유 이미지(SEO · OG)"
             name: "seo"
             widget: "object"
+            collapsed: true
             fields:
               - { label: "브라우저/공유 제목", name: "title", widget: "string", required: false, default: "무드바이 MOOD BY · 결혼식 사회자 에이전시" }
               - { label: "검색/공유 설명", name: "description", widget: "text", required: false }
@@ -56,6 +57,7 @@ collections:
           - label: "메인 첫 화면(Hero)"
             name: "hero"
             widget: "object"
+            collapsed: true
             fields:
               - { label: "배경 사진", name: "image", widget: "image", required: false }
               - label: "떠오르는 형용사(MOOD BY ___)"
@@ -69,6 +71,7 @@ collections:
           - label: "홈 에디토리얼 섹션"
             name: "home"
             widget: "object"
+            collapsed: true
             fields:
               - { label: "작은 영문 라벨", name: "eyebrow", widget: "string", required: false, default: "MOOD BY SCENE" }
               - { label: "대표 문장", name: "title", widget: "string", required: false }
@@ -114,6 +117,7 @@ collections:
           - label: "소개(About)"
             name: "about"
             widget: "object"
+            collapsed: true
             fields:
               - { label: "제목", name: "title", widget: "string" }
               - { label: "소개 글", name: "body", widget: "text", hint: "줄바꿈으로 문단을 나눠 주세요." }
@@ -126,6 +130,7 @@ collections:
           - label: "대표 소개"
             name: "ceo"
             widget: "object"
+            collapsed: true
             fields:
               - { label: "이름/제목", name: "title", widget: "string", default: "대표 정다원" }
               - { label: "직함", name: "role", widget: "string", required: false }
@@ -136,6 +141,7 @@ collections:
           - label: "비전 · 미션 · 약속"
             name: "vision"
             widget: "object"
+            collapsed: true
             fields:
               - label: "비전(VISION)"
                 name: "vision"
@@ -151,6 +157,7 @@ collections:
           - label: "Mood Crew(왜 무드바이)"
             name: "crew"
             widget: "object"
+            collapsed: true
             fields:
               - { label: "리드 문구", name: "lead", widget: "string", required: false }
               - label: "일하는 방식"
@@ -176,6 +183,7 @@ collections:
           - label: "포트폴리오 섹션"
             name: "portfolioSection"
             widget: "object"
+            collapsed: true
             fields:
               - { label: "제목", name: "title", widget: "string", required: false }
               - { label: "설명", name: "lead", widget: "text", required: false }
@@ -184,6 +192,7 @@ collections:
           - label: "사회자 명단(MC)"
             name: "mcs"
             widget: "list"
+            collapsed: true
             label_singular: "사회자"
             summary: "{{fields.name}}"
             hint: "사진/진행 영상은 비워두면 이니셜만 표시됩니다. 무드 키워드가 명단 위 필터로 자동 생성됩니다."
@@ -232,6 +241,7 @@ collections:
           - label: "진행 프로세스"
             name: "process"
             widget: "list"
+            collapsed: true
             label_singular: "단계"
             summary: "{{fields.title}}"
             fields:
@@ -242,6 +252,7 @@ collections:
           - label: "비용(가격표)"
             name: "pricing"
             widget: "object"
+            collapsed: true
             fields:
               - { label: "안내 문구", name: "note", widget: "string", required: false }
               - label: "등급별 가격"
@@ -259,6 +270,7 @@ collections:
           - label: "아카데미(무드랩)"
             name: "academy"
             widget: "object"
+            collapsed: true
             fields:
               - { label: "제목", name: "title", widget: "string", default: "무드랩 MOOD LAB" }
               - { label: "부제", name: "sub", widget: "string", required: false }
@@ -296,6 +308,7 @@ collections:
           - label: "자주 묻는 질문(Q&A)"
             name: "faq"
             widget: "list"
+            collapsed: true
             label_singular: "질문"
             summary: "{{fields.q}}"
             fields:
@@ -306,5 +319,6 @@ collections:
           - label: "문의 안내"
             name: "booking"
             widget: "object"
+            collapsed: true
             fields:
               - { label: "문의 안내 문구", name: "note", widget: "string", required: false }
