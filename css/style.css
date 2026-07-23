@@ -4070,3 +4070,52 @@ body.scrolling-up .site-header.scrolled {
     line-height: 1.42;
   }
 }
+
+/* ============================================================
+   MOOD BY · 홈 에디토리얼 콜라주 (스캐터 매거진) — 최종 오버라이드
+   큰 카드 2 + 작은 카드 3, 미세 회전으로 매거진 스크랩북 느낌.
+   ============================================================ */
+.home-editorial-copy { position: relative; }
+.home-accent {
+  display: block;
+  font-family: var(--logo);
+  font-style: italic;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: .82;
+  letter-spacing: .5px;
+  color: var(--accent);
+  opacity: .34;
+  margin: 0 0 10px -2px;
+}
+
+.home-gallery {
+  grid-template-columns: repeat(6, 1fr);
+  gap: 18px 16px;
+  align-items: start;
+  padding-top: 6px;
+}
+.home-gallery .editorial-card { min-height: 300px; }
+.home-gallery .editorial-card:nth-child(1) { grid-column: 1 / span 3; margin-top: 54px; rotate: -2.6deg; min-height: 400px; }
+.home-gallery .editorial-card:nth-child(2) { grid-column: 4 / span 3; margin-top: 0;    rotate: 2.2deg;  min-height: 424px; }
+.home-gallery .editorial-card:nth-child(3) { grid-column: 1 / span 2; margin-top: 30px; rotate: 2.4deg;  min-height: 262px; }
+.home-gallery .editorial-card:nth-child(4) { grid-column: 3 / span 2; margin-top: 52px; rotate: -3deg;   min-height: 262px; }
+.home-gallery .editorial-card:nth-child(5) { grid-column: 5 / span 2; margin-top: 16px; rotate: 2.8deg;  min-height: 262px; }
+.home-gallery .editorial-card:only-child { grid-column: 1 / -1; margin-top: 0; rotate: 0deg; }
+.home-gallery .editorial-card-copy { left: 14px; right: 14px; bottom: 14px; padding: 14px; }
+.home-gallery .editorial-card-copy strong { font-size: 18px; }
+.home-gallery .editorial-card-copy p { font-size: 12px; }
+
+@media (max-width: 860px) {
+  .home-accent { font-size: clamp(34px, 13vw, 52px); }
+  .home-gallery { grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 0; }
+  .home-gallery .editorial-card:nth-child(1),
+  .home-gallery .editorial-card:nth-child(2),
+  .home-gallery .editorial-card:nth-child(3),
+  .home-gallery .editorial-card:nth-child(4),
+  .home-gallery .editorial-card:nth-child(5) {
+    grid-column: auto; margin-top: 0; rotate: 0deg; min-height: 220px;
+  }
+}
+@media (max-width: 520px) {
+  .home-gallery { grid-template-columns: 1fr; }
+}

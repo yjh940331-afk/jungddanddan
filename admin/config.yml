@@ -74,6 +74,7 @@ collections:
             collapsed: true
             fields:
               - { label: "작은 영문 라벨", name: "eyebrow", widget: "string", required: false, default: "MOOD BY SCENE" }
+              - { label: "대형 이탤릭 액센트", name: "accent", widget: "string", required: false, default: "Scene", hint: "홈 왼쪽 위에 크게 흐르듯 들어가는 영문 한 단어 (예: Scene, Archive, Mood)" }
               - { label: "대표 문장", name: "title", widget: "string", required: false }
               - { label: "설명", name: "body", widget: "text", required: false }
               - label: "무드 팔레트 섹션"

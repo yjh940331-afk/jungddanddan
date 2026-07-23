@@ -156,6 +156,7 @@
   if (C.home) {
     var ht = $("[data-home-title]"); if (ht && C.home.title) ht.textContent = C.home.title;
     var he = $("[data-home-eyebrow]"); if (he && C.home.eyebrow) he.textContent = C.home.eyebrow;
+    var hac = $("[data-home-accent]"); if (hac) hac.textContent = C.home.accent || "Scene";
     var hbdy = $("[data-home-body]"); if (hbdy && C.home.body) hbdy.textContent = C.home.body;
     if (C.home.palette) {
       var palette = C.home.palette;
