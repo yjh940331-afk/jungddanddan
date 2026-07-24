@@ -10,7 +10,7 @@
   "instagram": "https://www.instagram.com/jung_ddanddan/",
   "kakao": "",
   "hero": {
-    "image": "images/moodby-hero-luxe.jpg",
+    "image": "images/moodby-hero-editorial.jpg",
     "words": [
       "따뜻하고 밝게",
       "차분하고 깔끔하게",
@@ -61,7 +61,7 @@
         "text": "식순과 멘트가 자연스럽게 이어지도록 두 사람만의 흐름을 정리합니다."
       },
       {
-        "image": "images/moodby-hero-editorial.jpg",
+        "image": "images/moodby-hero-luxe.jpg",
         "label": "CEREMONY",
         "title": "현장을 읽는 진행",
         "text": "음향·조명·플래너·하객의 분위기까지 읽으며 예식의 중심을 잡습니다."

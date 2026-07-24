@@ -4289,3 +4289,12 @@ body { background: var(--bg); }
 /* 섹션 헤드 정렬·간격 에디토리얼 */
 .section-label { color: var(--accent); letter-spacing: 3px; font-size: 11px; }
 .block-title { letter-spacing: .2px; }
+
+/* 사진 무디 트리트먼트 (분위기 통일) — 팔레트 색견본은 제외(색 컨셉) */
+.editorial-card img {
+  filter: grayscale(.62) saturate(.72) contrast(1.05) brightness(.98);
+  transition: filter .5s ease, transform .8s ease;
+}
+.editorial-card:hover img { filter: grayscale(.32) saturate(.86) contrast(1.05); }
+.ceo-profile img { filter: grayscale(.55) saturate(.76) contrast(1.03); }
+.mc-photo img { filter: grayscale(.5) saturate(.8) contrast(1.03); }
