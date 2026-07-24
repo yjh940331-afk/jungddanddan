@@ -4198,13 +4198,27 @@ body { background: var(--bg); }
 .section-label { color: var(--accent); letter-spacing: 3px; }
 .hero-word { color: var(--accent); }
 
-/* 메인 사진 · 마치식 저채도 에디토리얼 트리트먼트 */
-.hero-bg {
-  background-color: #e6e1d7;
-  filter: grayscale(.42) saturate(.62) contrast(1.06) brightness(.97);
+/* 메인 사진 · 마치식 강한 모노톤 갤러리 히어로 (흑백 + 무디 + 밝은 텍스트) */
+.hero { background: #201d1a !important; }
+.hero .hero-bg {
+  background-color: #201d1a !important;
+  filter: grayscale(1) contrast(1.12) brightness(.9) !important;
 }
-.hero-overlay {
+.hero .hero-overlay {
   background:
-    linear-gradient(90deg, rgba(241,238,231,.95) 0%, rgba(241,238,231,.8) 36%, rgba(241,238,231,.28) 66%, rgba(241,238,231,.06) 100%),
-    linear-gradient(180deg, rgba(241,238,231,.1) 0%, rgba(241,238,231,.52) 100%);
+    linear-gradient(90deg, rgba(20,18,16,.76) 0%, rgba(20,18,16,.52) 44%, rgba(20,18,16,.26) 76%, rgba(20,18,16,.18) 100%),
+    linear-gradient(180deg, rgba(20,18,16,.14) 0%, rgba(20,18,16,.6) 100%) !important;
 }
+.hero::after {
+  background: linear-gradient(180deg, rgba(20,18,16,.22) 0%, rgba(20,18,16,.58) 100%) !important;
+}
+.hero .hero-copy,
+.hero .hero-copy * { color: #F3F0E9 !important; }
+.hero .hero-kicker { color: rgba(243,240,233,.78) !important; }
+.hero .hero-word { color: #E4C199 !important; }
+.hero .hero-tagline { color: rgba(243,240,233,.86) !important; }
+.hero .hero-sub { color: rgba(243,240,233,.8) !important; }
+.hero .hero-proof span { color: rgba(243,240,233,.84) !important; border-color: rgba(243,240,233,.34) !important; }
+.hero .hero-cta.secondary { color: #F3F0E9 !important; border-color: rgba(243,240,233,.5) !important; background: transparent !important; }
+.hero .hero-cta.primary { background: #F3F0E9 !important; color: #201d1a !important; border-color: #F3F0E9 !important; }
+.hero .scroll-hint span { background: rgba(243,240,233,.6); }
