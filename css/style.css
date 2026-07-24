@@ -4250,3 +4250,42 @@ body { background: var(--bg); }
   backdrop-filter: none !important;
   padding: 40px 20px 20px !important;
 }
+
+/* ============================================================
+   전 섹션 에디토리얼 일관화 (샤프한 각 · 플랫 · 절제) — 마치 톤
+   ============================================================ */
+.trust-card, .preview-card, .contact-card, .vision-col, .price-card,
+.partner-card, .pricing-card, .portfolio-card, .mc-card, .editorial-card,
+.academy-criteria, .pricing-table-wrap, .product-table-wrap, .home-stat {
+  border-radius: 0 !important;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.mc-card { border-top-width: 2px; }
+.editorial-card { border: 1px solid var(--line); }
+
+/* 무드 칩 / 필터 → 샤프 에디토리얼 */
+.filter {
+  border-radius: 0; border: 1px solid var(--line); background: transparent;
+  color: var(--muted); font-size: 12px; letter-spacing: 1px; padding: 9px 18px;
+}
+.filter:hover { border-color: var(--ink); color: var(--ink); background: transparent; }
+.filter.active { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.mc-kw { border-radius: 0; }
+
+/* 버튼/링크 → 샤프 */
+.hero-cta, .contact-links a, .contact-links .primary-contact,
+.partner-action a, .pipe-step, .academy-cta a { border-radius: 0 !important; }
+.contact-links .primary-contact { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.contact-links .primary-contact:hover { background: var(--accent); border-color: var(--accent); }
+.partner-action a { background: var(--ink); }
+.partner-action a:hover { background: var(--accent); }
+
+/* 라인/구분 */
+.faq-list, .faq-item { border-color: var(--line); }
+.pipe-step { border-color: var(--line); color: var(--ink); background: var(--surface); }
+.pipe-arrow { color: var(--muted); }
+
+/* 섹션 헤드 정렬·간격 에디토리얼 */
+.section-label { color: var(--accent); letter-spacing: 3px; font-size: 11px; }
+.block-title { letter-spacing: .2px; }
