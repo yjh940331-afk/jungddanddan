@@ -4222,3 +4222,31 @@ body { background: var(--bg); }
 .hero .hero-cta.secondary { color: #F3F0E9 !important; border-color: rgba(243,240,233,.5) !important; background: transparent !important; }
 .hero .hero-cta.primary { background: #F3F0E9 !important; color: #201d1a !important; border-color: #F3F0E9 !important; }
 .hero .scroll-hint span { background: rgba(243,240,233,.6); }
+
+/* ============================================================
+   헤더 컴팩트(1행) + 패널 상단 가림 방지 + 섹션 에디토리얼 톤
+   ============================================================ */
+.logo, .scrolled .logo { padding: 14px 0 11px; font-size: 25px; letter-spacing: 2px; }
+@media (min-width: 641px) {
+  .nav { grid-template-columns: repeat(8, 1fr); }
+  .nav a { padding: 13px 6px; font-size: 11px; letter-spacing: 1.3px; }
+  .hero { padding-top: 104px; }
+}
+/* 고정 헤더에 가리지 않게 패널 스크롤 오프셋 */
+.content-panel { scroll-margin-top: 104px; }
+.content-panel.active { padding-top: 64px; padding-bottom: 104px; }
+
+/* 섹션 에디토리얼 여백·타이포 */
+.section { padding: 100px 28px; }
+.section-head { margin-bottom: 54px; }
+.section-title { letter-spacing: .2px; }
+.section-lead { color: var(--muted); }
+
+/* 홈 콜라주 글래스 캡션 → 담백한 플랫 라벨(마치 톤) */
+.editorial-card-copy {
+  left: 0 !important; right: 0 !important; bottom: 0 !important;
+  border: 0 !important; border-radius: 0 !important;
+  background: linear-gradient(180deg, rgba(20,18,16,0) 0%, rgba(20,18,16,.62) 60%) !important;
+  backdrop-filter: none !important;
+  padding: 40px 20px 20px !important;
+}
