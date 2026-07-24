@@ -4232,9 +4232,9 @@ body { background: var(--bg); }
   .nav a { padding: 13px 6px; font-size: 11px; letter-spacing: 1.3px; }
   .hero { padding-top: 104px; }
 }
-/* 고정 헤더에 가리지 않게 패널 스크롤 오프셋 */
-.content-panel { scroll-margin-top: 104px; }
-.content-panel.active { padding-top: 64px; padding-bottom: 104px; }
+/* 고정 헤더에 가리지 않게 패널 스크롤 오프셋 + 넉넉한 상단 여백 */
+.content-panel { scroll-margin-top: 76px; }
+.content-panel.active { padding-top: 104px; padding-bottom: 108px; }
 
 /* 섹션 에디토리얼 여백·타이포 */
 .section { padding: 100px 28px; }
