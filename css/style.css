@@ -4149,3 +4149,51 @@ body.scrolling-up .site-header.scrolled {
   .nav-toggle { display: none; }
   .hero { padding-top: 132px; }
 }
+
+/* ============================================================
+   MARCH 에디토리얼 시스템 · 최종 팔레트/질감 전면 개편
+   그리지 페이퍼 + 에스프레소 잉크 + 플랫(그림자 제거) + 절제
+   ============================================================ */
+:root {
+  --bg: #F1EEE7;
+  --bg-alt: #E7E2D8;
+  --surface: #FAF8F3;
+  --surface-strong: #FFFFFF;
+  --ink: #2A2521;
+  --muted: #786F66;
+  --line: #D9D2C5;
+  --accent: #8A5A44;
+  --accent-deep: #2A2521;
+  --shadow: none;
+  --shadow-soft: none;
+}
+body { background: var(--bg); }
+.hero { background: var(--bg); }
+.about { background: var(--bg-alt); }
+.header-inner .logo,
+.scrolled .logo { color: var(--ink); }
+
+/* 플랫 에디토리얼 — 카드 그림자 제거, 얇은 라인으로 정의 */
+.trust-card, .mc-card, .preview-card, .contact-card, .editorial-card,
+.vision-col, .price-card, .home-stat, .partner-card,
+.pricing-card, .portfolio-card, .mood-palette-visual {
+  box-shadow: none !important;
+}
+.trust-card:hover, .mc-card:hover, .preview-card:hover,
+.editorial-card:hover, .portfolio-card:hover {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* 홈 콜라주: 각도 제거 → 스트레이트 에디토리얼 */
+.home-gallery .editorial-card { rotate: 0deg !important; }
+.home-gallery .editorial-card:nth-child(1) { margin-top: 36px; }
+.home-gallery .editorial-card:nth-child(3) { margin-top: 18px; }
+
+/* 마퀴: 다크바 → 라이트 에디토리얼 스트립 */
+.mood-marquee { background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.mood-marquee-track span { color: var(--ink); font-style: normal; letter-spacing: 3px; }
+
+/* 섹션 라벨/에디토리얼 톤 */
+.section-label { color: var(--accent); letter-spacing: 3px; }
+.hero-word { color: var(--accent); }
