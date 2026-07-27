@@ -4304,7 +4304,7 @@ body { background: var(--bg); }
   transition: filter .5s ease, transform .8s ease;
 }
 .editorial-card:hover img { filter: grayscale(.32) saturate(.86) contrast(1.05); }
-.ceo-profile img { filter: grayscale(.55) saturate(.76) contrast(1.03); }
+.ceo-profile img { filter: none; }
 /* MC 프로필 사진은 원본 색상 그대로 (요청) */
 .mc-photo img { filter: none !important; }
 
