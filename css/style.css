@@ -4234,7 +4234,15 @@ body { background: var(--bg); }
 }
 /* 고정 헤더에 가리지 않게 패널 스크롤 오프셋 + 넉넉한 상단 여백 */
 .content-panel { scroll-margin-top: 76px; }
-.content-panel.active { padding-top: 104px; padding-bottom: 108px; }
+.content-panel.active { padding-top: 148px; padding-bottom: 120px; }
+
+/* 스크롤 시 헤더가 floating pill 되지 않게 → 상단 헤더와 동일(사각·풀폭) 유지 */
+.site-header.scrolled { background: var(--bg) !important; border-bottom: 1px solid var(--line) !important; box-shadow: none !important; }
+.site-header.scrolled .header-inner {
+  width: 100% !important; max-width: none !important; min-height: 0 !important; margin: 0 !important;
+  padding: 0 !important; border: 0 !important; border-radius: 0 !important;
+  background: transparent !important; box-shadow: none !important;
+}
 
 /* 섹션 에디토리얼 여백·타이포 */
 .section { padding: 100px 28px; }
@@ -4297,4 +4305,5 @@ body { background: var(--bg); }
 }
 .editorial-card:hover img { filter: grayscale(.32) saturate(.86) contrast(1.05); }
 .ceo-profile img { filter: grayscale(.55) saturate(.76) contrast(1.03); }
-.mc-photo img { filter: grayscale(.5) saturate(.8) contrast(1.03); }
+/* MC 프로필 사진은 원본 색상 그대로 (요청) */
+.mc-photo img { filter: none !important; }
