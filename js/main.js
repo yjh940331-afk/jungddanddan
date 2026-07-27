@@ -77,77 +77,124 @@
     var htag = $("[data-hero-tagline]"); if (htag && C.hero.tagline) htag.textContent = C.hero.tagline;
     var hsub = $("[data-hero-sub]"); if (hsub) hsub.textContent = C.hero.sub || "";
 
-    /* "MOOD BY ___" 형용사가 색을 바꿔가며 하나씩 떠오르는 연출 */
+    /* 첫 화면의 사진 5장과 MOOD BY 문구를 하나의 장면처럼 전환 */
     var hw = $("[data-hero-word]");
     var words = lines(C.hero.words);
-    if (hw && words.length) {
-      var wi = 0;
-      hw.textContent = words[0];
-      if (words.length > 1 && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
-        var switchingWord = false;
-        var wordFallbackTimer = null;
-        var wordHoldMs = 4600;
-        var wordLeaveMs = 760;
-        var wordSettleMs = 640;
-        var swapHeroWord = function () {
-          if (switchingWord) return;
-          switchingWord = true;
-          hw.classList.add("is-leaving");
+    var heroReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var heroScenes = Array.isArray(C.hero.scenes) ? C.hero.scenes.filter(function (scene) {
+      return scene && scene.image;
+    }) : [];
+    var heroFilm = $("#heroFilm");
+    var heroEl = $("#hero");
+    var heroSceneNav = $("#heroSceneNav");
+    var heroSceneCurrent = $("#heroSceneCurrent");
+    var heroSceneTotal = $("#heroSceneTotal");
+    var heroSceneProgress = $("#heroSceneProgress");
+    var heroSceneIndex = 0;
+    var heroSceneTimer = null;
+    var heroWordTimer = null;
+    var heroTouchX = null;
 
-          var finishLeave = function () {
-            hw.removeEventListener("transitionend", onLeave);
-            if (wordFallbackTimer) window.clearTimeout(wordFallbackTimer);
-            wordFallbackTimer = null;
-            wi = (wi + 1) % words.length;
-            hw.textContent = words[wi];
-            hw.classList.remove("is-leaving");
-            hw.classList.add("is-entering");
-            window.requestAnimationFrame(function () {
-              window.requestAnimationFrame(function () {
-                hw.classList.remove("is-entering");
-                window.setTimeout(function () {
-                  switchingWord = false;
-                }, wordSettleMs);
-              });
-            });
-          };
-
-          var onLeave = function (e) {
-            if (e.target !== hw || e.propertyName !== "opacity") return;
-            finishLeave();
-          };
-          hw.addEventListener("transitionend", onLeave);
-          wordFallbackTimer = window.setTimeout(finishLeave, wordLeaveMs + 120);
-        };
-        window.setInterval(function () {
-          if (document.hidden) return;
-          swapHeroWord();
-        }, wordHoldMs);
+    function sceneWord(scene, index) {
+      return (scene && scene.word) || words[index % Math.max(1, words.length)] || "";
+    }
+    function updateHeroWord(nextWord, immediate) {
+      if (!hw || !nextWord || hw.textContent === nextWord) return;
+      if (heroWordTimer) window.clearTimeout(heroWordTimer);
+      if (immediate || heroReducedMotion) {
+        hw.textContent = nextWord;
+        hw.classList.remove("is-leaving", "is-entering");
+        return;
+      }
+      hw.classList.add("is-leaving");
+      heroWordTimer = window.setTimeout(function () {
+        hw.textContent = nextWord;
+        hw.classList.remove("is-leaving");
+        hw.classList.add("is-entering");
+        window.requestAnimationFrame(function () {
+          window.requestAnimationFrame(function () { hw.classList.remove("is-entering"); });
+        });
+      }, 520);
+    }
+    function setHeroScene(next, immediate) {
+      if (!heroScenes.length) return;
+      heroSceneIndex = (next + heroScenes.length) % heroScenes.length;
+      $$(".hero-scene", heroFilm).forEach(function (scene, index) {
+        scene.classList.toggle("active", index === heroSceneIndex);
+        scene.classList.toggle("was-active", index === (heroSceneIndex - 1 + heroScenes.length) % heroScenes.length);
+      });
+      if (heroSceneCurrent) heroSceneCurrent.textContent = String(heroSceneIndex + 1).padStart(2, "0");
+      updateHeroWord(sceneWord(heroScenes[heroSceneIndex], heroSceneIndex), immediate);
+      if (heroSceneProgress) {
+        heroSceneProgress.classList.remove("playing");
+        void heroSceneProgress.offsetWidth;
+        if (!heroReducedMotion) heroSceneProgress.classList.add("playing");
       }
     }
-    var moodStage = $("#heroMoodStage");
-    if (moodStage && words.length) {
-      var stageHidden = window.getComputedStyle && window.getComputedStyle(moodStage).display === "none";
-      var noMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!stageHidden && noMotion) {
-        moodStage.innerHTML = '<span class="floating-mood static" style="--c:' + esc(PALETTE[0]) + '">' + esc(words[0]) + "</span>";
-      } else if (!stageHidden) {
-        var mi = 0;
-        var spawnMood = function () {
-          var word = words[mi % words.length];
-          var node = document.createElement("span");
-          node.className = "floating-mood";
-          node.textContent = word;
-          node.style.setProperty("--c", PALETTE[mi % PALETTE.length]);
-          node.style.setProperty("--x", (18 + ((mi * 23) % 58)) + "%");
-          node.style.setProperty("--y", (18 + ((mi * 31) % 56)) + "%");
-          node.style.setProperty("--r", ((mi % 5) - 2) + "deg");
-          moodStage.appendChild(node);
-          mi += 1;
-          window.setTimeout(function () { if (node.parentNode) node.parentNode.removeChild(node); }, 5600);
-        };
-        spawnMood();
-        window.setInterval(spawnMood, 1450);
+    function stopHeroScenes() {
+      if (heroSceneTimer) window.clearInterval(heroSceneTimer);
+      heroSceneTimer = null;
+      if (heroSceneProgress) heroSceneProgress.classList.remove("playing");
+    }
+    function startHeroScenes() {
+      stopHeroScenes();
+      if (heroReducedMotion || heroScenes.length < 2 || document.hidden) return;
+      if (heroSceneProgress) {
+        void heroSceneProgress.offsetWidth;
+        heroSceneProgress.classList.add("playing");
+      }
+      heroSceneTimer = window.setInterval(function () {
+        setHeroScene(heroSceneIndex + 1, false);
+      }, 5600);
+    }
+
+    if (heroFilm && heroScenes.length) {
+      heroFilm.innerHTML = heroScenes.map(function (scene, index) {
+        return '<figure class="hero-scene' + (index === 0 ? " active" : "") + '">' +
+          '<img src="' + esc(scene.image) + '" alt="" ' + (index === 0 ? 'fetchpriority="high"' : 'loading="lazy"') + " />" +
+          (scene.label ? '<figcaption>' + esc(scene.label) + "</figcaption>" : "") +
+        "</figure>";
+      }).join("");
+      if (heroEl) heroEl.classList.add("has-scenes");
+      if (heroSceneNav) heroSceneNav.hidden = heroScenes.length < 2;
+      if (heroSceneTotal) heroSceneTotal.textContent = String(heroScenes.length).padStart(2, "0");
+      setHeroScene(0, true);
+      startHeroScenes();
+
+      var heroScenePrev = $("#heroScenePrev");
+      var heroSceneNext = $("#heroSceneNext");
+      if (heroScenePrev) heroScenePrev.addEventListener("click", function () {
+        setHeroScene(heroSceneIndex - 1, false);
+        startHeroScenes();
+      });
+      if (heroSceneNext) heroSceneNext.addEventListener("click", function () {
+        setHeroScene(heroSceneIndex + 1, false);
+        startHeroScenes();
+      });
+      heroEl.addEventListener("touchstart", function (event) {
+        heroTouchX = event.changedTouches && event.changedTouches[0] ? event.changedTouches[0].clientX : null;
+      }, { passive: true });
+      heroEl.addEventListener("touchend", function (event) {
+        if (heroTouchX == null || !event.changedTouches || !event.changedTouches[0]) return;
+        var dx = event.changedTouches[0].clientX - heroTouchX;
+        heroTouchX = null;
+        if (Math.abs(dx) < 48) return;
+        setHeroScene(heroSceneIndex + (dx < 0 ? 1 : -1), false);
+        startHeroScenes();
+      }, { passive: true });
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) stopHeroScenes();
+        else startHeroScenes();
+      });
+    } else if (hw && words.length) {
+      var wi = 0;
+      hw.textContent = words[0];
+      if (words.length > 1 && !heroReducedMotion) {
+        window.setInterval(function () {
+          if (document.hidden) return;
+          wi = (wi + 1) % words.length;
+          updateHeroWord(words[wi], false);
+        }, 5600);
       }
     }
   }
@@ -197,8 +244,9 @@
     var mq = $("#moodMarquee");
     var moodWords = lines(C.home.marquee);
     if (mq && moodWords.length) {
-      var repeated = moodWords.concat(moodWords).concat(moodWords);
-      mq.innerHTML = repeated.map(function (w) { return "<span>" + esc(w) + "</span>"; }).join("");
+      mq.innerHTML = moodWords.map(function (w, index) {
+        return "<span><small>" + String(index + 1).padStart(2, "0") + "</small>" + esc(w) + "</span>";
+      }).join("");
     }
   }
 
@@ -875,7 +923,7 @@
 
   function initScrollScenes() {
     if (reduceMotion) return;
-    scrollScenes = $$(".hero, .mood-palette-section, .home-editorial, .mood-marquee, .home-preview, .content-panel");
+    scrollScenes = $$(".hero, .mood-palette-section, .home-editorial, .home-preview, .content-panel");
     if (!scrollScenes.length) return;
     document.documentElement.classList.add("motion-ready");
     scrollScenes.forEach(function (scene, i) {

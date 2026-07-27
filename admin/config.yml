@@ -60,6 +60,17 @@ collections:
             collapsed: true
             fields:
               - { label: "배경 사진", name: "image", widget: "image", required: false }
+              - label: "첫 화면 장면(권장 5장)"
+                name: "scenes"
+                widget: "list"
+                required: false
+                label_singular: "장면"
+                summary: "{{fields.label}}"
+                hint: "사진은 자동으로 천천히 전환됩니다. 가로 사진을 권장하며, 순서대로 예식의 이야기가 이어지게 구성해 주세요."
+                fields:
+                  - { label: "사진", name: "image", widget: "image" }
+                  - { label: "장면 라벨", name: "label", widget: "string", required: false, hint: "예: CEREMONY, SCRIPT, MOOD LAB" }
+                  - { label: "MOOD BY 문구", name: "word", widget: "string", required: false, hint: "예: 따뜻하고 밝게" }
               - label: "떠오르는 형용사(MOOD BY ___)"
                 name: "words"
                 widget: "list"

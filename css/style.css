@@ -4307,3 +4307,430 @@ body { background: var(--bg); }
 .ceo-profile img { filter: grayscale(.55) saturate(.76) contrast(1.03); }
 /* MC 프로필 사진은 원본 색상 그대로 (요청) */
 .mc-photo img { filter: none !important; }
+
+/* ============================================================
+   MOOD BY · 5 SCENES
+   첫 화면 사진 5장을 한 편의 예식처럼 연결하는 시네마틱 쇼케이스
+   ============================================================ */
+.hero-film {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #1d1a18;
+}
+.hero-film:empty { display: none; }
+.hero-scene {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.15s cubic-bezier(.2,.68,.2,1), visibility 1.15s;
+}
+.hero-scene.active {
+  opacity: 1;
+  visibility: visible;
+}
+.hero-scene.was-active {
+  visibility: visible;
+}
+.hero-scene img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(.76) contrast(1.06) brightness(.78);
+  transform: scale(1.075);
+}
+.hero-scene.active img {
+  animation: heroSceneDrift 6.6s cubic-bezier(.2,.62,.2,1) both;
+}
+.hero-scene figcaption {
+  position: absolute;
+  right: max(28px, calc((100vw - 1180px) / 2));
+  bottom: 104px;
+  color: rgba(246, 241, 232, .7);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+.hero.has-scenes .hero-bg { opacity: 0; }
+.hero.has-scenes::after {
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(19,17,15,.78) 0%, rgba(19,17,15,.58) 42%, rgba(19,17,15,.25) 72%, rgba(19,17,15,.16) 100%),
+    linear-gradient(180deg, rgba(19,17,15,.18) 0%, rgba(19,17,15,.58) 100%) !important;
+}
+.hero.has-scenes .hero-copy {
+  z-index: 3;
+}
+.hero.has-scenes .hero-logo {
+  max-width: 820px;
+  font-size: clamp(52px, 5.2vw, 76px);
+  line-height: 1;
+}
+.hero.has-scenes .hero-word {
+  max-width: 720px;
+  min-height: 1.28em;
+  margin-top: 12px;
+  color: #e4c199 !important;
+  font-family: var(--sans);
+  font-size: clamp(32px, 3.5vw, 52px);
+  font-weight: 500;
+  line-height: 1.28;
+}
+.hero.has-scenes .hero-sub {
+  max-width: 520px;
+}
+.hero-scene-nav {
+  position: absolute;
+  right: max(28px, calc((100vw - 1180px) / 2));
+  bottom: 45px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #f3f0e9;
+}
+.hero-scene-nav[hidden] { display: none; }
+.hero-scene-arrow {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(243,240,233,.42);
+  border-radius: 50%;
+  color: #f3f0e9;
+  background: rgba(25,22,20,.16);
+  font-family: var(--sans);
+  font-size: 17px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: color .25s ease, background .25s ease, border-color .25s ease;
+}
+.hero-scene-arrow:hover,
+.hero-scene-arrow:focus-visible {
+  border-color: #f3f0e9;
+  color: #201d1a;
+  background: #f3f0e9;
+  outline: none;
+}
+.hero-scene-count {
+  display: grid;
+  grid-template-columns: 26px minmax(76px, 10vw) 26px;
+  gap: 10px;
+  align-items: center;
+  font-family: var(--logo);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.hero-scene-count strong {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+.hero-scene-count > span:last-child {
+  color: rgba(243,240,233,.58);
+  text-align: right;
+}
+.hero-scene-progress {
+  position: relative;
+  display: block;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(243,240,233,.3);
+}
+.hero-scene-progress i {
+  position: absolute;
+  inset: 0;
+  background: #f3f0e9;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.hero-scene-progress.playing i {
+  animation: heroSceneProgress 5.6s linear both;
+}
+
+/* 5장의 홈 기록은 포스터처럼 리듬감 있게 이어지도록 구성 */
+.home-gallery {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 22px 16px;
+}
+.home-gallery .editorial-card:nth-child(1) {
+  grid-column: 1 / span 7;
+  min-height: 440px;
+  margin-top: 36px;
+}
+.home-gallery .editorial-card:nth-child(2) {
+  grid-column: 8 / span 5;
+  min-height: 320px;
+  margin-top: 0;
+}
+.home-gallery .editorial-card:nth-child(3) {
+  grid-column: 2 / span 5;
+  min-height: 310px;
+  margin-top: 4px;
+}
+.home-gallery .editorial-card:nth-child(4) {
+  grid-column: 7 / span 6;
+  min-height: 420px;
+  margin-top: -38px;
+}
+.home-gallery .editorial-card:nth-child(5) {
+  grid-column: 1 / span 10;
+  min-height: 350px;
+  margin-top: -56px;
+}
+.home-gallery .editorial-card img {
+  filter: saturate(.72) contrast(1.04) brightness(.94);
+}
+.home-gallery .editorial-card:hover img {
+  filter: saturate(.9) contrast(1.03) brightness(.98);
+}
+
+@keyframes heroSceneDrift {
+  from { transform: scale(1.075) translate3d(0, 0, 0); }
+  to { transform: scale(1.025) translate3d(0, -0.6%, 0); }
+}
+@keyframes heroSceneProgress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (max-width: 860px) {
+  .home-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .home-gallery .editorial-card:nth-child(1),
+  .home-gallery .editorial-card:nth-child(2),
+  .home-gallery .editorial-card:nth-child(3),
+  .home-gallery .editorial-card:nth-child(4),
+  .home-gallery .editorial-card:nth-child(5) {
+    grid-column: auto;
+    min-height: 300px;
+    margin-top: 0;
+  }
+  .home-gallery .editorial-card:nth-child(1),
+  .home-gallery .editorial-card:nth-child(4) {
+    min-height: 390px;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header .header-inner {
+    position: relative !important;
+  }
+  .site-header .nav-toggle {
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    z-index: 120;
+    display: flex !important;
+    min-width: 46px;
+    align-items: center;
+    justify-content: flex-end;
+    transform: translateY(-50%);
+  }
+  .site-header .nav-toggle span {
+    display: none !important;
+  }
+  .site-header .nav-toggle::before {
+    content: "MENU";
+    display: block;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+  }
+  .site-header .nav-toggle.open::before {
+    content: "CLOSE";
+  }
+  .hero.has-scenes {
+    min-height: 760px;
+    padding: 106px 18px 126px;
+  }
+  .hero-scene img {
+    object-position: 64% center;
+    filter: saturate(.72) contrast(1.06) brightness(.68);
+  }
+  .hero-scene:nth-child(1) img,
+  .hero-scene:nth-child(2) img {
+    object-position: 74% center;
+  }
+  .hero-scene:nth-child(3) img,
+  .hero-scene:nth-child(5) img {
+    object-position: center;
+  }
+  .hero.has-scenes::after {
+    background:
+      linear-gradient(180deg, rgba(18,16,14,.68) 0%, rgba(18,16,14,.42) 42%, rgba(18,16,14,.8) 100%) !important;
+  }
+  .hero.has-scenes .hero-logo {
+    font-size: clamp(40px, 12.4vw, 54px);
+  }
+  .hero.has-scenes .hero-word {
+    max-width: 330px;
+    min-height: 2.6em;
+    font-size: clamp(27px, 8.2vw, 36px);
+  }
+  .hero.has-scenes .hero-sub {
+    width: 100%;
+    max-width: 354px;
+    font-size: 14px;
+    line-height: 1.7;
+    word-break: keep-all;
+  }
+  .hero.has-scenes .hero-proof {
+    max-width: 340px;
+  }
+  .hero-scene figcaption {
+    right: 18px;
+    bottom: 105px;
+  }
+  .hero-scene-nav {
+    right: 18px;
+    left: 18px;
+    bottom: 42px;
+    justify-content: stretch;
+  }
+  .hero-scene-count {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    flex: 1 1 auto;
+  }
+  .hero-scene-count strong,
+  .hero-scene-count > span:last-child {
+    width: 26px;
+    flex: 0 0 26px;
+  }
+  .hero-scene-progress {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+  .hero-scene-arrow {
+    display: none;
+  }
+
+  .home-editorial {
+    overflow: hidden;
+  }
+  .home-gallery,
+  .home-gallery[style] {
+    display: flex;
+    width: calc(100vw - 18px);
+    max-width: none;
+    gap: 12px;
+    margin-right: -18px;
+    padding: 4px 18px 18px 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .home-gallery::-webkit-scrollbar { display: none; }
+  .home-gallery .editorial-card:nth-child(1),
+  .home-gallery .editorial-card:nth-child(2),
+  .home-gallery .editorial-card:nth-child(3),
+  .home-gallery .editorial-card:nth-child(4),
+  .home-gallery .editorial-card:nth-child(5) {
+    width: min(78vw, 310px);
+    min-width: min(78vw, 310px);
+    height: 390px;
+    min-height: 390px;
+    margin: 0;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+  .home-gallery .editorial-card-copy p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scene:not(.active) { display: none; }
+  .hero-scene.active img { animation: none; transform: scale(1.02); }
+  .hero-scene-progress i { animation: none !important; transform: scaleX(1); }
+}
+
+/* ============================================================
+   MOOD INDEX · 흐르는 마퀴 대신 정적인 에디토리얼 인덱스
+   ============================================================ */
+.mood-marquee {
+  padding: 0 24px;
+  overflow: hidden;
+  background: #e7e2d8;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.mood-marquee-track {
+  display: grid;
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 0;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 0;
+  animation: none !important;
+  transform: none !important;
+}
+.mood-marquee-track span {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 88px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 18px 8px 16px;
+  color: var(--ink);
+  font-family: var(--logo);
+  font-size: clamp(14px, 1.25vw, 18px);
+  font-style: normal;
+  letter-spacing: 2.2px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.mood-marquee-track span + span {
+  border-left: 1px solid rgba(42, 37, 33, .1);
+}
+.mood-marquee-track span::after {
+  display: none !important;
+}
+.mood-marquee-track small {
+  color: rgba(42, 37, 33, .46);
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+}
+
+@media (max-width: 760px) {
+  .mood-marquee {
+    padding: 0 18px;
+  }
+  .mood-marquee-track {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .mood-marquee-track span {
+    min-height: 68px;
+    gap: 5px;
+    padding: 14px 4px 12px;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+  }
+  .mood-marquee-track span:nth-child(5) {
+    border-left: 0;
+  }
+  .mood-marquee-track span:nth-child(n + 5) {
+    border-top: 1px solid rgba(42, 37, 33, .1);
+  }
+  .mood-marquee-track small {
+    font-size: 7px;
+  }
+}

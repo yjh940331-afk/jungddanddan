@@ -11,7 +11,19 @@ window.SITE_CONFIG = {
   mcPrefix: "무드바이",
   instagram: "https://www.instagram.com/jung_ddanddan/",
   kakao: "",
-  hero: { image: "images/moodby-hero-luxe.jpg", words: ["따뜻하고 밝게", "차분하고 깔끔하게", "산뜻하고 활기차게", "사랑스럽고 로맨틱하게"], tagline: "Color your wedding mood.", sub: "당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성합니다." },
+  hero: {
+    image: "images/moodby-hero-editorial.jpg",
+    scenes: [
+      { image: "images/moodby-hero-editorial.jpg", label: "CEREMONY", word: "따뜻하고 밝게" },
+      { image: "images/moodby-hero-luxe.jpg", label: "LIVE", word: "차분하고 깔끔하게" },
+      { image: "images/moodby-detail-script.jpg", label: "SCRIPT", word: "우리답고 섬세하게" },
+      { image: "images/moodby-lab-luxe.jpg", label: "MOOD LAB", word: "매끄럽고 안정감 있게" },
+      { image: "images/moodby-palette-luxe.jpg", label: "MOOD PALETTE", word: "두 사람의 색으로" }
+    ],
+    words: ["따뜻하고 밝게", "차분하고 깔끔하게", "산뜻하고 활기차게", "사랑스럽고 로맨틱하게"],
+    tagline: "Color your wedding mood.",
+    sub: "당신이 꿈꾸는 결혼식의 분위기, 무드바이가 함께 완성합니다."
+  },
   home: {
     eyebrow: "MOOD BY SCENE",
     title: "전문성은 기본, 무드는 더 섬세하게.",
@@ -28,7 +40,7 @@ window.SITE_CONFIG = {
     marquee: ["WARM", "BRIGHT", "CALM", "ROMANTIC", "FRESH", "CLEAR", "COZY", "ELEGANT"]
   },
   about: { title: "mood by your story", body: "", fit: [] },
-  ceo: { title: "대표 정다원", role: "무드컴퍼니 대표 · 웨딩 MC", image: "", body: "" },
+  ceo: { title: "대표 정다원", role: "무드컴퍼니 대표 · 웨딩 MC", image: "images/dawon-profile.jpg", body: "" },
   vision: { vision: [], mission: "", promises: [] },
   crew: { lead: "", ways: [], diffs: [] },
   mcs: [],
