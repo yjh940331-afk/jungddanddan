@@ -12,7 +12,9 @@
   <meta property="og:image" content="https://moodby.kr/images/moodby-og-luxe.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://moodby.kr/images/moodby-og-luxe.jpg" />
-  <meta name="theme-color" content="#fffaf4" />
+  <meta name="theme-color" content="#11110f" />
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg?v=20260728-1" />
+  <link rel="shortcut icon" href="images/favicon.svg?v=20260728-1" />
 
   <!-- 폰트 -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -22,7 +24,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
 
   <link rel="preload" as="image" href="images/moodby-hero-editorial.jpg" />
-  <link rel="stylesheet" href="css/style.css?v=20260630-35" />
+  <link rel="stylesheet" href="css/style.css?v=20260728-38" />
+  <link rel="stylesheet" href="css/march.css?v=20260728-2" />
 
   <!-- 옛 서비스워커/캐시 정리 (예전 버전이 기기에 붙어있는 문제 방지) -->
   <script>
@@ -51,16 +54,32 @@
   <!-- ============ 헤더 ============ -->
   <header class="site-header" id="header">
     <div class="header-inner">
-      <a href="#hero" class="logo" data-brand>MOOD BY</a>
+      <a href="#hero" class="logo" data-header-brand aria-label="Mood By 홈으로 이동">Mood</a>
+
+      <div class="header-utility" aria-label="바로가기">
+        <a
+          class="header-instagram"
+          href="https://www.instagram.com/jung_ddanddan/"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-instagram-link
+          aria-label="무드바이 인스타그램 새 창에서 열기"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+            <circle cx="12" cy="12" r="4"></circle>
+            <circle cx="17.4" cy="6.7" r="1"></circle>
+          </svg>
+        </a>
+        <a class="header-inquiry" href="#contact" data-panel-link>상담문의</a>
+      </div>
 
       <nav class="nav" id="nav">
         <a href="#about">About</a>
-        <a href="#crew">Crew</a>
         <a href="#mc">MC</a>
         <a href="#portfolio">Portfolio</a>
         <a href="#service">Service</a>
-        <a href="#academy">Academy</a>
-        <a href="#faq">Q&amp;A</a>
+        <a href="#academy">Mood Lab</a>
         <a href="#contact">Contact</a>
       </nav>
 
@@ -199,21 +218,26 @@
         <ul id="promiseList"><!-- JS --></ul>
       </div>
     </div>
-  </section>
 
-  <!-- ============ Mood Crew (왜 무드바이) ============ -->
-  <section class="crew section content-panel" id="crew" data-panel>
-    <div class="section-head center reveal">
-      <p class="section-label">MOOD CREW</p>
-      <h2 class="section-title">무드바이 사회자는 다릅니다</h2>
-      <p class="section-lead" data-crew-lead></p>
+    <!-- Mood Crew: About 안에서 이어지는 How we work -->
+    <div class="panel-chapter crew-chapter" id="crew" data-scroll-label="HOW WE WORK">
+      <div class="chapter-layout">
+        <div class="chapter-intro reveal">
+          <p class="section-label">HOW WE WORK</p>
+          <h2 class="section-title">무드바이 사회자는<br />다릅니다</h2>
+          <p class="section-lead" data-crew-lead></p>
+          <span class="chapter-index" aria-hidden="true">01 — 02</span>
+        </div>
+
+        <div class="chapter-content">
+          <h3 class="block-title reveal">일하는 방식</h3>
+          <div class="trust-grid" id="crewWays"><!-- JS --></div>
+
+          <h3 class="block-title reveal">무드바이의 차별점</h3>
+          <div class="trust-grid" id="crewDiffs"><!-- JS --></div>
+        </div>
+      </div>
     </div>
-
-    <h3 class="block-title center reveal">일하는 방식</h3>
-    <div class="trust-grid" id="crewWays"><!-- JS --></div>
-
-    <h3 class="block-title center reveal" style="margin-top:64px">무드바이의 차별점</h3>
-    <div class="trust-grid" id="crewDiffs"><!-- JS --></div>
   </section>
 
   <!-- ============ MC 사회자 명단 ============ -->
@@ -259,6 +283,16 @@
         <p class="price-note" data-pricing-note></p>
       </div>
     </div>
+
+    <!-- Q&A: 서비스 안내 뒤에서 바로 이어지는 정보 -->
+    <div class="panel-chapter service-faq" id="faq" data-scroll-label="Q&A">
+      <div class="chapter-heading center reveal">
+        <p class="section-label">Q&amp;A</p>
+        <h2 class="section-title">결정하기 전에<br />궁금한 것들</h2>
+        <p class="section-lead">상담 전에 가장 많이 물어보시는 내용을 먼저 정리했습니다.</p>
+      </div>
+      <div class="faq-list" id="faqList"><!-- JS --></div>
+    </div>
   </section>
 
   <!-- ============ Academy (무드랩) ============ -->
@@ -282,15 +316,6 @@
     <div class="academy-criteria reveal" id="academyCriteria"><!-- JS: 인재상 + 선발기준 --></div>
 
     <div class="partner-action reveal" id="academyCta"><!-- JS --></div>
-  </section>
-
-  <!-- ============ Q&A ============ -->
-  <section class="faq section content-panel" id="faq" data-panel>
-    <div class="section-head center reveal">
-      <p class="section-label">Q&amp;A</p>
-      <h2 class="section-title">자주 묻는 질문</h2>
-    </div>
-    <div class="faq-list" id="faqList"><!-- JS --></div>
   </section>
 
   <!-- ============ 문의 ============ -->
@@ -328,10 +353,10 @@
   </div>
 
   <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
-  <script src="js/site-config.js?v=20260630-35"></script>
+  <script src="js/site-config.js?v=20260728-39"></script>
   <script>
     (function () {
-      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260630-35"; document.body.appendChild(s); }
+      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260728-39"; document.body.appendChild(s); }
       fetch("content/settings.json", { cache: "no-store" })
         .then(function (r) { if (!r.ok) throw 0; return r.json(); })
         .then(function (j) { window.SITE_CONFIG = j; })

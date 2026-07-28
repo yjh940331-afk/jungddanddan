@@ -54,6 +54,10 @@
 
   /* ---------- 브랜드명 ---------- */
   $$("[data-brand]").forEach(function (el) { if (C.brand) el.textContent = C.brand; });
+  $$("[data-instagram-link]").forEach(function (el) {
+    if (C.instagram) el.href = C.instagram;
+    else el.hidden = true;
+  });
   if (C.company) { var fc = $("[data-footer-company]"); if (fc) fc.textContent = C.company; }
   if (C.seo) {
     if (C.seo.title) {
@@ -121,6 +125,7 @@
       heroSceneIndex = (next + heroScenes.length) % heroScenes.length;
       $$(".hero-scene", heroFilm).forEach(function (scene, index) {
         scene.classList.toggle("active", index === heroSceneIndex);
+        scene.classList.toggle("secondary", index === (heroSceneIndex + 1) % heroScenes.length);
         scene.classList.toggle("was-active", index === (heroSceneIndex - 1 + heroScenes.length) % heroScenes.length);
       });
       if (heroSceneCurrent) heroSceneCurrent.textContent = String(heroSceneIndex + 1).padStart(2, "0");
@@ -444,6 +449,10 @@
     });
     observeReveal();
     enhanceTilt(mcGrid);
+    if (document.documentElement.classList.contains("motion-ready")) {
+      refreshDynamicMotionTargets();
+      updateScrollScenes(window.scrollY || 0);
+    }
   }
 
   function renderPortfolioPanel() {
@@ -719,18 +728,183 @@
   var progress = $("#scrollProgress");
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var scrollScenes = [];
+  var scrollMedia = [];
+  var scrollTitleGroups = [];
+  var scrollStatus = null;
+  var scrollStatusIndex = null;
+  var scrollStatusLabel = null;
+  var scrollStatusPercent = null;
+  var scrollStatusBar = null;
+  var moodIndexItems = [];
+  var activeScrollScene = -1;
   var lastScrollY = window.scrollY || 0;
+  var lastScrollTime = performance.now();
+  var scrollVelocity = 0;
+  var scrollStopTimer = null;
   var ticking = false;
   function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+  function sceneLabel(scene, index) {
+    if (!scene) return "SCENE " + String(index + 1).padStart(2, "0");
+    if (scene.dataset.scrollLabel) return scene.dataset.scrollLabel;
+    if (scene.id === "hero") return "HOME";
+    if (scene.id === "moodPalette") return "MOOD PALETTE";
+    if (scene.id === "homeEditorial") return "OUR SCENE";
+    if (scene.id === "moodIndex") return "MOOD INDEX";
+    if (scene.classList.contains("home-preview")) return "EXPLORE";
+    var label = $(".section-label", scene);
+    return (label && label.textContent.trim()) || (scene.id ? scene.id.replace(/-/g, " ").toUpperCase() : "SCENE " + String(index + 1).padStart(2, "0"));
+  }
+
+  function setupScrollStatus() {
+    if (reduceMotion || scrollStatus) return;
+    scrollStatus = document.createElement("div");
+    scrollStatus.className = "scroll-status";
+    scrollStatus.setAttribute("aria-hidden", "true");
+    scrollStatus.innerHTML =
+      '<span class="scroll-status-index">01</span>' +
+      '<span class="scroll-status-track"><i></i></span>' +
+      '<span class="scroll-status-copy"><strong>HOME</strong><small>00%</small></span>';
+    document.body.appendChild(scrollStatus);
+    scrollStatusIndex = $(".scroll-status-index", scrollStatus);
+    scrollStatusLabel = $(".scroll-status-copy strong", scrollStatus);
+    scrollStatusPercent = $(".scroll-status-copy small", scrollStatus);
+    scrollStatusBar = $(".scroll-status-track i", scrollStatus);
+  }
+
+  function splitMotionTitle(el) {
+    if (!el || el.dataset.scrollSplit) return;
+    el.dataset.scrollSplit = "1";
+    el.classList.add("scroll-title");
+    var wordIndex = 0;
+    function splitNode(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (child) {
+        if (child.nodeType === 3) {
+          var parts = child.nodeValue.split(/(\s+)/);
+          var fragment = document.createDocumentFragment();
+          parts.forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) {
+              fragment.appendChild(document.createTextNode(part));
+              return;
+            }
+            var span = document.createElement("span");
+            span.className = "scroll-title-word";
+            span.style.setProperty("--word-i", wordIndex++);
+            span.textContent = part;
+            fragment.appendChild(span);
+          });
+          child.parentNode.replaceChild(fragment, child);
+        } else if (child.nodeType === 1 && child.tagName !== "BR") {
+          splitNode(child);
+        }
+      });
+    }
+    splitNode(el);
+  }
+
+  function refreshDynamicMotionTargets() {
+    if (reduceMotion) return;
+    scrollMedia = $$(".mood-palette-visual img, .editorial-card img, .ceo-profile img, .mc-photo img, .portfolio-media img");
+    scrollMedia.forEach(function (media, index) {
+      media.classList.add("scroll-media");
+      media.style.setProperty("--media-i", index % 8);
+    });
+
+    $$(".palette-title, .home-title, .section-title").forEach(splitMotionTitle);
+    scrollTitleGroups = $$(".scroll-title").map(function (title) {
+      return { el: title, words: $$(".scroll-title-word", title) };
+    });
+    moodIndexItems = $$(".mood-marquee-track span");
+  }
+
+  function updateMotionMedia(vh) {
+    scrollMedia.forEach(function (media) {
+      if (!media.isConnected || !media.offsetParent) return;
+      var r = media.getBoundingClientRect();
+      var isNear = r.bottom >= -80 && r.top <= vh + 80;
+      media.classList.toggle("is-scroll-visible", isNear);
+      if (!isNear) return;
+      var center = r.top + r.height * 0.5;
+      var intensity = window.innerWidth <= 760 ? .55 : 1;
+      var shift = clamp((vh * 0.5 - center) * 0.065, -34, 34) * intensity;
+      var focus = clamp(1 - Math.abs(center - vh * 0.5) / (vh * 0.72), 0, 1);
+      media.style.setProperty("--media-shift", shift.toFixed(2) + "px");
+      media.style.setProperty("--media-focus", focus.toFixed(3));
+      media.style.setProperty("--media-scale", (1.035 + focus * .018).toFixed(4));
+    });
+  }
+
+  function updateMotionTitles(vh) {
+    scrollTitleGroups.forEach(function (group) {
+      if (!group.el.offsetParent) return;
+      var r = group.el.getBoundingClientRect();
+      var reveal = clamp((vh * 0.9 - r.top) / (vh * 0.46), 0, 1);
+      var count = Math.max(1, group.words.length);
+      group.words.forEach(function (word, index) {
+        var stagger = (index / count) * 0.42;
+        var progress = clamp((reveal - stagger) / 0.58, 0, 1);
+        word.style.setProperty("--word-progress", progress.toFixed(3));
+        word.style.opacity = progress.toFixed(3);
+        word.style.transform = "translate3d(0," + ((1 - progress) * 18).toFixed(2) + "px,0)";
+        word.style.filter = "blur(" + ((1 - progress) * 2.4).toFixed(2) + "px)";
+      });
+    });
+  }
+
+  function updateMoodIndex(sceneProgress) {
+    if (!moodIndexItems.length) return;
+    var active = Math.min(moodIndexItems.length - 1, Math.floor(clamp(sceneProgress, 0, .9999) * moodIndexItems.length));
+    moodIndexItems.forEach(function (item, index) {
+      var distance = Math.min(4, Math.abs(index - active));
+      item.classList.toggle("is-scroll-active", index === active);
+      item.style.setProperty("--index-distance", distance);
+      item.style.opacity = (1 - distance * .12).toFixed(2);
+    });
+  }
+
+  function updateScrollStatus(index, localProgress, pageProgress, displayIndex) {
+    if (!scrollStatus || index < 0 || !scrollScenes[index]) return;
+    if (activeScrollScene !== index) {
+      activeScrollScene = index;
+      scrollStatus.classList.remove("is-changing");
+      void scrollStatus.offsetWidth;
+      scrollStatus.classList.add("is-changing");
+      scrollStatusIndex.textContent = String(displayIndex + 1).padStart(2, "0");
+      scrollStatusLabel.textContent = sceneLabel(scrollScenes[index], index);
+    }
+    scrollStatusPercent.textContent = String(Math.round(pageProgress * 100)).padStart(2, "0") + "%";
+    scrollStatusBar.style.transform = "scaleX(" + clamp(localProgress, 0, 1).toFixed(4) + ")";
+  }
+
   function updateScrollScenes(y) {
     if (!scrollScenes.length || reduceMotion) return;
     var vh = window.innerHeight || document.documentElement.clientHeight || 1;
     var max = Math.max(1, document.documentElement.scrollHeight - vh);
-    document.documentElement.style.setProperty("--page-progress", clamp(y / max, 0, 1).toFixed(4));
+    var pageProgress = clamp(y / max, 0, 1);
+    var now = performance.now();
+    var deltaTime = Math.max(16, now - lastScrollTime);
+    var rawVelocity = (y - lastScrollY) / deltaTime;
+    scrollVelocity += (rawVelocity - scrollVelocity) * .24;
+    document.documentElement.style.setProperty("--page-progress", pageProgress.toFixed(4));
+    document.documentElement.style.setProperty("--scroll-velocity", clamp(Math.abs(scrollVelocity) / 2.4, 0, 1).toFixed(4));
+    document.documentElement.style.setProperty("--ambient-y", (-pageProgress * 18).toFixed(2) + "px");
+    document.documentElement.style.setProperty("--ambient-opacity", (.24 + clamp(Math.abs(scrollVelocity) / 2.4, 0, 1) * .22).toFixed(3));
+    document.documentElement.style.setProperty("--progress-height", (2 + clamp(Math.abs(scrollVelocity) / 2.4, 0, 1) * 2).toFixed(2) + "px");
     document.body.classList.toggle("scrolling-down", y > lastScrollY + 2);
     document.body.classList.toggle("scrolling-up", y < lastScrollY - 2);
+    document.body.classList.toggle("scrolling-fast", Math.abs(scrollVelocity) > 1.15);
+    document.body.classList.remove("scroll-settled");
     lastScrollY = y;
-    scrollScenes.forEach(function (scene) {
+    lastScrollTime = now;
+
+    var bestIndex = -1;
+    var bestFocus = -1;
+    var bestProgress = 0;
+    var visibleSceneIndices = [];
+    scrollScenes.forEach(function (scene, index) {
+      if (!scene.offsetParent) return;
+      visibleSceneIndices.push(index);
       var r = scene.getBoundingClientRect();
       var p = clamp((vh - r.top) / (vh + Math.max(1, r.height)), 0, 1);
       var focus = clamp(1 - Math.abs(p - 0.5) * 2.15, 0, 1);
@@ -742,8 +916,19 @@
       scene.style.setProperty("--scene-brightness", (0.94 + focus * 0.08).toFixed(3));
       scene.style.setProperty("--scene-scale", (1.015 + focus * 0.025).toFixed(4));
       scene.style.setProperty("--scene-clip", ((1 - focus) * 9).toFixed(2) + "%");
+      scene.style.setProperty("--scene-rotate", ((p - .5) * 16).toFixed(2) + "deg");
+      scene.style.setProperty("--scene-line", (18 + focus * 38).toFixed(2) + "%");
       scene.classList.toggle("scene-active", focus > 0.16);
+      if (scene.id === "moodIndex") updateMoodIndex(p);
+      if (focus > bestFocus && r.bottom > 0 && r.top < vh) {
+        bestFocus = focus;
+        bestIndex = index;
+        bestProgress = p;
+      }
     });
+    updateMotionMedia(vh);
+    updateMotionTitles(vh);
+    updateScrollStatus(bestIndex, bestProgress, pageProgress, Math.max(0, visibleSceneIndices.indexOf(bestIndex)));
   }
   function onScroll() {
     if (ticking) return;
@@ -761,6 +946,13 @@
       updateScrollScenes(y);
       ticking = false;
     });
+    if (scrollStopTimer) window.clearTimeout(scrollStopTimer);
+    scrollStopTimer = window.setTimeout(function () {
+      scrollVelocity = 0;
+      document.documentElement.style.setProperty("--scroll-velocity", "0");
+      document.body.classList.remove("scrolling-fast");
+      document.body.classList.add("scroll-settled");
+    }, 140);
   }
   window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
 
@@ -776,6 +968,7 @@
   /* ---------- 메뉴별 섹션 전환 ---------- */
   var panels = $$("[data-panel]");
   var panelIds = panels.map(function (panel) { return panel.id; });
+  var panelAliases = { crew: "about", faq: "service" };
   function showHome(shouldScroll) {
     panels.forEach(function (panel) { panel.classList.remove("active"); panel.hidden = true; });
     document.body.classList.remove("panel-open");
@@ -788,20 +981,22 @@
     }
   }
   function activatePanel(id, shouldScroll) {
-    if (panelIds.indexOf(id) === -1) { showHome(shouldScroll); return; }
+    var anchorId = id;
+    var panelId = panelAliases[id] || id;
+    if (panelIds.indexOf(panelId) === -1) { showHome(shouldScroll); return; }
     panels.forEach(function (panel) {
-      var active = panel.id === id;
+      var active = panel.id === panelId;
       panel.classList.toggle("active", active);
       panel.hidden = !active;
     });
     document.body.classList.add("panel-open");
     $$(".nav a").forEach(function (link) {
-      link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+      link.classList.toggle("active", link.getAttribute("href") === "#" + panelId);
     });
     observeReveal();
     if (shouldScroll) {
       window.setTimeout(function () {
-        var target = document.getElementById(id);
+        var target = document.getElementById(anchorId) || document.getElementById(panelId);
         if (target) target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
       }, 20);
     }
@@ -923,18 +1118,24 @@
 
   function initScrollScenes() {
     if (reduceMotion) return;
-    scrollScenes = $$(".hero, .mood-palette-section, .home-editorial, .home-preview, .content-panel");
+    scrollScenes = $$(".hero, .mood-palette-section, .home-editorial, .mood-marquee, .home-preview, .content-panel, .panel-chapter");
     if (!scrollScenes.length) return;
     document.documentElement.classList.add("motion-ready");
     scrollScenes.forEach(function (scene, i) {
       scene.classList.add("scroll-scene");
       scene.style.setProperty("--scene-i", i);
+      scene.dataset.scrollLabel = sceneLabel(scene, i);
     });
     $$(".palette-signature, .home-stat, .editorial-card, .preview-card, .trust-card, .process-step, .mc-card, .portfolio-card, .contact-card").forEach(function (el, i) {
       el.style.setProperty("--motion-i", Math.min(i % 12, 11));
     });
+    setupScrollStatus();
+    refreshDynamicMotionTargets();
     updateScrollScenes(window.scrollY || 0);
-    window.addEventListener("resize", function () { updateScrollScenes(window.scrollY || 0); }, { passive: true });
+    window.addEventListener("resize", function () {
+      refreshDynamicMotionTargets();
+      updateScrollScenes(window.scrollY || 0);
+    }, { passive: true });
   }
 
   /* ---------- 초기 실행 ---------- */
@@ -983,7 +1184,7 @@
   renderMc("all");
   renderPortfolioPanel();
   var initialPanel = window.location.hash.replace("#", "");
-  if (panelIds.indexOf(initialPanel) !== -1) activatePanel(initialPanel, true);
+  if (panelIds.indexOf(panelAliases[initialPanel] || initialPanel) !== -1) activatePanel(initialPanel, true);
   else showHome(false);
   observeReveal();
   initDynamicMotion();
