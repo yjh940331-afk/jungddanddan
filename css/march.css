@@ -948,4 +948,47 @@
   .about .crew-chapter .trust-card {
     grid-template-columns: 36px minmax(0, 1fr);
   }
+
+  /* Scene 통계와 사진을 시각적으로도 완전히 다른 높이/배경으로 분리 */
+  .home-editorial-copy::after {
+    content: "MOOD JOURNAL";
+    display: block;
+    margin-top: 54px;
+    padding-top: 17px;
+    border-top: 1px solid rgba(16, 44, 38, .14);
+    color: rgba(16, 44, 38, .5);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .home-stats {
+    min-height: 78px;
+    margin-bottom: 0;
+    padding: 8px 10px;
+    overflow: hidden;
+    border: 1px solid rgba(16, 44, 38, .12);
+    background: var(--march-white);
+    box-shadow: 0 8px 24px rgba(16, 44, 38, .04);
+    isolation: isolate;
+  }
+
+  .home-stat {
+    min-height: 58px;
+  }
+
+  .home-gallery,
+  .home-gallery[style] {
+    margin-top: 22px !important;
+    padding-top: 0;
+  }
+
+  .home-gallery .editorial-card:nth-child(n) {
+    width: min(84vw, 340px);
+    min-width: min(84vw, 340px);
+    height: min(94vw, 380px);
+    min-height: min(94vw, 380px);
+    margin-top: 0;
+  }
 }
