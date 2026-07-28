@@ -12,13 +12,13 @@ window.SITE_CONFIG = {
   instagram: "https://www.instagram.com/jung_ddanddan/",
   kakao: "",
   hero: {
-    image: "images/moodby-hero-editorial.jpg",
+    image: "images/moodby-placeholder-toast.jpg",
     scenes: [
-      { image: "images/moodby-hero-editorial.jpg", label: "CEREMONY", word: "따뜻하고 밝게" },
-      { image: "images/moodby-hero-luxe.jpg", label: "LIVE", word: "차분하고 깔끔하게" },
-      { image: "images/moodby-detail-script.jpg", label: "SCRIPT", word: "우리답고 섬세하게" },
-      { image: "images/moodby-lab-luxe.jpg", label: "MOOD LAB", word: "매끄럽고 안정감 있게" },
-      { image: "images/moodby-palette-luxe.jpg", label: "MOOD PALETTE", word: "두 사람의 색으로" }
+      { image: "images/moodby-placeholder-toast.jpg", label: "CELEBRATION", word: "따뜻하고 밝게" },
+      { image: "images/moodby-placeholder-bride-bouquet.jpg", label: "BRIDE", word: "차분하고 깔끔하게" },
+      { image: "images/moodby-placeholder-ceremony-entrance.jpg", label: "CEREMONY", word: "우리답고 섬세하게" },
+      { image: "images/moodby-placeholder-mc-preparation.jpg", label: "MC PREPARATION", word: "매끄럽고 안정감 있게" },
+      { image: "images/moodby-placeholder-rings-vow.jpg", label: "VOW", word: "두 사람의 색으로" }
     ],
     words: ["따뜻하고 밝게", "차분하고 깔끔하게", "산뜻하고 활기차게", "사랑스럽고 로맨틱하게"],
     tagline: "Color your wedding mood.",
@@ -36,7 +36,14 @@ window.SITE_CONFIG = {
       note: ""
     },
     stats: [],
-    gallery: [],
+    gallery: [
+      { image: "images/moodby-placeholder-toast.jpg", label: "CELEBRATION", title: "잔이 부딪히는 순간", text: "예식 뒤에 이어지는 작은 축하까지 그날의 무드로 기억됩니다." },
+      { image: "images/moodby-placeholder-bride-bouquet.jpg", label: "BRIDE ROOM", title: "시작 전의 고요함", text: "설렘과 긴장이 함께 머무는 시간부터 예식의 분위기는 시작됩니다." },
+      { image: "images/moodby-placeholder-ceremony-entrance.jpg", label: "CEREMONY", title: "두 사람이 함께 걷는 장면", text: "하객의 시선과 음악, 멘트가 자연스럽게 한 방향으로 이어집니다." },
+      { image: "images/moodby-placeholder-mc-preparation.jpg", label: "MC PREPARATION", title: "첫 문장 전의 준비", text: "대본과 식순을 마지막까지 확인하며 안정적인 진행을 준비합니다." },
+      { image: "images/moodby-placeholder-rings-vow.jpg", label: "VOW", title: "두 사람만의 약속", text: "작은 디테일까지 놓치지 않고 예식의 흐름 안에 담아냅니다." },
+      { image: "images/moodby-placeholder-reception-guests.jpg", label: "GUESTS", title: "하객에게도 좋은 기억", text: "자연스러운 웃음과 반응이 이어지는 편안한 현장을 만듭니다." }
+    ],
     marquee: ["WARM", "BRIGHT", "CALM", "ROMANTIC", "FRESH", "CLEAR", "COZY", "ELEGANT"]
   },
   about: { title: "mood by your story", body: "", fit: [] },

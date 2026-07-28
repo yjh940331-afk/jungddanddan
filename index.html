@@ -23,9 +23,9 @@
   <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css" />
   <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
 
-  <link rel="preload" as="image" href="images/moodby-hero-editorial.jpg" />
+  <link rel="preload" as="image" href="images/moodby-placeholder-toast.jpg" />
   <link rel="stylesheet" href="css/style.css?v=20260728-38" />
-  <link rel="stylesheet" href="css/march.css?v=20260728-2" />
+  <link rel="stylesheet" href="css/march.css?v=20260728-3" />
 
   <!-- 옛 서비스워커/캐시 정리 (예전 버전이 기기에 붙어있는 문제 방지) -->
   <script>
@@ -148,6 +148,7 @@
         <div class="home-stats" id="homeStats"></div>
       </div>
       <div class="home-gallery reveal" id="homeGallery"></div>
+      <p class="home-visual-note">현재 일부 이미지는 무드 연출 방향을 보여주는 임시 비주얼이며, 실제 현장 사진으로 순차 교체됩니다.</p>
     </div>
   </section>
 
@@ -353,10 +354,10 @@
   </div>
 
   <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
-  <script src="js/site-config.js?v=20260728-39"></script>
+  <script src="js/site-config.js?v=20260728-40"></script>
   <script>
     (function () {
-      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260728-39"; document.body.appendChild(s); }
+      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260728-40"; document.body.appendChild(s); }
       fetch("content/settings.json", { cache: "no-store" })
         .then(function (r) { if (!r.ok) throw 0; return r.json(); })
         .then(function (j) { window.SITE_CONFIG = j; })
